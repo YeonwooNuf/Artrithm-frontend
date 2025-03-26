@@ -1,3 +1,6 @@
+# for macOS
+.DS_Store
+
 # node_modules & frontend build
 artrithm-frontend/node_modules/
 artrithm-frontend/dist/
