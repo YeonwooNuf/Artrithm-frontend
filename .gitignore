@@ -1,3 +1,12 @@
+# Logs
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+
 # Node Modules
 /node_modules
 
@@ -12,13 +21,19 @@
 .env.test.local
 .env.production.local
 
-# 로컬 IDE 설정
-.vscode/
-.idea/
+node_modules
+dist
+dist-ssr
+*.local
 
-# OS 파일
+# Editor directories and files
+.vscode/*
+!.vscode/extensions.json
+.idea
 .DS_Store
-Thumbs.db
-
-# 로그파일
-*.log
+Thumbs.db   
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
