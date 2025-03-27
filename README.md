@@ -1,6 +1,12 @@
-#Artrithm
+# React + Vite
 
-세상 모든 예술가들을 위한 온라인 전시관
+This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
 
-“Think Art. Speak Artrithm.”
-예술을 생각할 땐, Artrithm으로 말하세요.
+Currently, two official plugins are available:
+
+- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
+- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+
+## Expanding the ESLint configuration
+
+If you are developing a production application, we recommend using TypeScript and enable type-aware lint rules. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
