@@ -43,13 +43,32 @@ function Player() {
     if (keys.current['a']) direction.x -= 1
     if (keys.current['d']) direction.x += 1
 
+    const isMoving = direction.length > 0
+    if(isMoving) {
+        console.log("방향 벡터 : ", direction.toArray())
+    }
+
     direction.normalize().multiplyScalar(speed)
     direction.applyEuler(new THREE.Euler(0, camera.rotation.y, 0))
+
+    const velocity = {
+        x: direction.x,
+        y: body.linvel().y,
+        z: direction.z,
+    }
+
+    if(isMoving) {
+        console.log("속도 적용: ", velocity)
+    }
 
     body.setLinvel({ x: direction.x, y: body.linvel().y, z: direction.z }, true)
 
     const pos = body.translation()
-    if (pos) camera.position.set(pos.x, pos.y, pos.z)
+    if (pos) {
+        camera.position.set(pos.x, pos.y, pos.z)
+        if(isMoving) console.log("카메라 위치: ", pos)
+    }
+
   })
 
   return (
@@ -61,6 +80,7 @@ function Player() {
       enabledRotations={[false, false, false]}
       friction={0}
       linearDamping={0}
+      
     />
   )
 }
