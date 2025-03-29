@@ -14,8 +14,13 @@ import './GalleryWalkable.css'
 function useKeys() {
   const keys = useRef({})
   useEffect(() => {
-    const down = (e) => (keys.current[e.key.toLowerCase()] = true)
-    const up = (e) => (keys.current[e.key.toLowerCase()] = false)
+    const down = (e) => {
+      console.log('⬇️ 키 눌림:', e.key) // ✅ 이거 꼭 추가!
+      keys.current[e.key.toLowerCase()] = true
+    }
+    const up = (e) => {
+      keys.current[e.key.toLowerCase()] = false
+    }
     window.addEventListener('keydown', down)
     window.addEventListener('keyup', up)
     return () => {
@@ -43,7 +48,7 @@ function Player() {
     if (keys.current['a']) direction.x -= 1
     if (keys.current['d']) direction.x += 1
 
-    const isMoving = direction.length > 0
+    const isMoving = direction.length() > 0
     if(isMoving) {
         console.log("방향 벡터 : ", direction.toArray())
     }
