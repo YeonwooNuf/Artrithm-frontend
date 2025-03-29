@@ -1,5 +1,3 @@
-// src/pages/GalleryWalkable.jsx
-
 import React, { useRef, useEffect } from 'react'
 import { Canvas, useFrame, useThree } from '@react-three/fiber'
 import {
@@ -11,8 +9,8 @@ import {
 import { Physics, RigidBody } from '@react-three/rapier'
 import * as THREE from 'three'
 import { ImportedGallery } from '../components/ImportedGallery'
+import './GalleryWalkable.css'
 
-/* 🎮 키 입력 */
 function useKeys() {
   const keys = useRef({})
   useEffect(() => {
@@ -28,7 +26,6 @@ function useKeys() {
   return keys
 }
 
-/* 🧍 플레이어 */
 function Player() {
   const ref = useRef()
   const keys = useKeys()
@@ -68,7 +65,6 @@ function Player() {
   )
 }
 
-/* 🖼️ 그림 */
 function Painting({ position, imageUrl, title }) {
   const texture = useTexture(imageUrl)
   return (
@@ -79,16 +75,13 @@ function Painting({ position, imageUrl, title }) {
           <meshStandardMaterial map={texture} />
         </mesh>
         <Html position={[0, -1.2, 0]}>
-          <div className="bg-white/80 text-black px-2 py-1 rounded shadow text-sm">
-            {title}
-          </div>
+          <div className="painting-label">{title}</div>
         </Html>
       </group>
     </RigidBody>
   )
 }
 
-/* 🌐 전체 페이지 */
 export default function GalleryWalkable() {
   const controlsRef = useRef()
 
@@ -101,38 +94,32 @@ export default function GalleryWalkable() {
   }
 
   return (
-    <div className="absolute inset-0 w-full h-full z-0">
-      {/* 🔘 마우스 잠금 버튼 */}
-      <button
-        onClick={handleTogglePointerLock}
-        className="absolute top-4 right-4 z-50 px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded"
-      >
-        🔒 마우스 잠금 토글
-      </button>
+    <div className="gallery-container">
+      <div className="gallery-wrapper">
+        <button className="lock-button" onClick={handleTogglePointerLock}>
+          🔒 마우스 잠금 토글
+        </button>
 
-      <Canvas shadows camera={{ fov: 45, position: [0, 2, 5] }}>
-        {/* ☀️ 조명 */}
-        <ambientLight intensity={0.6} />
-        <directionalLight position={[5, 10, 5]} intensity={1.5} castShadow />
-        <Environment preset="sunset" />
-        <PointerLockControls ref={controlsRef} />
+        <Canvas shadows camera={{ fov: 45, position: [0, 2, 5] }}>
+          <ambientLight intensity={0.6} />
+          <directionalLight position={[5, 10, 5]} intensity={1.5} castShadow />
+          <Environment preset="sunset" />
+          <PointerLockControls ref={controlsRef} />
+          <primitive object={new THREE.AxesHelper(5)} position={[0, 0, 0]} />
 
-        {/* 🎯 좌표축 (디버깅용) */}
-        <primitive object={new THREE.AxesHelper(5)} position={[0, 0, 0]} />
+          <Physics gravity={[0, -9.81, 0]}>
+            <Player />
+            <ImportedGallery scale={4} position={[0, -1.5, 0]} />
+            <Painting position={[0, 2, -23.9]} imageUrl="/art1.png" title="작품 1" />
+            <Painting position={[3, 2, -23.9]} imageUrl="/art2.jpeg" title="작품 2" />
+            <Painting position={[-3, 2, -23.9]} imageUrl="/art3.jpeg" title="작품 3" />
+          </Physics>
+        </Canvas>
 
-        <Physics gravity={[0, -9.81, 0]}>
-          <Player />
-          <ImportedGallery scale={4} position={[0, -1.5, 0]} />
-          <Painting position={[0, 2, -23.9]} imageUrl="/art1.png" title="작품 1" />
-          <Painting position={[3, 2, -23.9]} imageUrl="/art2.jpeg" title="작품 2" />
-          <Painting position={[-3, 2, -23.9]} imageUrl="/art3.jpeg" title="작품 3" />
-        </Physics>
-      </Canvas>
-
-      {/* 안내 문구 */}
-      <div className="absolute top-2 left-2 z-50 bg-black/70 text-white px-4 py-2 rounded text-sm pointer-events-none">
-        🧍 WASD로 이동 가능 / 마우스 회전<br />
-        🎨 전시관에 작품 배치 완료!
+        <div className="info-banner">
+          🧍 WASD로 이동 / 마우스 회전<br />
+          🎨 전시관에 작품 배치 완료!
+        </div>
       </div>
     </div>
   )
