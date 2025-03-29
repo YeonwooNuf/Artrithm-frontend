@@ -40,7 +40,7 @@ function Player() {
     const body = ref.current
     if (!body) return
 
-    const speed = 4
+    const speed = 10
     const direction = new THREE.Vector3()
 
     if (keys.current['w']) direction.z -= 1
@@ -54,7 +54,7 @@ function Player() {
     }
 
     direction.normalize().multiplyScalar(speed)
-    direction.applyEuler(new THREE.Euler(0, camera.rotation.y, 0))
+    direction.applyQuaternion(camera.quaternion)
 
     const velocity = {
         x: direction.x,
