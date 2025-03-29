@@ -130,7 +130,9 @@ export default function GalleryWalkable() {
           <directionalLight position={[5, 10, 5]} intensity={1.5} castShadow />
           <Environment preset="sunset" />
           <PointerLockControls ref={controlsRef} />
-          <primitive object={new THREE.AxesHelper(5)} position={[0, 0, 0]} />
+
+          {/* 청크 기준선 */}
+          {/*<primitive object={new THREE.AxesHelper(5)} position={[0, 0, 0]} />*/}
 
           <Physics gravity={[0, -9.81, 0]}>
             <Player />
