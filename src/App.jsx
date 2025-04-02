@@ -1,4 +1,4 @@
-import GalleryWalkable from './pages/GalleryWalkable'
+import GalleryWalkable from './pages/3DGallery/GalleryWalkable'
 
 function App() {
   return (
