@@ -3,7 +3,6 @@ import LoginForm from "./components/login/LoginForm";
 import ExhibitionDetailPage from "./pages/Exhibition/ExhibitionDetailPage";
 import Home from "./pages/Home/Home";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-//import GalleryWalkable from "./pages/GalleryWalkable";
 
 function App() {
   return (

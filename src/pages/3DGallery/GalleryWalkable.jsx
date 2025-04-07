@@ -8,7 +8,7 @@ import {
 } from '@react-three/drei'
 import { Physics, RigidBody } from '@react-three/rapier'
 import * as THREE from 'three'
-import { ImportedGallery } from '../components/ImportedGallery'
+import { ImportedGallery } from '../../components/ImportedGallery'
 import './GalleryWalkable.css'
 
 function useKeys() {
