@@ -8,7 +8,7 @@ import {
   PointerLockControls,
 } from "@react-three/drei";
 import { Physics, RigidBody } from "@react-three/rapier";
-import { Vector3, Object3D, SpotLight } from "three";
+import { Vector3 } from "three";
 import * as THREE from "three";
 import "./Gallery3D.css";
 
@@ -104,13 +104,14 @@ function GalleryModel({ scale = 2 }) {
 function Painting({ position, imageUrl, title }) {
   const texture = useTexture(imageUrl)
   const wood = useTexture("/wood.jpg")
+  const lamp = useGLTF("/models/led_projector_lamp_vega_c100.glb")
   const groupRef = useRef()
   const lightRef = useRef()
 
   const width = 2.5
   const height = 1.8
   const frameWidth = 0.15
-  const frameDepth = 0.4
+  const frameDepth = 0.3
 
   useFrame(() => {
     if (lightRef.current && groupRef.current) {
@@ -121,7 +122,7 @@ function Painting({ position, imageUrl, title }) {
   return (
     <group position={position} ref={groupRef}>
       {/* 그림 */}
-      <mesh position={[0, 0, 0.1]} castShadow receiveShadow>
+      <mesh position={[0, 0, 0.01]} castShadow receiveShadow>
         <planeGeometry args={[width, height]} />
         <meshStandardMaterial map={texture} />
       </mesh>
@@ -144,7 +145,7 @@ function Painting({ position, imageUrl, title }) {
         <meshStandardMaterial map={wood} />
       </mesh>
 
-      {/* 브라켓 2개 */}
+      {/* 브라켓 */}
       <mesh position={[-width / 2 + 0.2, height / 2 + 0.7, 0]}>
         <cylinderGeometry args={[0.01, 0.01, 1.4]} />
         <meshStandardMaterial color="#666" metalness={1} roughness={0.4} />
@@ -153,6 +154,20 @@ function Painting({ position, imageUrl, title }) {
         <cylinderGeometry args={[0.01, 0.01, 1.4]} />
         <meshStandardMaterial color="#666" metalness={1} roughness={0.4} />
       </mesh>
+
+      {/* 전등 모델 */}
+      <primitive object={lamp.scene} position={[0, -height / 2 + 13, 0.3]} scale={6} rotation={[0, 0, Math.PI]} />
+
+      {/* Spotlight */}
+      <spotLight
+        ref={lightRef}
+        position={[0, height / 2 + 0.95, 0.4]}
+        angle={0.4}
+        penumbra={0.5}
+        intensity={2.5}
+        distance={5}
+        castShadow
+      />
 
       {/* 라벨 */}
       <Html position={[0, -height / 2 - frameWidth - 0.3, 0]}>
