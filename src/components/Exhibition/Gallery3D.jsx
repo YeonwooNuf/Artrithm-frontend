@@ -185,7 +185,7 @@ export default function Gallery3D_Walkable() {
       <div className="gallery3d-container">
         <Canvas shadows camera={{ fov: 40, position: [-6, 2.5, 14] }} style={{ background: "#dcdcdc" }}>
           <ambientLight intensity={0.4} />
-          <Environment preset="sunset" />
+          <Environment preset="night" />
           <PointerLockControls />
 
           <primitive object={new THREE.AxesHelper(3)} position={[-8, 1, 15]} />
