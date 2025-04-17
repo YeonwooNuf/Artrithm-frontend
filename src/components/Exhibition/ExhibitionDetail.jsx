@@ -28,6 +28,8 @@ export default function ExhibitionDetail() {
           ))}
         </div>
       </div>
+
+      <div></div>
     </div>
   );
 }
