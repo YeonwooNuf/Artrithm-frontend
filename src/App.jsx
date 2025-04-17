@@ -3,15 +3,12 @@ import Header from "./components/Header/Header";
 import LoginForm from "./components/login/LoginForm";
 import ExhibitionDetailPage from "./pages/Exhibition/ExhibitionDetailPage";
 import Home from "./pages/Home/Home";
-<<<<<<< HEAD
 import { BrowserRouter, Routes, Route, Router } from "react-router-dom";
 import ExhibitionPage from "./pages/Exhibition/ExhibitionPage";
 import Gallery3D_Walkable from "./components/Exhibition/Gallery3D";
 import Footer from "./components/Footer/Footer";
 //import GalleryWalkable from "./pages/GalleryWalkable";
-=======
 import { BrowserRouter, Routes, Route } from "react-router-dom";
->>>>>>> dcea2a99e097562ee1bae496b3f39ec79192eb70
 
 function App() {
   const [user, setUser] = useState(null); //로그인 된 사용자 정보
