@@ -156,16 +156,16 @@ function Painting({ position, imageUrl, title }) {
       </mesh>
 
       {/* 전등 모델 */}
-      <primitive object={lamp.scene} position={[0, -height / 2 + 13, 0.3]} scale={6} rotation={[0, 0, Math.PI]} />
+      <primitive object={lamp.scene} position={[0, -height / 2 + 13.5, 0.3]} scale={6} rotation={[Math.PI, Math.PI, 0]} />
 
       {/* Spotlight */}
       <spotLight
         ref={lightRef}
-        position={[0, height / 2 + 0.95, 0.4]}
-        angle={0.4}
-        penumbra={0.5}
-        intensity={2.5}
-        distance={5}
+        position={[0, height / 2 + 1.5, 0.8]}
+        angle={0.7}
+        penumbra={0.01}
+        intensity={100}
+        distance={4}
         castShadow
       />
 
@@ -184,7 +184,7 @@ export default function Gallery3D_Walkable() {
 
       <div className="gallery3d-container">
         <Canvas shadows camera={{ fov: 40, position: [-6, 2.5, 14] }} style={{ background: "#dcdcdc" }}>
-          <ambientLight intensity={0.4} />
+          <ambientLight intensity={0.3} />
           <Environment preset="night" />
           <PointerLockControls />
 
