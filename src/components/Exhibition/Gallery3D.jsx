@@ -15,6 +15,7 @@ import "./Gallery3D.css";
 function useKeyboardControls() {
   const keys = useRef({})
   useEffect(() => {
+
     const down = (e) => (keys.current[e.key.toLowerCase()] = true)
     const up = (e) => (keys.current[e.key.toLowerCase()] = false)
     window.addEventListener("keydown", down)
@@ -82,6 +83,7 @@ function Player({ position = [-26, 0.8, 15] }) {
 function GalleryModel({ scale = 2 }) {
   const { scene } = useGLTF("/models/vr_art_gallery_01.glb")
   useEffect(() => {
+
     scene.traverse((obj) => {
       if (obj.isMesh) {
         obj.castShadow = true
@@ -101,7 +103,22 @@ function Painting({ position, imageUrl, title }) {
   const texture = useTexture(imageUrl)
   const wood = useTexture("/wood.jpg")
   const { scene } = useGLTF("/models/led_projector_lamp_vega_c100.glb")
-  const lamp = useMemo(() => scene.clone(true), [scene])
+  const lamp = useMemo(() => {
+    const cloned = scene.clone(true)
+    cloned.traverse((child) => {
+      if (child.isMesh && child.name === "Object_5") {
+        child.material = new THREE.MeshBasicMaterial({
+          color: 0xffffff,
+          emissive: new THREE.Color(0xffffff),
+          emissiveIntensity: 20,
+          metalness: 0,
+          roughness: 0.2
+        })
+      }
+    })
+    return cloned
+  }, [scene])
+
   const groupRef = useRef()
   const lightRef = useRef()
 
@@ -149,7 +166,7 @@ function Painting({ position, imageUrl, title }) {
         <meshStandardMaterial color="#666" metalness={1} roughness={0.4} />
       </mesh>
 
-      <primitive object={lamp} position={[0, -height / 2 + 13.5, 0.25]} scale={6} rotation={[Math.PI, Math.PI, 0]} />
+      <primitive object={lamp} position={[0, -height / 2 - 7, 0.25]} scale={6} rotation={[Math.PI, Math.PI, Math.PI]} />
 
       <spotLight
         ref={lightRef}
