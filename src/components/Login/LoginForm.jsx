@@ -1,11 +1,13 @@
 import { useState } from "react";
 import "./LoginForm.css";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
-function LoginForm() {
+const LoginForm = ({ setUser }) => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [message, setMessage] = useState("");
+  const navigate = useNavigate();
 
   const handleLogin = async (e) => {
     e.preventDefault();
@@ -21,6 +23,8 @@ function LoginForm() {
           withCredentials: true,
         }
       );
+      setUser({ username }); // 사용자 상태 업데이트
+      navigate("/"); //홈으로 감
 
       setMessage(response.data); // ex: "testuser님 로그인 성공"
     } catch (error) {
@@ -59,6 +63,6 @@ function LoginForm() {
       <p>{message}</p>
     </div>
   );
-}
+};
 
 export default LoginForm;
