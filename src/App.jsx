@@ -8,7 +8,6 @@ import ExhibitionPage from "./pages/Exhibition/ExhibitionPage";
 import Gallery3D_Walkable from "./components/Exhibition/Gallery3D";
 import Footer from "./components/Footer/Footer";
 //import GalleryWalkable from "./pages/GalleryWalkable";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
 
 function App() {
   const [user, setUser] = useState(null); //로그인 된 사용자 정보
