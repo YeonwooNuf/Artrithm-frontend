@@ -144,6 +144,16 @@ function Painting({ position, imageUrl, title }) {
         <meshStandardMaterial map={wood} />
       </mesh>
 
+      {/* 브라켓 2개 */}
+      <mesh position={[-width / 2 + 0.2, height / 2 + 0.7, 0]}>
+        <cylinderGeometry args={[0.01, 0.01, 1.4]} />
+        <meshStandardMaterial color="#666" metalness={1} roughness={0.4} />
+      </mesh>
+      <mesh position={[width / 2 - 0.2, height / 2 + 0.7, 0]}>
+        <cylinderGeometry args={[0.01, 0.01, 1.4]} />
+        <meshStandardMaterial color="#666" metalness={1} roughness={0.4} />
+      </mesh>
+
       {/* 라벨 */}
       <Html position={[0, -height / 2 - frameWidth - 0.3, 0]}>
         <div className="painting-label">{title}</div>
