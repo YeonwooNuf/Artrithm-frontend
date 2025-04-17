@@ -1,4 +1,4 @@
-import React, { useRef, useEffect } from "react";
+import React, { useRef, useEffect, useMemo } from "react";
 import { Canvas, useFrame, useThree } from "@react-three/fiber";
 import {
   Environment,
@@ -27,14 +27,10 @@ function useKeyboardControls() {
   return keys
 }
 
-function Player({ position = [-8, 0.8, 18] }) {
+function Player({ position = [-26, 0.8, 15] }) {
   const ref = useRef()
   const keys = useKeyboardControls()
   const { camera } = useThree()
-
-  useEffect(() => {
-    camera.lookAt(-8, 1.5, 15)
-  }, [camera])
 
   useFrame(() => {
     const body = ref.current
@@ -43,10 +39,10 @@ function Player({ position = [-8, 0.8, 18] }) {
     const speed = 5
     const direction = new Vector3()
 
-    if (keys.current["w"]) direction.z -= 1
-    if (keys.current["s"]) direction.z += 1
-    if (keys.current["a"]) direction.x -= 1
-    if (keys.current["d"]) direction.x += 1
+    if (keys.current["w"]) direction.z -= 0.1
+    if (keys.current["s"]) direction.z += 0.1
+    if (keys.current["a"]) direction.x -= 0.1
+    if (keys.current["d"]) direction.x += 0.1
 
     if (direction.length() === 0) return
 
@@ -104,7 +100,8 @@ function GalleryModel({ scale = 2 }) {
 function Painting({ position, imageUrl, title }) {
   const texture = useTexture(imageUrl)
   const wood = useTexture("/wood.jpg")
-  const lamp = useGLTF("/models/led_projector_lamp_vega_c100.glb")
+  const { scene } = useGLTF("/models/led_projector_lamp_vega_c100.glb")
+  const lamp = useMemo(() => scene.clone(true), [scene])
   const groupRef = useRef()
   const lightRef = useRef()
 
@@ -121,13 +118,11 @@ function Painting({ position, imageUrl, title }) {
 
   return (
     <group position={position} ref={groupRef}>
-      {/* 그림 */}
       <mesh position={[0, 0, 0.01]} castShadow receiveShadow>
         <planeGeometry args={[width, height]} />
         <meshStandardMaterial map={texture} />
       </mesh>
 
-      {/* 액자 프레임 */}
       <mesh position={[0, height / 2 + frameWidth / 2, 0]} castShadow receiveShadow>
         <boxGeometry args={[width + frameWidth * 2, frameWidth, frameDepth]} />
         <meshStandardMaterial map={wood} />
@@ -145,7 +140,6 @@ function Painting({ position, imageUrl, title }) {
         <meshStandardMaterial map={wood} />
       </mesh>
 
-      {/* 브라켓 */}
       <mesh position={[-width / 2 + 0.2, height / 2 + 0.7, 0]}>
         <cylinderGeometry args={[0.01, 0.01, 1.4]} />
         <meshStandardMaterial color="#666" metalness={1} roughness={0.4} />
@@ -155,13 +149,11 @@ function Painting({ position, imageUrl, title }) {
         <meshStandardMaterial color="#666" metalness={1} roughness={0.4} />
       </mesh>
 
-      {/* 전등 모델 */}
-      <primitive object={lamp.scene} position={[0, -height / 2 + 13.5, 0.3]} scale={6} rotation={[Math.PI, Math.PI, 0]} />
+      <primitive object={lamp} position={[0, -height / 2 + 13.5, 0.25]} scale={6} rotation={[Math.PI, Math.PI, 0]} />
 
-      {/* Spotlight */}
       <spotLight
         ref={lightRef}
-        position={[0, height / 2 + 1.5, 0.8]}
+        position={[0, height / 2 + 1.2, 0.5]}
         angle={0.7}
         penumbra={0.01}
         intensity={100}
@@ -169,7 +161,6 @@ function Painting({ position, imageUrl, title }) {
         castShadow
       />
 
-      {/* 라벨 */}
       <Html position={[0, -height / 2 - frameWidth - 0.3, 0]}>
         <div className="painting-label">{title}</div>
       </Html>
@@ -183,13 +174,13 @@ export default function Gallery3D_Walkable() {
       <h2 className="gallery-title">🎨 고급 박물관 스타일 3D 전시관</h2>
 
       <div className="gallery3d-container">
-        <Canvas shadows camera={{ fov: 40, position: [-6, 2.5, 14] }} style={{ background: "#dcdcdc" }}>
+        <Canvas shadows camera={{ fov: 60, position: [-26, 2.5, 15] }} style={{ background: "#dcdcdc" }}>
           <ambientLight intensity={0.3} />
           <Environment preset="night" />
           <PointerLockControls />
 
-          <primitive object={new THREE.AxesHelper(3)} position={[-8, 1, 15]} />
-          <primitive object={new THREE.GridHelper(10, 10)} position={[-8, 0, 15]} />
+          <primitive object={new THREE.AxesHelper(3)} position={[-26, 1, 15]} />
+          <primitive object={new THREE.GridHelper(10, 10)} position={[-26, 0, 15]} />
 
           <Physics gravity={[0, -9.81, 0]}>
             <RigidBody type="fixed" colliders="cuboid">
