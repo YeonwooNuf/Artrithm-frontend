@@ -14,7 +14,6 @@ const Home = () => {
       <ScrollRevealImage />
       <ExhibitionMasonry />
       <WeeklyPopularArtworks />
-      <Footer />
     </div>
   );
 };

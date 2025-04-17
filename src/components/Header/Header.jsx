@@ -1,7 +1,8 @@
 import React, { useState } from "react";
 import "./Header.css";
+import { Link } from "react-router-dom";
 
-const Header = () => {
+const Header = ({ user }) => {
   const [openExhibition, setOpenExhibition] = useState(false);
   const [openArtwork, setOpenArtwork] = useState(false);
   return (
@@ -15,7 +16,7 @@ const Header = () => {
       <nav className="header__nav">
         <ul>
           <li>
-            <a href="/">홈</a>
+            <Link to="/">홈</Link>
           </li>
 
           <li
@@ -61,12 +62,20 @@ const Header = () => {
           <li>
             <a href="/intro">소개</a>
           </li>
-          <li>
-            <a href="/login">로그인</a>
-          </li>
-          <li>
-            <a href="/register">회원가입</a>
-          </li>
+
+          {user ? (
+            <li>{user.username}님, 환영합니다!</li>
+          ) : (
+            <>
+              <li>
+                <Link to="/login">로그인</Link>
+              </li>
+              <li>
+                <Link to="/register">회원가입</Link>
+              </li>
+            </>
+          )}
+
           <li>
             <a href="/mypage">마이페이지</a>
           </li>

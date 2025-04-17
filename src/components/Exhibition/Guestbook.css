@@ -1,0 +1,50 @@
+.guestbook-container {
+  border-left: 4px solid #b3a79f;
+  background-color: #f5f1ea;
+  padding: 30px;
+  max-width: 600px;
+  margin: 60px auto;
+  font-family: "Noto Sans KR", sans-serif;
+}
+
+.guestbook-title {
+  font-size: 18px;
+  color: #6e5c52;
+  margin-bottom: 10px;
+  border-bottom: 1px solid #e0dbd6;
+  padding-bottom: 6px;
+}
+
+.guestbook-form input,
+.guestbook-form textarea {
+  width: 100%;
+  border: none;
+  border-bottom: 1px solid #cfcfcf;
+  background: transparent;
+  padding: 8px 4px;
+  font-size: 14px;
+  margin-bottom: 10px;
+}
+
+.guestbook-button {
+  background: none;
+  color: #6e5c52;
+  border: 1px solid #b3a79f;
+  padding: 6px 12px;
+  font-size: 14px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.guestbook-button:hover {
+  background-color: #b3a79f;
+  color: #fff;
+}
+
+.guestbook-message {
+  border-bottom: 1px dashed #ddd;
+  padding: 6px 0;
+  font-size: 13px;
+  color: #333;
+}
