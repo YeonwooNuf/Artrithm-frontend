@@ -15,7 +15,6 @@ import "./Gallery3D.css";
 function useKeyboardControls() {
   const keys = useRef({})
   useEffect(() => {
-
     const down = (e) => (keys.current[e.key.toLowerCase()] = true)
     const up = (e) => (keys.current[e.key.toLowerCase()] = false)
     window.addEventListener("keydown", down)
@@ -83,7 +82,6 @@ function Player({ position = [-26, 0.8, 15] }) {
 function GalleryModel({ scale = 2 }) {
   const { scene } = useGLTF("/models/vr_art_gallery_01.glb")
   useEffect(() => {
-
     scene.traverse((obj) => {
       if (obj.isMesh) {
         obj.castShadow = true
@@ -103,21 +101,7 @@ function Painting({ position, imageUrl, title }) {
   const texture = useTexture(imageUrl)
   const wood = useTexture("/wood.jpg")
   const { scene } = useGLTF("/models/led_projector_lamp_vega_c100.glb")
-  const lamp = useMemo(() => {
-    const cloned = scene.clone(true)
-    cloned.traverse((child) => {
-      if (child.isMesh && child.name === "Object_5") {
-        child.material = new THREE.MeshBasicMaterial({
-          color: 0xffffff,
-          emissive: new THREE.Color(0xffffff),
-          emissiveIntensity: 20,
-          metalness: 0,
-          roughness: 0.2
-        })
-      }
-    })
-    return cloned
-  }, [scene])
+  const lamp = useMemo(() => scene.clone(true), [scene])
 
   const groupRef = useRef()
   const lightRef = useRef()
@@ -134,7 +118,7 @@ function Painting({ position, imageUrl, title }) {
   })
 
   return (
-    <group position={position} ref={groupRef}>
+    <group position={position} ref={groupRef} className="painting-group">
       <mesh position={[0, 0, 0.01]} castShadow receiveShadow>
         <planeGeometry args={[width, height]} />
         <meshStandardMaterial map={texture} />
@@ -168,12 +152,16 @@ function Painting({ position, imageUrl, title }) {
 
       <primitive object={lamp} position={[0, -height / 2 - 7, 0.25]} scale={6} rotation={[Math.PI, Math.PI, Math.PI]} />
 
+      <pointLight color="#ffdca8" decay={2} position={[0, height / 2 + 1.24, 0.26]} intensity={10} distance={0.28} />
+
       <spotLight
+        color="#ffdca8"
+        decay={2}
         ref={lightRef}
-        position={[0, height / 2 + 1.2, 0.5]}
-        angle={0.7}
+        position={[0, height / 2 + 1.5, 0.9]}
+        angle={0.6}
         penumbra={0.01}
-        intensity={100}
+        intensity={20}
         distance={4}
         castShadow
       />
@@ -187,12 +175,12 @@ function Painting({ position, imageUrl, title }) {
 
 export default function Gallery3D_Walkable() {
   return (
-    <div className="gallery3d-wrapper">
+    <div className="gallery3d-wrapper fade-in">
       <h2 className="gallery-title">🎨 고급 박물관 스타일 3D 전시관</h2>
 
       <div className="gallery3d-container">
         <Canvas shadows camera={{ fov: 60, position: [-26, 2.5, 15] }} style={{ background: "#dcdcdc" }}>
-          <ambientLight intensity={0.3} />
+          <ambientLight intensity={0.4} />
           <Environment preset="night" />
           <PointerLockControls />
 
