@@ -5,7 +5,7 @@ import ExhibitionDetailPage from "./pages/Exhibition/ExhibitionDetailPage";
 import Home from "./pages/Home/Home";
 import { BrowserRouter, Routes, Route, Router } from "react-router-dom";
 import ExhibitionPage from "./pages/Exhibition/ExhibitionPage";
-import Gallery3D_Walkable from "./components/Exhibition/Gallery3D";
+import Exhibition3D from "./pages/Exhibition/Exhibition3D";
 import Footer from "./components/Footer/Footer";
 //import GalleryWalkable from "./pages/GalleryWalkable";
 
@@ -19,8 +19,8 @@ function App() {
           <Route path="/" element={<Home />} />
           <Route path="/exhibitions/:id" element={<ExhibitionPage />} />
           <Route
-            path="/exhibitions/Gallery3D"
-            element={<Gallery3D_Walkable />}
+            path="/exhibitions/Gallery3D/:exhibitionId"
+            element={<Exhibition3D />}
           />
           <Route path="/login" element={<LoginForm setUser={setUser} />} />
         </Routes>
