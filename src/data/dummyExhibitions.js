@@ -14,9 +14,13 @@ export const dummyExhibitions = [
         bio: "서울과 베를린에서 활동하는 현대 작가입니다.",
         profileImage: "https://picsum.photos/100",
         works: [
-          { id: 1, src: "/exhibition1.png", title: "사진" },
-          { id: 2, src: "/exhibition2.png", title: "계속" },
-          { id: 3, src: "/exhibition3.png", title: "안 뜨네" },
+          { id: 1, src: "/exhibition1.png", title: "그림 1" },
+          { id: 2, src: "/exhibition2.png", title: "그림 2" },
+          { id: 3, src: "/exhibition3.png", title: "그림 3" },
+          { id: 4, src: "/artwork1.jpg", title: "그림 4" },
+          { id: 5, src: "/artwork2.jpg", title: "그림 5" },
+          { id: 6, src: "/artwork3.jpg", title: "그림 6" },
+          { id: 7, src: "/flower1.png", title: "그림 7" },
         ],
       },
       guestbook: [
