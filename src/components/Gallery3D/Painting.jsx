@@ -34,7 +34,7 @@ export default function Painting({ index, imageUrl, title, isFocused }) {
 
     if (isFocused) {
       setOpacity((prev) => Math.min(prev + 0.05, 1));
-      setScale((prev) => prev.lerp(new THREE.Vector3(2.3, 2.3, 2.3), 0.1));
+      setScale((prev) => prev.lerp(new THREE.Vector3(8, 8, 8), 0.1));
     } else {
       setOpacity((prev) => Math.max(prev - 0.05, 0));
       setScale((prev) => prev.lerp(new THREE.Vector3(1, 1, 1), 0.1));
