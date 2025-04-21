@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import "./Guestbook.css";
 
-export default function Guestbook() {
+export default function Guestbook({ guestbook }) {
   const [messages, setMessages] = useState([]);
   const [name, setName] = useState("");
   const [msg, setMsg] = useState("");
@@ -42,6 +42,11 @@ export default function Guestbook() {
           </div>
         ))}
       </div>
+      {guestbook.map((entry, i) => (
+        <li key={i} className="guestbook-message">
+          <strong>{entry.id}</strong>: {entry.message}
+        </li>
+      ))}
     </div>
   );
 }
