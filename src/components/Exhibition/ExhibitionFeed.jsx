@@ -28,7 +28,11 @@ export default function ExhibitionFeed({ exhibition }) {
   if (!exhibition) return <p>전시 정보를 불러오는 중입니다...</p>;
   return (
     <div className="exhibition-card">
-      <Link to={exhibition.path} className="thumbnail-wrapper">
+      <Link
+        to={exhibition.path}
+        state={{ works: exhibition.artist.works }}
+        className="thumbnail-wrapper"
+      >
         <img
           src={exhibition.thumbnail}
           alt={exhibition.title}
