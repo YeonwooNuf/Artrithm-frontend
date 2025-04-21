@@ -17,8 +17,8 @@
   height: 300px;
   object-fit: cover;
   border-radius: 0px;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
-  border: 3px solid white;
+  border: none;
+  box-shadow: 0 12px 36px rgba(0, 0, 0, 0.4);
 }
 
 .artist-info-box {
@@ -48,8 +48,8 @@
 
 .artist-tagline {
   font-style: italic;
-  margin-left: auto;
-  text-align: right;
+  margin-left: 230px;
+  text-align: left;
   display: block;
   color: #777;
   margin-bottom: 0;
@@ -68,7 +68,7 @@
   width: 200px;
   height: 140px;
   overflow: hidden;
-  border-radius: 8px;
+  border-radius: 0px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
   transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
