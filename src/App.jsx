@@ -19,7 +19,7 @@ function App() {
           <Route path="/" element={<Home />} />
           <Route path="/exhibitions/:id" element={<ExhibitionPage />} />
           <Route
-            path="/exhibitions/:exhibitionId/3d"
+            path="/exhibitions/Gallery3D/:exhibitionId"
             element={<Exhibition3D />}
           />
           <Route path="/login" element={<LoginForm setUser={setUser} />} />
