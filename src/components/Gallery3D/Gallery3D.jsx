@@ -33,7 +33,9 @@ export default function Gallery3D() {
         let minDist = Infinity;
 
         works.forEach((art, idx) => {
-          const artPos = new THREE.Vector3(-10 + idx * 5, 3, 3.01);
+          const isRightWall = idx % 2 === 1;
+          const baseX = Math.floor(idx / 2) * 5;
+          const artPos = new THREE.Vector3(baseX, 2, isRightWall ? 5 : -5);
           const distance = camPos.distanceTo(artPos);
           if (distance < threshold && distance < minDist) {
             closest = art.id;
@@ -86,11 +88,10 @@ export default function Gallery3D() {
             {works.map((art, idx) => (
               <Painting
                 key={art.id}
-                position={[-20 + idx * 5, 2, 3.01]}
+                index={idx}
                 imageUrl={art.src}
                 title={art.title}
                 isFocused={focusedId === art.id}
-                rotation={focusedId === art.id ? [0, Math.PI / 2, 0] : [0, 0, 0]}
               />
             ))}
           </Physics>
