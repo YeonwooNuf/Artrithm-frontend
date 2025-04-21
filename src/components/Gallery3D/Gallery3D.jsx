@@ -33,9 +33,11 @@ export default function Gallery3D() {
         let minDist = Infinity;
 
         works.forEach((art, idx) => {
-          const isRightWall = idx % 2 === 1;
-          const baseX = Math.floor(idx / 2) * 5;
-          const artPos = new THREE.Vector3(baseX, 2, isRightWall ? 5 : -5);
+          const isRightWall = idx % 2 === 0; // ✅ Painting과 동일 기준
+          const gap = 5;
+          const baseX = Math.floor(idx / 2) * gap;
+          const artPos = new THREE.Vector3(baseX - 10, 2, isRightWall ? 27 : 3);
+  
           const distance = camPos.distanceTo(artPos);
           if (distance < threshold && distance < minDist) {
             closest = art.id;
