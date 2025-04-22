@@ -29,6 +29,7 @@ export default function Gallery3D() {
   useEffect(() => {
     if (infoId) {
       const fullText = works.find((art) => art.id === infoId)?.description || "";
+      setTypedText("");
       let index = 0;
       let currentText = "";
       const typing = setInterval(() => {
@@ -39,7 +40,7 @@ export default function Gallery3D() {
       }, 40);
       return () => clearInterval(typing);
     } else {
-      setTypedText(""); // 정보창 닫힐 때 초기화
+      setTypedText("");
     }
   }, [infoId, works]);
 
@@ -69,7 +70,7 @@ export default function Gallery3D() {
 
         if (closest) {
           if (e.key.toLowerCase() === "r") setFocusedId(closest);
-          if (e.key.toLowerCase() === "f") setInfoId(closest);
+          if (e.key.toLowerCase() === "f") setInfoId((prev) => (prev === closest ? null : closest));
         }
       }
 
