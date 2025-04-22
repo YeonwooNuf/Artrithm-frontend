@@ -33,7 +33,7 @@ export default function Gallery3D() {
         let minDist = Infinity;
 
         works.forEach((art, idx) => {
-          const artPos = new THREE.Vector3(-10 + idx * 5, 3, 3.01);
+          const artPos = new THREE.Vector3(-20 + idx * 5, 3, 3.01);
           const distance = camPos.distanceTo(artPos);
           if (distance < threshold && distance < minDist) {
             closest = art.id;
@@ -68,20 +68,39 @@ export default function Gallery3D() {
 
           {/* 디버깅용 Helper */}
           <primitive object={new THREE.AxesHelper(3)} position={[-26, 1, 15]} />
-          <primitive object={new THREE.GridHelper(10, 10)} position={[-26, 0, 15]} />
+          <primitive
+            object={new THREE.GridHelper(10, 10)}
+            position={[-26, 0, 15]}
+          />
 
           <Physics gravity={[0, -9.81, 0]}>
             <RigidBody type="fixed" colliders="cuboid">
-              <mesh rotation={[-Math.PI / 2, 0, 0]} position={[0, -1, 0]} receiveShadow>
+              <mesh
+                rotation={[-Math.PI / 2, 0, 0]}
+                position={[0, -1, 0]}
+                receiveShadow
+              >
                 <planeGeometry args={[300, 300]} />
               </mesh>
             </RigidBody>
 
             <GalleryModel scale={2} />
             <Player />
-            <Painting position={[-5, 2, 3.01]} imageUrl="/art1.png" title="작품 1" />
-            <Painting position={[0, 2, 3.01]} imageUrl="/art2.jpeg" title="작품 2" />
-            <Painting position={[5, 2, 3.01]} imageUrl="/art3.jpeg" title="작품 3" />
+            <Painting
+              position={[-5, 2, 3.01]}
+              imageUrl="/art1.png"
+              title="작품 1"
+            />
+            <Painting
+              position={[0, 2, 3.01]}
+              imageUrl="/art2.jpeg"
+              title="작품 2"
+            />
+            <Painting
+              position={[5, 2, 3.01]}
+              imageUrl="/art3.jpeg"
+              title="작품 3"
+            />
 
             {works.map((art, idx) => (
               <Painting
@@ -90,7 +109,9 @@ export default function Gallery3D() {
                 imageUrl={art.src}
                 title={art.title}
                 isFocused={focusedId === art.id}
-                rotation={focusedId === art.id ? [0, Math.PI / 2, 0] : [0, 0, 0]}
+                rotation={
+                  focusedId === art.id ? [0, Math.PI / 2, 0] : [0, 0, 0]
+                }
               />
             ))}
           </Physics>
