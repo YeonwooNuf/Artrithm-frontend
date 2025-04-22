@@ -57,9 +57,9 @@ export default function Gallery3D() {
       if (e.key.toLowerCase() === "r" || e.key.toLowerCase() === "f") {
         works.forEach((art, idx) => {
           const isRightWall = idx % 2 === 0;
-          const gap = 5;
+          const gap = 7;
           const baseX = Math.floor(idx / 2) * gap;
-          const artPos = new THREE.Vector3(baseX - 10, 2, isRightWall ? 27 : 3);
+          const artPos = new THREE.Vector3(baseX - 15, 2, isRightWall ? 27 : 3);
 
           const distance = camPos.distanceTo(artPos);
           if (distance < threshold && distance < minDist) {
