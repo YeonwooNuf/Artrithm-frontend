@@ -14,30 +14,52 @@ export default function Gallery3D() {
   const location = useLocation();
   const works = location.state?.works || [];
   const [focusedId, setFocusedId] = useState(null);
+  const [infoId, setInfoId] = useState(null);
   const [cameraRef, setCameraRef] = useState(null);
+  const [typedText, setTypedText] = useState("");
 
   const captureCamera = (state) => {
     if (!cameraRef) setCameraRef(state.camera);
   };
 
-  // R 키 확대 기능
+  useEffect(() => {
+    console.log("📦 works:", works);
+  }, [works]);
+
+  useEffect(() => {
+    if (infoId) {
+      const fullText = works.find((art) => art.id === infoId)?.description || "";
+      let index = 0;
+      let currentText = "";
+      const typing = setInterval(() => {
+        currentText += fullText.charAt(index);
+        setTypedText(currentText);
+        index++;
+        if (index >= fullText.length) clearInterval(typing);
+      }, 40);
+      return () => clearInterval(typing);
+    } else {
+      setTypedText(""); // 정보창 닫힐 때 초기화
+    }
+  }, [infoId, works]);
+
   useEffect(() => {
     const handleKeyDown = (e) => {
       if (!cameraRef) return;
-      if (e.key.toLowerCase() === "r") {
-        const camPos = new THREE.Vector3();
-        cameraRef.getWorldPosition(camPos);
+      const camPos = new THREE.Vector3();
+      cameraRef.getWorldPosition(camPos);
 
-        const threshold = 3;
-        let closest = null;
-        let minDist = Infinity;
+      const threshold = 3;
+      let closest = null;
+      let minDist = Infinity;
 
+      if (e.key.toLowerCase() === "r" || e.key.toLowerCase() === "f") {
         works.forEach((art, idx) => {
-          const isRightWall = idx % 2 === 0; // ✅ Painting과 동일 기준
+          const isRightWall = idx % 2 === 0;
           const gap = 5;
           const baseX = Math.floor(idx / 2) * gap;
           const artPos = new THREE.Vector3(baseX - 10, 2, isRightWall ? 27 : 3);
-  
+
           const distance = camPos.distanceTo(artPos);
           if (distance < threshold && distance < minDist) {
             closest = art.id;
@@ -45,10 +67,16 @@ export default function Gallery3D() {
           }
         });
 
-        if (closest) setFocusedId(closest);
+        if (closest) {
+          if (e.key.toLowerCase() === "r") setFocusedId(closest);
+          if (e.key.toLowerCase() === "f") setInfoId(closest);
+        }
       }
 
-      if (e.key === "Escape") setFocusedId(null);
+      if (e.key === "Escape") {
+        setFocusedId(null);
+        setInfoId(null);
+      }
     };
 
     window.addEventListener("keydown", handleKeyDown);
@@ -60,17 +88,39 @@ export default function Gallery3D() {
       <h2 className="gallery-title">3D 작품 전시관</h2>
 
       <div className="gallery3d-container">
+        {/* HUD 설명창 */}
+        {infoId && (
+          <div
+            className="hud-description"
+            style={{
+              position: "absolute",
+              top: "80px",
+              right: "50px",
+              width: "300px",
+              background: "rgba(0, 0, 0, 0.8)",
+              color: "white",
+              padding: "16px",
+              borderRadius: "8px",
+              fontSize: "14px",
+              lineHeight: "1.5",
+              zIndex: 10,
+            }}
+          >
+            <strong>{works.find((art) => art.id === infoId)?.title || "제목 없음"}</strong>
+            <p style={{ marginTop: "8px", whiteSpace: "pre-line" }}>{typedText || "설명 없음"}</p>
+          </div>
+        )}
+
         <Canvas
           shadows
           camera={{ fov: 60, position: [-26, 2.5, 15] }}
           style={{ background: "#dcdcdc" }}
           onCreated={captureCamera}
         >
-          <ambientLight intensity={0.4} />
+          <ambientLight intensity={0.9} />
           <Environment preset="night" />
           <PointerLockControls />
 
-          {/* 디버깅용 Helper */}
           <primitive object={new THREE.AxesHelper(3)} position={[-26, 1, 15]} />
           <primitive object={new THREE.GridHelper(10, 10)} position={[-26, 0, 15]} />
 
@@ -93,13 +143,17 @@ export default function Gallery3D() {
                 index={idx}
                 imageUrl={art.src}
                 title={art.title}
+                description={art.description}
                 isFocused={focusedId === art.id}
+                isInfoShown={infoId === art.id}
               />
             ))}
           </Physics>
         </Canvas>
 
-        <div className="walk-guide">🧍 마우스 클릭 후 → WASD 걷기 가능</div>
+        <div className="walk-guide">
+          🧍 마우스 클릭 후 → WASD 걷기 가능 / 🎨 R: 확대, F: 설명
+        </div>
       </div>
 
       <p className="gallery-description">
