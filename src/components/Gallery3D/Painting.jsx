@@ -3,7 +3,7 @@ import { Html, useGLTF, useTexture } from "@react-three/drei";
 import { useFrame } from "@react-three/fiber";
 import * as THREE from "three";
 
-export default function Painting({ index, imageUrl, title, isFocused }) {
+export default function Painting({ index, imageUrl, title, description, isFocused, isInfoShown }) {
   const texture = useTexture(imageUrl);
   const wood = useTexture("/wood.jpg");
   const { scene } = useGLTF("/models/led_projector_lamp_vega_c100.glb");
@@ -23,8 +23,8 @@ export default function Painting({ index, imageUrl, title, isFocused }) {
   const gap = 5;
   const baseX = Math.floor(index / 2) * gap;
   const position = isRightWall
-  ? [baseX - 10, 2, 27]            // 오른쪽 벽 (Z = 5)
-  : [baseX - 10, 2, 3];          // 왼쪽 벽 (Z = -5) 
+    ? [baseX - 10, 2, 27]
+    : [baseX - 10, 2, 3];
   const rotation = isRightWall ? [0, Math.PI, 0] : [0, 0, 0];
 
   useFrame(() => {
@@ -44,14 +44,12 @@ export default function Painting({ index, imageUrl, title, isFocused }) {
   return (
     <>
       <group ref={groupRef} position={position} rotation={rotation}>
-        {/* 일반 그림 (조명 포함) */}
         <group name="ArtworkWithLights">
           <mesh position={[0, 0, 0.01]} castShadow receiveShadow>
             <planeGeometry args={[width, height]} />
             <meshStandardMaterial map={texture} />
           </mesh>
 
-          {/* 액자 프레임 4면 */}
           <mesh position={[0, height / 2 + frameWidth / 2, 0]}>
             <boxGeometry args={[width + frameWidth * 2, frameWidth, frameDepth]} />
             <meshStandardMaterial map={wood} />
@@ -69,12 +67,23 @@ export default function Painting({ index, imageUrl, title, isFocused }) {
             <meshStandardMaterial map={wood} />
           </mesh>
 
-          {/* 설명 라벨 */}
           <Html position={[0, -height / 2 - frameWidth - 0.3, 0]}>
             <div className="painting-label">{title}</div>
           </Html>
 
-          {/* 브라켓 */}
+          {/* 그림 설명 (F 키) */}
+          {isInfoShown && (
+            <Html
+              center
+              transform
+              distanceFactor={1.5} // 카메라 거리 기반 크기 조절
+              occlude // 그림에 가려지지 않도록
+              position={[0, height / 2 + 0.5, 0.1]}
+            >
+              <div className="painting-description">{description}</div>
+            </Html>
+          )}
+
           <mesh position={[-width / 2 + 0.2, height / 2 + 0.7, 0]}>
             <cylinderGeometry args={[0.01, 0.01, 1.4]} />
             <meshStandardMaterial color="#666" metalness={1} roughness={0.4} />
@@ -84,7 +93,6 @@ export default function Painting({ index, imageUrl, title, isFocused }) {
             <meshStandardMaterial color="#666" metalness={1} roughness={0.4} />
           </mesh>
 
-          {/* 조명 */}
           <primitive object={lamp} position={[0, -height / 2 - 7.1, 0.17]} scale={6} rotation={[Math.PI, Math.PI, Math.PI]} />
           <pointLight color="#ffdca8" decay={2} position={[0, height / 2 + 1.14, 0.23]} intensity={10} distance={0.27} />
           <spotLight
@@ -101,7 +109,6 @@ export default function Painting({ index, imageUrl, title, isFocused }) {
         </group>
       </group>
 
-      {/* ✅ 복제용 확대 그림 (조명 없음, 자연스러운 트랜지션 포함) */}
       {opacity > 0 && (
         <group
           position={[-0.5, 3, 15]}
