@@ -1,5 +1,5 @@
-import React, { useRef, useMemo, useState } from "react";
-import { useGLTF, useTexture, Text } from "@react-three/drei";
+import React, { useRef, useMemo, useState, useEffect } from "react";
+import { useGLTF, useTexture, Text3D } from "@react-three/drei";
 import { useFrame } from "@react-three/fiber";
 import * as THREE from "three";
 
@@ -11,6 +11,7 @@ export default function Painting({ index, imageUrl, title, description, isFocuse
 
   const groupRef = useRef();
   const lightRef = useRef();
+  const textRef = useRef();
   const [opacity, setOpacity] = useState(0);
   const [scale, setScale] = useState(new THREE.Vector3(1, 1, 1));
 
@@ -20,12 +21,18 @@ export default function Painting({ index, imageUrl, title, description, isFocuse
   const frameDepth = 0.3;
 
   const isRightWall = index % 2 === 0;
-  const gap = 7; // ✅ 그림 간격 넓힘
+  const gap = 7;
   const baseX = Math.floor(index / 2) * gap;
   const position = isRightWall
     ? [baseX - 15, 2, 27]
     : [baseX - 15, 2, 3];
   const rotation = isRightWall ? [0, Math.PI, 0] : [0, 0, 0];
+
+  useEffect(() => {
+    if (textRef.current) {
+      textRef.current.geometry.center();
+    }
+  }, [title]);
 
   useFrame(() => {
     if (lightRef.current && groupRef.current) {
@@ -67,25 +74,20 @@ export default function Painting({ index, imageUrl, title, description, isFocuse
             <meshStandardMaterial map={wood} />
           </mesh>
 
-          {/* 그림 제목을 오른쪽에 Text로 표시 (기본 폰트, 검정색) */}
-          <group position={[width / 0.4 - 4, 0.5, 0.02]}>
-            {/* ✅ 배경 박스 (조금 더 뒤쪽에 위치) */}
-            <mesh position={[0.2, 0, -0.01]}>
-              <planeGeometry args={[1, 0.4]} />
-              <meshBasicMaterial color="#E9FFD9" transparent opacity={0.8} />
-            </mesh>
-
-            {/* ✅ 텍스트 */}
-            <Text
-              fontSize={0.15}
-              fontWeight={"bold"}
-              color="black"
-              anchorX="left"
-              anchorY="middle"
-            >
-              {title}
-            </Text>
-          </group>
+          <Text3D
+            ref={textRef}
+            position={[2, height / 2 - 1, 0.05]}
+            size={0.2}
+            bevelEnabled
+            bevelSize={0.005}
+            height={0.001}
+            depth={0.01}
+            curveSegments={12}
+            font="/fonts/Nanum NaMuJeongWeon_Regular.json"
+          >
+            {title}
+            <meshStandardMaterial color="black" />
+          </Text3D>
 
           <mesh position={[-width / 2 + 0.2, height / 2 + 0.7, 0]}>
             <cylinderGeometry args={[0.01, 0.01, 1.4]} />
