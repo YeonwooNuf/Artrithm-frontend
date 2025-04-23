@@ -28,6 +28,16 @@ export default function Painting({ index, imageUrl, title, description, isFocuse
     : [baseX - 15, 2, 3];
   const rotation = isRightWall ? [0, Math.PI, 0] : [0, 0, 0];
 
+  const breakTextIntoLines = (text, maxCharsPerLine = 10) => {
+    const lines = [];
+    for (let i = 0; i < text.length; i += maxCharsPerLine) {
+      lines.push(text.slice(i, i + maxCharsPerLine));
+    }
+    return lines;
+  };
+  
+  const lines = breakTextIntoLines(title, 9); // 최대 8자씩 줄바꿈
+
   useEffect(() => {
     if (textRef.current) {
       textRef.current.geometry.center();
@@ -74,20 +84,23 @@ export default function Painting({ index, imageUrl, title, description, isFocuse
             <meshStandardMaterial map={wood} />
           </mesh>
 
-          <Text3D
-            ref={textRef}
-            position={[2, height / 2 - 1, 0.05]}
-            size={0.2}
-            bevelEnabled
-            bevelSize={0.005}
-            height={0.001}
-            depth={0.01}
-            curveSegments={12}
-            font="/fonts/Nanum NaMuJeongWeon_Regular.json"
-          >
-            {title}
-            <meshStandardMaterial color="black" />
-          </Text3D>
+          {lines.map((line, idx) => (
+            <Text3D
+              key={idx}
+              ref={idx === 0 ? textRef : null} // 첫 줄만 중심 정렬
+              position={[1.7, height / 2 - 0.5 - idx * 0.3, -0.07]} // Y축 아래로 줄 내려감
+              size={0.15}
+              bevelEnabled
+              bevelSize={0.005}
+              height={0.001}
+              depth={0.01}
+              curveSegments={12}
+              font="/fonts/Nanum NaMuJeongWeon_Regular.json"
+            >
+              {line}
+              <meshStandardMaterial color="black" />
+            </Text3D>
+          ))}
 
           <mesh position={[-width / 2 + 0.2, height / 2 + 0.7, 0]}>
             <cylinderGeometry args={[0.01, 0.01, 1.4]} />
