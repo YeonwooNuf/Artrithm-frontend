@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import { Canvas, useThree } from "@react-three/fiber";
 import { Environment, PointerLockControls } from "@react-three/drei";
 import { Physics, RigidBody } from "@react-three/rapier";
@@ -8,6 +8,7 @@ import { useLocation } from "react-router-dom";
 import Player from "./Player";
 import GalleryModel from "./GalleryModel";
 import Painting from "./Painting";
+import ArtistChatRoom from "../Chat/ArtistChatRoom";
 import "./Gallery3D.css";
 
 export default function Gallery3D() {
@@ -15,16 +16,14 @@ export default function Gallery3D() {
   const works = location.state?.works || [];
   const [focusedId, setFocusedId] = useState(null);
   const [infoId, setInfoId] = useState(null);
+  const [chatId, setChatId] = useState(null);
   const [cameraRef, setCameraRef] = useState(null);
   const [typedText, setTypedText] = useState("");
+  const pointerLockRef = useRef();
 
   const captureCamera = (state) => {
     if (!cameraRef) setCameraRef(state.camera);
   };
-
-  useEffect(() => {
-    console.log("📦 works:", works);
-  }, [works]);
 
   useEffect(() => {
     if (infoId) {
@@ -45,8 +44,18 @@ export default function Gallery3D() {
   }, [infoId, works]);
 
   useEffect(() => {
+    const canvasWrapper = document.querySelector(".gallery3d-wrapper");
+    if (canvasWrapper) {
+      canvasWrapper.style.cursor = chatId ? "default" : "none";
+    }
+  }, [chatId]);
+
+  useEffect(() => {
     const handleKeyDown = (e) => {
+      const activeTag = document.activeElement?.tagName;
+      if (activeTag === "INPUT" || activeTag === "TEXTAREA") return;
       if (!cameraRef) return;
+
       const camPos = new THREE.Vector3();
       cameraRef.getWorldPosition(camPos);
 
@@ -54,7 +63,7 @@ export default function Gallery3D() {
       let closest = null;
       let minDist = Infinity;
 
-      if (e.key.toLowerCase() === "r" || e.key.toLowerCase() === "f") {
+      if (["r", "f", "t"].includes(e.key.toLowerCase())) {
         works.forEach((art, idx) => {
           const isRightWall = idx % 2 === 0;
           const gap = 7;
@@ -70,13 +79,24 @@ export default function Gallery3D() {
 
         if (closest) {
           if (e.key.toLowerCase() === "r") setFocusedId(closest);
-          if (e.key.toLowerCase() === "f") setInfoId((prev) => (prev === closest ? null : closest));
+          if (e.key.toLowerCase() === "f") {
+            setInfoId((prev) => (prev === closest ? null : closest));
+            setChatId(null);
+          }
+          if (e.key.toLowerCase() === "t") {
+            setChatId((prev) => (prev === closest ? null : closest));
+            setInfoId(null);
+            setTimeout(() => {
+              pointerLockRef.current?.unlock();
+            }, 50);
+          }
         }
       }
 
       if (e.key === "Escape") {
         setFocusedId(null);
         setInfoId(null);
+        setChatId(null);
       }
     };
 
@@ -89,7 +109,6 @@ export default function Gallery3D() {
       <h2 className="gallery-title">3D 작품 전시관</h2>
 
       <div className="gallery3d-container">
-        {/* HUD 설명창 */}
         {infoId && (
           <div
             className="hud-description"
@@ -112,6 +131,24 @@ export default function Gallery3D() {
           </div>
         )}
 
+        {chatId && (
+          <div
+            className="hud-chat"
+            style={{
+              position: "absolute",
+              top: "80px",
+              right: "50px",
+              width: "300px",
+              background: "white",
+              borderRadius: "8px",
+              boxShadow: "0 4px 12px rgba(0, 0, 0, 0.2)",
+              zIndex: 20,
+            }}
+          >
+            <ArtistChatRoom artist={works.find((art) => art.id === chatId)?.artist} />
+          </div>
+        )}
+
         <Canvas
           shadows
           camera={{ fov: 60, position: [-26, 2.5, 15] }}
@@ -120,7 +157,7 @@ export default function Gallery3D() {
         >
           <ambientLight intensity={0.9} />
           <Environment preset="night" />
-          <PointerLockControls />
+          <PointerLockControls ref={pointerLockRef} />
 
           <primitive object={new THREE.AxesHelper(3)} position={[-26, 1, 15]} />
           <primitive object={new THREE.GridHelper(10, 10)} position={[-26, 0, 15]} />
@@ -153,7 +190,7 @@ export default function Gallery3D() {
         </Canvas>
 
         <div className="walk-guide">
-          🧍 마우스 클릭 후 → WASD 걷기 가능 / 🎨 R: 확대, F: 설명
+          🧍 마우스 클릭 후 → WASD 걷기 가능 / 🎨 R: 확대, F: 설명, T: 작가와 채팅
         </div>
       </div>
 
