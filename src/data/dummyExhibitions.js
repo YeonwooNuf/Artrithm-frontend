@@ -1,8 +1,8 @@
-// src/data/dummyExhibitions.js
 export const dummyExhibitions = [
     {
       id: 1,
       title: "빛의 조각",
+      theme: "modern",  // 전시관 유형
       description: "자연광을 해체한 추상 전시입니다.",
       likes: 12,
       views: 150,
@@ -31,6 +31,7 @@ export const dummyExhibitions = [
     {
       id: 2,
       title: "몽환의 끝",
+      theme: "circle",
       description: "환상과 현실의 경계에서 펼쳐지는 감정의 흐름.",
       likes: 21,
       views: 234,
@@ -42,9 +43,18 @@ export const dummyExhibitions = [
         bio: "꿈과 현실을 화폭에 담는 아티스트입니다.",
         profileImage: "https://picsum.photos/100",
         works: [
-          { id: 1, src: "/exhibition1.png", title: "사진" },
-          { id: 2, src: "/exhibition2.png", title: "계속" },
-          { id: 3, src: "/exhibition3.png", title: "안 뜨네" },
+          { id: 1, src: "/exhibition1.png", title: "그림 1", description: "그림 1 설명 어쩌구 저쩌구" },
+          { id: 2, src: "/exhibition2.png", title: "그림 2", description: "그림 2 설명 내가 더 잘그릴 듯"},
+          { id: 3, src: "/exhibition3.png", title: "그림 3인데 제목 길게 해볼까", description: "그림 3 설명 뭐라 쓰지 이제" },
+          { id: 4, src: "/artwork1.jpg", title: "그림 4", description: "그림 4 사과는 영어로 에아뽀으" },
+          { id: 5, src: "/artwork2.jpg", title: "그림 5", description: "그림 5 바다보러 떠나고싶다" },
+          { id: 6, src: "/artwork3.jpg", title: "그림 6", description: "그림 6 사실 집에가고 싶은거임" },
+          { id: 7, src: "/flower1.png", title: "그림 7", description: "그림 7 조퇴할까" },
+          { id: 8, src: "/art1.png", title: "그림 8", description: "그림 8 사과는 영어로 에아뽀으" },
+          { id: 9, src: "/art2.jpeg", title: "그림 9", description: "그림 9 바다보러 떠나고싶다" },
+          { id: 10, src: "/art3.jpeg", title: "그림 10", description: "그림 10 사실 집에가고 싶은거임" },
+          { id: 11, src: "/flower2.png", title: "그림 11", description: "그림 11 조퇴할까" },
+          { id: 12, src: "/brush2.png", title: "그림 12", description: "그림 12 조퇴할까" },
         ],
       },
       guestbook: [
@@ -55,6 +65,7 @@ export const dummyExhibitions = [
     {
       id: 3,
       title: "조용한 파동",
+      theme: "circle",
       description: "소리 없는 울림과 색의 떨림을 표현한 전시입니다.",
       likes: 8,
       views: 90,
@@ -66,9 +77,13 @@ export const dummyExhibitions = [
         bio: "소리와 움직임을 시각화하는 실험적 작가.",
         profileImage: "https://picsum.photos/100",
         works: [
-          { id: 1, src: "/exhibition1.png", title: "사진" },
-          { id: 2, src: "/exhibition2.png", title: "계속" },
-          { id: 3, src: "/exhibition3.png", title: "안 뜨네" },
+          { id: 1, src: "/exhibition1.png", title: "그림 1", description: "그림 1 설명 어쩌구 저쩌구" },
+          { id: 2, src: "/exhibition2.png", title: "그림 2", description: "그림 2 설명 내가 더 잘그릴 듯"},
+          { id: 3, src: "/exhibition3.png", title: "그림 3인데 제목 길게 해볼까", description: "그림 3 설명 뭐라 쓰지 이제" },
+          { id: 4, src: "/artwork1.jpg", title: "그림 4", description: "그림 4 사과는 영어로 에아뽀으" },
+          { id: 5, src: "/artwork2.jpg", title: "그림 5", description: "그림 5 바다보러 떠나고싶다" },
+          { id: 6, src: "/artwork3.jpg", title: "그림 6", description: "그림 6 사실 집에가고 싶은거임" },
+          { id: 7, src: "/flower1.png", title: "그림 7", description: "그림 7 조퇴할까" },
         ],
       },
       guestbook: [{ id: "최파동", message: "이되" }],
