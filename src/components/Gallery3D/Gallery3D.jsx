@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useRef } from "react";
-import { Canvas, useThree } from "@react-three/fiber";
+import { Canvas } from "@react-three/fiber";
 import { Environment, PointerLockControls } from "@react-three/drei";
 import { Physics, RigidBody } from "@react-three/rapier";
 import * as THREE from "three";
@@ -9,11 +9,20 @@ import Player from "./Player";
 import GalleryModel from "./GalleryModel";
 import Painting from "./Painting";
 import ArtistChatRoom from "../Chat/ArtistChatRoom";
+import { getLayoutConfig } from "./layoutConfig"; // ✅ 추가
 import "./Gallery3D.css";
 
 export default function Gallery3D() {
   const location = useLocation();
-  const works = location.state?.works || [];
+  const { works = [], theme = "modern" } = location.state || {};
+  const layout = getLayoutConfig(theme); // ✅ 레이아웃 구성 추출
+
+  console.log("🎨 [Gallery3D] 현재 테마:", theme);
+  console.log("📐 layoutConfig:", layout);
+  console.log("📌 playerStart 위치:", layout.playerStart);
+  console.log("🖼️ 확대 위치:", layout.getFocusTransform()?.position);
+  console.log("🔄 회전:", layout.getFocusTransform()?.rotation);
+
   const [focusedId, setFocusedId] = useState(null);
   const [infoId, setInfoId] = useState(null);
   const [chatId, setChatId] = useState(null);
@@ -65,11 +74,8 @@ export default function Gallery3D() {
 
       if (["r", "f", "t"].includes(e.key.toLowerCase())) {
         works.forEach((art, idx) => {
-          const isRightWall = idx % 2 === 0;
-          const gap = 7;
-          const baseX = Math.floor(idx / 2) * gap;
-          const artPos = new THREE.Vector3(baseX - 15, 2, isRightWall ? 27 : 3);
-
+          const { position } = layout.getPosition(idx, works.length); // ✅ 테마 기반 위치
+          const artPos = new THREE.Vector3(...position);
           const distance = camPos.distanceTo(artPos);
           if (distance < threshold && distance < minDist) {
             closest = art.id;
@@ -110,41 +116,14 @@ export default function Gallery3D() {
 
       <div className="gallery3d-container">
         {infoId && (
-          <div
-            className="hud-description"
-            style={{
-              position: "absolute",
-              top: "80px",
-              right: "50px",
-              width: "300px",
-              background: "rgba(0, 0, 0, 0.8)",
-              color: "white",
-              padding: "16px",
-              borderRadius: "8px",
-              fontSize: "14px",
-              lineHeight: "1.5",
-              zIndex: 10,
-            }}
-          >
+          <div className="hud-description">
             <strong>{works.find((art) => art.id === infoId)?.title || "제목 없음"}</strong>
-            <p style={{ marginTop: "8px", whiteSpace: "pre-line" }}>{typedText || "설명 없음"}</p>
+            <p>{typedText || "설명 없음"}</p>
           </div>
         )}
 
         {chatId && (
-          <div
-            className="hud-chat"
-            style={{
-              position: "absolute",
-              top: "80px",
-              right: "50px",
-              width: "300px",
-              background: "white",
-              borderRadius: "8px",
-              boxShadow: "0 4px 12px rgba(0, 0, 0, 0.2)",
-              zIndex: 20,
-            }}
-          >
+          <div className="hud-chat">
             <ArtistChatRoom artist={works.find((art) => art.id === chatId)?.artist} />
           </div>
         )}
@@ -156,11 +135,8 @@ export default function Gallery3D() {
           onCreated={captureCamera}
         >
           <ambientLight intensity={0.9} />
-          <Environment preset="night" />
+          <Environment preset={layout.environment} />
           <PointerLockControls ref={pointerLockRef} />
-
-          <primitive object={new THREE.AxesHelper(3)} position={[-26, 1, 15]} />
-          <primitive object={new THREE.GridHelper(10, 10)} position={[-26, 0, 15]} />
 
           <Physics gravity={[0, -9.81, 0]}>
             <RigidBody type="fixed" colliders="cuboid">
@@ -169,23 +145,29 @@ export default function Gallery3D() {
               </mesh>
             </RigidBody>
 
-            <GalleryModel scale={2} />
-            <Player />
-            <Painting position={[-5, 2, 3.01]} imageUrl="/art1.png" title="작품 1" />
-            <Painting position={[0, 2, 3.01]} imageUrl="/art2.jpeg" title="작품 2" />
-            <Painting position={[5, 2, 3.01]} imageUrl="/art3.jpeg" title="작품 3" />
+            <GalleryModel path={layout.galleryModelPath} />
+            <Player key={theme} position={layout.playerStart} />
 
-            {works.map((art, idx) => (
-              <Painting
-                key={art.id}
-                index={idx}
-                imageUrl={art.src}
-                title={art.title}
-                description={art.description}
-                isFocused={focusedId === art.id}
-                isInfoShown={infoId === art.id}
-              />
-            ))}
+            {works.map((art, idx) => {
+              const { position, rotation } = layout.getPosition(idx, works.length);
+              const { position: focusPosition, rotation: focusRotation } = layout.getFocusTransform();
+              return (
+                <Painting
+                  key={art.id}
+                  index={idx}
+                  imageUrl={art.src}
+                  title={art.title}
+                  description={art.description}
+                  isFocused={focusedId === art.id}
+                  isInfoShown={infoId === art.id}
+                  position={position}
+                  rotation={rotation}
+                  focusPosition={focusPosition}
+                  focusRotation={focusRotation}
+                  focusScale={layout.focusScale}
+                />
+              );
+            })}
           </Physics>
         </Canvas>
 
