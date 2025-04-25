@@ -30,7 +30,10 @@ export default function ExhibitionFeed({ exhibition }) {
     <div className="exhibition-card">
       <Link
         to={exhibition.path}
-        state={{ works: exhibition.artist.works }}
+        state={{
+          works: exhibition.artist.works,
+          theme: exhibition.theme   // ✅ theme도 함께 전달
+        }}
         className="thumbnail-wrapper"
       >
         <img
