@@ -7,21 +7,15 @@ import { useLocation } from "react-router-dom";
 
 import Player from "./Player";
 import GalleryModel from "./GalleryModel";
-import Painting from "./Painting";
+import SceneContent from "./SceneContent";
 import ArtistChatRoom from "../Chat/ArtistChatRoom";
-import { getLayoutConfig } from "./layoutConfig"; // ✅ 추가
+import { getLayoutConfig } from "./layoutConfig";
 import "./Gallery3D.css";
 
 export default function Gallery3D() {
   const location = useLocation();
   const { works = [], theme = "modern" } = location.state || {};
-  const layout = getLayoutConfig(theme); // ✅ 레이아웃 구성 추출
-
-  console.log("🎨 [Gallery3D] 현재 테마:", theme);
-  console.log("📐 layoutConfig:", layout);
-  console.log("📌 playerStart 위치:", layout.playerStart);
-  console.log("🖼️ 확대 위치:", layout.getFocusTransform()?.position);
-  console.log("🔄 회전:", layout.getFocusTransform()?.rotation);
+  const layout = getLayoutConfig(theme);
 
   const [focusedId, setFocusedId] = useState(null);
   const [infoId, setInfoId] = useState(null);
@@ -74,7 +68,7 @@ export default function Gallery3D() {
 
       if (["r", "f", "t"].includes(e.key.toLowerCase())) {
         works.forEach((art, idx) => {
-          const { position } = layout.getPosition(idx, works.length); // ✅ 테마 기반 위치
+          const { position } = layout.getPosition(idx, works.length);
           const artPos = new THREE.Vector3(...position);
           const distance = camPos.distanceTo(artPos);
           if (distance < threshold && distance < minDist) {
@@ -134,41 +128,16 @@ export default function Gallery3D() {
           style={{ background: "#dcdcdc" }}
           onCreated={captureCamera}
         >
-          <ambientLight intensity={0.9} />
-          <Environment preset={layout.environment} />
           <PointerLockControls ref={pointerLockRef} />
+          <Environment preset={layout.environment} background intensity={layout.environment === "night" ? 1.5 : 0.8} />
 
-          <Physics gravity={[0, -9.81, 0]}>
-            <RigidBody type="fixed" colliders="cuboid">
-              <mesh rotation={[-Math.PI / 2, 0, 0]} position={[0, -1, 0]} receiveShadow>
-                <planeGeometry args={[300, 300]} />
-              </mesh>
-            </RigidBody>
-
-            <GalleryModel path={layout.galleryModelPath} />
-            <Player key={theme} position={layout.playerStart} />
-
-            {works.map((art, idx) => {
-              const { position, rotation } = layout.getPosition(idx, works.length);
-              const { position: focusPosition, rotation: focusRotation } = layout.getFocusTransform();
-              return (
-                <Painting
-                  key={art.id}
-                  index={idx}
-                  imageUrl={art.src}
-                  title={art.title}
-                  description={art.description}
-                  isFocused={focusedId === art.id}
-                  isInfoShown={infoId === art.id}
-                  position={position}
-                  rotation={rotation}
-                  focusPosition={focusPosition}
-                  focusRotation={focusRotation}
-                  focusScale={layout.focusScale}
-                />
-              );
-            })}
-          </Physics>
+          <SceneContent
+            layout={layout}
+            works={works}
+            theme={theme}
+            focusedId={focusedId}
+            infoId={infoId}
+          />
         </Canvas>
 
         <div className="walk-guide">

@@ -1,5 +1,5 @@
 import React, { useRef, useMemo, useState, useEffect } from "react";
-import { useGLTF, useTexture, Text3D } from "@react-three/drei";
+import { Text3D } from "@react-three/drei";
 import { useFrame } from "@react-three/fiber";
 import * as THREE from "three";
 
@@ -8,18 +8,14 @@ export default function Painting({
   rotation,
   focusPosition,
   focusRotation,
-  focusScale = 8, // 테마별로 조절 가능
-  imageUrl,
+  focusScale = 8,
+  texture,
+  woodTexture,
+  lamp,
   title,
   description,
   isFocused,
-  isInfoShown,
 }) {
-  const texture = useTexture(imageUrl);
-  const wood = useTexture("/wood.jpg");
-  const { scene } = useGLTF("/models/led_projector_lamp_vega_c100.glb");
-  const lamp = useMemo(() => scene.clone(true), [scene]);
-
   const groupRef = useRef();
   const lightRef = useRef();
   const textRef = useRef();
@@ -67,7 +63,6 @@ export default function Painting({
 
   return (
     <>
-      {/* 작품 원래 위치 */}
       <group ref={groupRef} position={position} rotation={rotation}>
         <group name="ArtworkWithLights">
           <mesh position={[0, 0, 0.01]} castShadow receiveShadow>
@@ -75,25 +70,24 @@ export default function Painting({
             <meshStandardMaterial map={texture} />
           </mesh>
 
-          {/* 액자 */}
-          <mesh position={[0, height / 2 + frameWidth / 2, 0]}>
-            <boxGeometry args={[width + frameWidth * 2, frameWidth, frameDepth]} />
-            <meshStandardMaterial map={wood} />
-          </mesh>
-          <mesh position={[0, -height / 2 - frameWidth / 2, 0]}>
-            <boxGeometry args={[width + frameWidth * 2, frameWidth, frameDepth]} />
-            <meshStandardMaterial map={wood} />
-          </mesh>
-          <mesh position={[-width / 2 - frameWidth / 2, 0, 0]}>
-            <boxGeometry args={[frameWidth, height, frameDepth]} />
-            <meshStandardMaterial map={wood} />
-          </mesh>
-          <mesh position={[width / 2 + frameWidth / 2, 0, 0]}>
-            <boxGeometry args={[frameWidth, height, frameDepth]} />
-            <meshStandardMaterial map={wood} />
-          </mesh>
+          {[
+            [0, height / 2 + frameWidth / 2, 0],
+            [0, -height / 2 - frameWidth / 2, 0],
+            [-width / 2 - frameWidth / 2, 0, 0],
+            [width / 2 + frameWidth / 2, 0, 0],
+          ].map((pos, i) => (
+            <mesh key={i} position={pos}>
+              <boxGeometry
+                args={
+                  i < 2
+                    ? [width + frameWidth * 2, frameWidth, frameDepth]
+                    : [frameWidth, height, frameDepth]
+                }
+              />
+              <meshStandardMaterial map={woodTexture} />
+            </mesh>
+          ))}
 
-          {/* 작품 텍스트 */}
           {lines.map((line, idx) => (
             <Text3D
               key={idx}
@@ -112,19 +106,29 @@ export default function Painting({
             </Text3D>
           ))}
 
-          {/* 지지대 */}
-          <mesh position={[-width / 2 + 0.2, height / 2 + 0.7, 0]}>
-            <cylinderGeometry args={[0.01, 0.01, 1.4]} />
-            <meshStandardMaterial color="#666" metalness={1} roughness={0.4} />
-          </mesh>
-          <mesh position={[width / 2 - 0.2, height / 2 + 0.7, 0]}>
-            <cylinderGeometry args={[0.01, 0.01, 1.4]} />
-            <meshStandardMaterial color="#666" metalness={1} roughness={0.4} />
-          </mesh>
+          {[-1, 1].map((side) => (
+            <mesh
+              key={side}
+              position={[side * (width / 2 - 0.2), height / 2 + 0.7, 0]}
+            >
+              <cylinderGeometry args={[0.01, 0.01, 1.4]} />
+              <meshStandardMaterial color="#666" metalness={1} roughness={0.4} />
+            </mesh>
+          ))}
 
-          {/* 조명 */}
-          <primitive object={lamp} position={[0, -height / 2 - 7.1, 0.17]} scale={6} rotation={[Math.PI, Math.PI, Math.PI]} />
-          <pointLight color="#ffdca8" decay={2} position={[0, height / 2 + 1.14, 0.23]} intensity={10} distance={0.27} />
+          <primitive
+            object={lamp}
+            position={[0, -height / 2 - 7.1, 0.17]}
+            scale={6}
+            rotation={[Math.PI, Math.PI, Math.PI]}
+          />
+          <pointLight
+            color="#ffdca8"
+            decay={2}
+            position={[0, height / 2 + 1.14, 0.23]}
+            intensity={10}
+            distance={0.27}
+          />
           <spotLight
             color="#ffdca8"
             decay={2}
@@ -139,33 +143,29 @@ export default function Painting({
         </group>
       </group>
 
-      {/* 확대된 작품 */}
-      {opacity > 0 && (
-        <group
-          position={focusPosition}
-          rotation={focusRotation}
-          scale={scale}
-        >
+      {isFocused && (
+        <group position={focusPosition} rotation={focusRotation} scale={scale}>
           <mesh position={[0, 0, 0.01]}>
             <planeGeometry args={[width, height]} />
             <meshStandardMaterial map={texture} transparent opacity={opacity} />
           </mesh>
-          <mesh position={[0, height / 2 + frameWidth / 2, 0]}>
-            <boxGeometry args={[width + frameWidth * 2, frameWidth, frameDepth]} />
-            <meshStandardMaterial map={wood} transparent opacity={opacity} />
-          </mesh>
-          <mesh position={[0, -height / 2 - frameWidth / 2, 0]}>
-            <boxGeometry args={[width + frameWidth * 2, frameWidth, frameDepth]} />
-            <meshStandardMaterial map={wood} transparent opacity={opacity} />
-          </mesh>
-          <mesh position={[-width / 2 - frameWidth / 2, 0, 0]}>
-            <boxGeometry args={[frameWidth, height, frameDepth]} />
-            <meshStandardMaterial map={wood} transparent opacity={opacity} />
-          </mesh>
-          <mesh position={[width / 2 + frameWidth / 2, 0, 0]}>
-            <boxGeometry args={[frameWidth, height, frameDepth]} />
-            <meshStandardMaterial map={wood} transparent opacity={opacity} />
-          </mesh>
+          {[
+            [0, height / 2 + frameWidth / 2, 0],
+            [0, -height / 2 - frameWidth / 2, 0],
+            [-width / 2 - frameWidth / 2, 0, 0],
+            [width / 2 + frameWidth / 2, 0, 0],
+          ].map((pos, i) => (
+            <mesh key={i} position={pos}>
+              <boxGeometry
+                args={
+                  i < 2
+                    ? [width + frameWidth * 2, frameWidth, frameDepth]
+                    : [frameWidth, height, frameDepth]
+                }
+              />
+              <meshStandardMaterial map={woodTexture} transparent opacity={opacity} />
+            </mesh>
+          ))}
         </group>
       )}
     </>
