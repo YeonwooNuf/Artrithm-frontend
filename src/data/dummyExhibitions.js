@@ -21,6 +21,7 @@ export const dummyExhibitions = [
           { id: 5, src: "/artwork2.jpg", title: "그림 5", description: "그림 5 바다보러 떠나고싶다" },
           { id: 6, src: "/artwork3.jpg", title: "그림 6", description: "그림 6 사실 집에가고 싶은거임" },
           { id: 7, src: "/flower1.png", title: "그림 7", description: "그림 7 조퇴할까" },
+          { id: 8, src: "/art1.png", title: "그림 8", description: "그림 8 사과는 영어로 에아뽀으" },
         ],
       },
       guestbook: [
@@ -51,10 +52,8 @@ export const dummyExhibitions = [
           { id: 6, src: "/artwork3.jpg", title: "그림 6", description: "그림 6 사실 집에가고 싶은거임" },
           { id: 7, src: "/flower1.png", title: "그림 7", description: "그림 7 조퇴할까" },
           { id: 8, src: "/art1.png", title: "그림 8", description: "그림 8 사과는 영어로 에아뽀으" },
-          { id: 9, src: "/art2.jpeg", title: "그림 9", description: "그림 9 바다보러 떠나고싶다" },
-          { id: 10, src: "/art3.jpeg", title: "그림 10", description: "그림 10 사실 집에가고 싶은거임" },
-          { id: 11, src: "/flower2.png", title: "그림 11", description: "그림 11 조퇴할까" },
-          { id: 12, src: "/brush2.png", title: "그림 12", description: "그림 12 조퇴할까" },
+          { id: 9, src: "/flower2.png", title: "그림 9", description: "그림 8 사과는 영어로 에아뽀으" },
+          { id: 10, src: "/art2.jpeg", title: "그림 10", description: "그림 8 사과는 영어로 에아뽀으" },
         ],
       },
       guestbook: [
