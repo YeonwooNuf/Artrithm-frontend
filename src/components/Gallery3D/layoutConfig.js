@@ -28,7 +28,7 @@ export const getLayoutConfig = (theme) => {
         playerStart: [0, 0.8, -12],
 
         getPosition: (index, total) => {
-          const outerRadius = 16.3;
+          const outerRadius = 16.2;
           const innerRadius = 9.3;
 
           if (total <= 6) {
@@ -46,7 +46,7 @@ export const getLayoutConfig = (theme) => {
             if (index < 6) {
               // 바깥쪽 6개 먼저
               const slotIndex = (index * 2) % 12;
-              const angle = (slotIndex / 12) * 2 * Math.PI;
+              const angle = (slotIndex / 12) * 2 * Math.PI + 0.1;
               const x = Math.sin(angle) * outerRadius;
               const z = Math.cos(angle) * outerRadius;
               const y = 3.5;
@@ -57,7 +57,7 @@ export const getLayoutConfig = (theme) => {
             } else {
               // 안쪽 중심
               const centerIndex = index - 6;
-              const angle = (centerIndex / 4) * 2 * Math.PI;
+              const angle = (centerIndex / 4) * 2 * Math.PI + 0.1;
               const x = Math.sin(angle) * innerRadius;
               const z = Math.cos(angle) * innerRadius;
               const y = 3.5;

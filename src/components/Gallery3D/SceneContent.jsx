@@ -10,6 +10,9 @@ export default function SceneContent({ layout, works, theme, focusedId, infoId }
   const woodTexture = useTexture("/wood.jpg");
   woodTexture.encoding = THREE.sRGBEncoding;
 
+  const { scene: lampScene } = useGLTF("/models/led_projector_lamp_vega_c100.glb");
+  const lamp = lampScene.clone(true);
+
   return (
     <>
       <ambientLight intensity={0.9} />
@@ -23,33 +26,64 @@ export default function SceneContent({ layout, works, theme, focusedId, infoId }
         <GalleryModel path={layout.galleryModelPath} />
         <Player key={theme} position={layout.playerStart} />
 
-        {works.map((art, idx) => {
-          const { position, rotation } = layout.getPosition(idx, works.length);
-          const { position: focusPosition, rotation: focusRotation } = layout.getFocusTransform();
-
+        {works.flatMap((art, idx) => {
           const texture = useTexture(art.src);
           texture.encoding = THREE.sRGBEncoding;
 
-          const { scene: lampScene } = useGLTF("/models/led_projector_lamp_vega_c100.glb");
-          const lamp = lampScene.clone(true);
-
-          return (
-            <Painting
-              key={art.id}
-              texture={texture}
-              woodTexture={woodTexture}
-              lamp={lamp}
-              title={art.title}
-              description={art.description}
-              isFocused={focusedId === art.id}
-              isInfoShown={infoId === art.id}
-              position={position}
-              rotation={rotation}
-              focusPosition={focusPosition}
-              focusRotation={focusRotation}
-              focusScale={layout.focusScale}
-            />
-          );
+          if (layout.theme === "circle" && works.length <= 6) {
+            // 6개 이하라면 -> 12개 복제
+            const original = (
+              <Painting
+                key={`${art.id}_1`}
+                texture={texture}
+                woodTexture={woodTexture}
+                lamp={lamp}
+                title={art.title}
+                description={art.description}
+                isFocused={focusedId === art.id}
+                isInfoShown={infoId === art.id}
+                {...layout.getPosition(idx, 12)}
+                focusPosition={layout.getFocusTransform().position}
+                focusRotation={layout.getFocusTransform().rotation}
+                focusScale={layout.focusScale}
+              />
+            );
+            const mirrored = (
+              <Painting
+                key={`${art.id}_2`}
+                texture={texture}
+                woodTexture={woodTexture}
+                lamp={lamp}
+                title={art.title}
+                description={art.description}
+                isFocused={focusedId === art.id}
+                isInfoShown={infoId === art.id}
+                {...layout.getPosition(idx + 6, 12)}
+                focusPosition={layout.getFocusTransform().position}
+                focusRotation={layout.getFocusTransform().rotation}
+                focusScale={layout.focusScale}
+              />
+            );
+            return [original, mirrored];
+          } else {
+            // 7개 이상이면 그대로 1개만
+            return (
+              <Painting
+                key={art.id}
+                texture={texture}
+                woodTexture={woodTexture}
+                lamp={lamp}
+                title={art.title}
+                description={art.description}
+                isFocused={focusedId === art.id}
+                isInfoShown={infoId === art.id}
+                {...layout.getPosition(idx, works.length)}
+                focusPosition={layout.getFocusTransform().position}
+                focusRotation={layout.getFocusTransform().rotation}
+                focusScale={layout.focusScale}
+              />
+            );
+          }
         })}
       </Physics>
     </>
