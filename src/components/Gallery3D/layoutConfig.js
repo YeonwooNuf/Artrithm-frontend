@@ -28,13 +28,15 @@ export const getLayoutConfig = (theme) => {
         playerStart: [0, 0.8, -12],
 
         getPosition: (index, total) => {
+          const outerRadius = 16.3;
+          const innerRadius = 9.3;
+
           if (total <= 6) {
-            // 작품 수가 6개 이하일 때: 바깥쪽 12칸 중 1칸 건너뛰기
-            const radius = 16.3;
-            const slotIndex = (index * 2) % 12; // 한 칸씩 건너뛰어 배치
+            // 6개 이하: 12개로 복제
+            const slotIndex = index % 12; // 그냥 0~11번 칸에 다 배치
             const angle = (slotIndex / 12) * 2 * Math.PI;
-            const x = Math.sin(angle) * radius;
-            const z = Math.cos(angle) * radius;
+            const x = Math.sin(angle) * outerRadius;
+            const z = Math.cos(angle) * outerRadius;
             const y = 3.5;
             return {
               position: [x, y, z],
@@ -42,24 +44,22 @@ export const getLayoutConfig = (theme) => {
             };
           } else {
             if (index < 6) {
-              // 바깥쪽 6개 먼저 배치
-              const radius = 16;
-              const slotIndex = index * 2;
+              // 바깥쪽 6개 먼저
+              const slotIndex = (index * 2) % 12;
               const angle = (slotIndex / 12) * 2 * Math.PI;
-              const x = Math.sin(angle) * radius;
-              const z = Math.cos(angle) * radius;
+              const x = Math.sin(angle) * outerRadius;
+              const z = Math.cos(angle) * outerRadius;
               const y = 3.5;
               return {
-                position: [x+1.5, y, z],
+                position: [x, y, z],
                 rotation: [0, angle + Math.PI, 0],
               };
             } else {
-              // 7개 이상부터 중심 안쪽 4방향 분배
+              // 안쪽 중심
               const centerIndex = index - 6;
-              const radius = 7; // 중심 쪽 반지름 (더 가까움)
               const angle = (centerIndex / 4) * 2 * Math.PI;
-              const x = Math.sin(angle) * radius;
-              const z = Math.cos(angle) * radius;
+              const x = Math.sin(angle) * innerRadius;
+              const z = Math.cos(angle) * innerRadius;
               const y = 3.5;
               return {
                 position: [x, y, z],
