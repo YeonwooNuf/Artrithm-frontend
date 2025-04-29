@@ -15,6 +15,7 @@ export default function Painting({
   title,
   description,
   isFocused,
+  theme, // ✅ theme prop 추가 (modern/circle 구분용)
 }) {
   const groupRef = useRef();
   const lightRef = useRef();
@@ -50,14 +51,10 @@ export default function Painting({
 
     if (isFocused) {
       setOpacity((prev) => Math.min(prev + 0.05, 1));
-      setScale((prev) =>
-        prev.lerp(new THREE.Vector3(focusScale, focusScale, focusScale), 0.1)
-      );
+      setScale((prev) => prev.lerp(new THREE.Vector3(focusScale, focusScale, focusScale), 0.1));
     } else {
       setOpacity((prev) => Math.max(prev - 0.05, 0));
-      setScale((prev) =>
-        prev.lerp(new THREE.Vector3(1, 1, 1), 0.1)
-      );
+      setScale((prev) => prev.lerp(new THREE.Vector3(1, 1, 1), 0.1));
     }
   });
 
@@ -78,13 +75,16 @@ export default function Painting({
           ].map((pos, i) => (
             <mesh key={i} position={pos}>
               <boxGeometry
-                args={
-                  i < 2
-                    ? [width + frameWidth * 2, frameWidth, frameDepth]
-                    : [frameWidth, height, frameDepth]
-                }
+                args={i < 2
+                  ? [width + frameWidth * 2, frameWidth, frameDepth]
+                  : [frameWidth, height, frameDepth]}
               />
-              <meshStandardMaterial map={woodTexture} />
+              {/* ✅ theme에 따라 액자 재질 다르게 */}
+              {theme === "circle" ? (
+                <meshStandardMaterial color="#333333" />
+              ) : (
+                <meshStandardMaterial map={woodTexture} />
+              )}
             </mesh>
           ))}
 
@@ -106,40 +106,45 @@ export default function Painting({
             </Text3D>
           ))}
 
-          {[-1, 1].map((side) => (
-            <mesh
-              key={side}
-              position={[side * (width / 2 - 0.2), height / 2 + 0.7, 0]}
-            >
-              <cylinderGeometry args={[0.01, 0.01, 1.4]} />
-              <meshStandardMaterial color="#666" metalness={1} roughness={0.4} />
-            </mesh>
-          ))}
+          {theme !== "circle" && (
+            // ✅ 조명과 지지대는 modern만 렌더링
+            <>
+              {[-1, 1].map((side) => (
+                <mesh
+                  key={side}
+                  position={[side * (width / 2 - 0.2), height / 2 + 0.7, 0]}
+                >
+                  <cylinderGeometry args={[0.01, 0.01, 1.4]} />
+                  <meshStandardMaterial color="#666" metalness={1} roughness={0.4} />
+                </mesh>
+              ))}
 
-          <primitive
-            object={lamp}
-            position={[0, -height / 2 - 7.1, 0.17]}
-            scale={6}
-            rotation={[Math.PI, Math.PI, Math.PI]}
-          />
-          <pointLight
-            color="#ffdca8"
-            decay={2}
-            position={[0, height / 2 + 1.14, 0.23]}
-            intensity={10}
-            distance={0.27}
-          />
-          <spotLight
-            color="#ffdca8"
-            decay={2}
-            ref={lightRef}
-            position={[0, height / 2 + 1.5, 0.9]}
-            angle={0.6}
-            penumbra={0.01}
-            intensity={20}
-            distance={4}
-            castShadow
-          />
+              <primitive
+                object={lamp}
+                position={[0, -height / 2 - 7.1, 0.17]}
+                scale={6}
+                rotation={[Math.PI, Math.PI, Math.PI]}
+              />
+              <pointLight
+                color="#ffdca8"
+                decay={2}
+                position={[0, height / 2 + 1.14, 0.23]}
+                intensity={10}
+                distance={0.27}
+              />
+              <spotLight
+                color="#ffdca8"
+                decay={2}
+                ref={lightRef}
+                position={[0, height / 2 + 1.5, 0.9]}
+                angle={0.6}
+                penumbra={0.01}
+                intensity={20}
+                distance={4}
+                castShadow
+              />
+            </>
+          )}
         </group>
       </group>
 
@@ -157,13 +162,15 @@ export default function Painting({
           ].map((pos, i) => (
             <mesh key={i} position={pos}>
               <boxGeometry
-                args={
-                  i < 2
-                    ? [width + frameWidth * 2, frameWidth, frameDepth]
-                    : [frameWidth, height, frameDepth]
-                }
+                args={i < 2
+                  ? [width + frameWidth * 2, frameWidth, frameDepth]
+                  : [frameWidth, height, frameDepth]}
               />
-              <meshStandardMaterial map={woodTexture} transparent opacity={opacity} />
+              {theme === "circle" ? (
+                <meshStandardMaterial color="#333333" roughness={0.4} transparent opacity={opacity} />
+              ) : (
+                <meshStandardMaterial map={woodTexture} transparent opacity={opacity} />
+              )}
             </mesh>
           ))}
         </group>

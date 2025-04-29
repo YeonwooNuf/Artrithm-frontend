@@ -81,6 +81,7 @@ export default function SceneContent({ layout, works, theme, focusedId, infoId }
                 focusPosition={layout.getFocusTransform().position}
                 focusRotation={layout.getFocusTransform().rotation}
                 focusScale={layout.focusScale}
+                theme={theme}
               />
             );
           }

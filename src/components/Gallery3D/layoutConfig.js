@@ -21,63 +21,35 @@ export const getLayoutConfig = (theme) => {
         focusScale: 16,
       };
 
-    case "circle":
-      return {
-        galleryModelPath: "/models/art_gallery.glb",
-        environment: "sunset",
-        playerStart: [0, 0.8, -12],
-
-        getPosition: (index, total) => {
-          const outerRadius = 16.2;
-          const innerRadius = 9.3;
-
-          if (total <= 6) {
-            // 6개 이하: 12개로 복제
-            const slotIndex = index % 12; // 그냥 0~11번 칸에 다 배치
-            const angle = (slotIndex / 12) * 2 * Math.PI;
+      case "circle":
+        return {
+          galleryModelPath: "/models/art_gallery.glb",
+          environment: "sunset",
+          playerStart: [0, 0.8, -12],
+  
+          getPosition: (index, total) => {
+            const totalSlots = 12; // 항상 12개 슬롯 기준
+            const outerRadius = 16.2;
+            const angle = (index / totalSlots) * 2 * Math.PI + 0.1; // 12등분
             const x = Math.sin(angle) * outerRadius;
             const z = Math.cos(angle) * outerRadius;
             const y = 3.5;
+  
             return {
               position: [x, y, z],
               rotation: [0, angle + Math.PI, 0],
             };
-          } else {
-            if (index < 6) {
-              // 바깥쪽 6개 먼저
-              const slotIndex = (index * 2) % 12;
-              const angle = (slotIndex / 12) * 2 * Math.PI + 0.1;
-              const x = Math.sin(angle) * outerRadius;
-              const z = Math.cos(angle) * outerRadius;
-              const y = 3.5;
-              return {
-                position: [x, y, z],
-                rotation: [0, angle + Math.PI, 0],
-              };
-            } else {
-              // 안쪽 중심
-              const centerIndex = index - 6;
-              const angle = (centerIndex / 4) * 2 * Math.PI + 0.1;
-              const x = Math.sin(angle) * innerRadius;
-              const z = Math.cos(angle) * innerRadius;
-              const y = 3.5;
-              return {
-                position: [x, y, z],
-                rotation: [0, angle + Math.PI, 0],
-              };
-            }
-          }
-        },
-
-        getFocusTransform: () => ({
-          position: [0, 3, 0],
-          rotation: [0, 0, 0],
-        }),
-
-        focusScale: 8,
-      };
-
-    default:
-      throw new Error(`Unknown theme: ${theme}`);
-  }
+          },
+  
+          getFocusTransform: () => ({
+            position: [0, 3, 0],
+            rotation: [0, 0, 0],
+          }),
+  
+          focusScale: 8,
+        };
+  
+      default:
+        throw new Error(`Unknown theme: ${theme}`);
+    }
 };
