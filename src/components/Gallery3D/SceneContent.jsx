@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useMemo } from "react";
 import { useGLTF, useTexture } from "@react-three/drei";
 import { Physics, RigidBody } from "@react-three/rapier";
 import GalleryModel from "./GalleryModel";
@@ -11,7 +11,6 @@ export default function SceneContent({ layout, works, theme, focusedId, infoId }
   woodTexture.encoding = THREE.sRGBEncoding;
 
   const { scene: lampScene } = useGLTF("/models/led_projector_lamp_vega_c100.glb");
-  const lamp = lampScene.clone(true);
 
   return (
     <>
@@ -30,11 +29,14 @@ export default function SceneContent({ layout, works, theme, focusedId, infoId }
           const texture = useTexture(art.src);
           texture.encoding = THREE.sRGBEncoding;
 
-          if (layout.theme === "circle" && works.length <= 6) {
-            // 6개 이하라면 -> 12개 복제
-            const original = (
+          // lampScene을 작품별로 clone (useMemo로 최적화)
+          const lamp = useMemo(() => lampScene.clone(true), [lampScene]);
+
+          if (theme === "circle" && works.length <= 6) {
+            // 6개 이하라면 -> 12개로 복제
+            const first = (
               <Painting
-                key={`${art.id}_1`}
+                key={`${art.id}_outer`}
                 texture={texture}
                 woodTexture={woodTexture}
                 lamp={lamp}
@@ -46,11 +48,12 @@ export default function SceneContent({ layout, works, theme, focusedId, infoId }
                 focusPosition={layout.getFocusTransform().position}
                 focusRotation={layout.getFocusTransform().rotation}
                 focusScale={layout.focusScale}
+                theme={theme}
               />
             );
-            const mirrored = (
+            const mirror = (
               <Painting
-                key={`${art.id}_2`}
+                key={`${art.id}_mirror`}
                 texture={texture}
                 woodTexture={woodTexture}
                 lamp={lamp}
@@ -62,11 +65,12 @@ export default function SceneContent({ layout, works, theme, focusedId, infoId }
                 focusPosition={layout.getFocusTransform().position}
                 focusRotation={layout.getFocusTransform().rotation}
                 focusScale={layout.focusScale}
+                theme={theme}
               />
             );
-            return [original, mirrored];
+            return [first, mirror];
           } else {
-            // 7개 이상이면 그대로 1개만
+            // 7개 이상이면 1개만
             return (
               <Painting
                 key={art.id}
