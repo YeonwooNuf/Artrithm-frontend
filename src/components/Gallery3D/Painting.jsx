@@ -27,16 +27,6 @@ export default function Painting({
   const frameWidth = 0.15;
   const frameDepth = 0.3;
 
-  const breakTextIntoLines = (text, maxCharsPerLine = 10) => {
-    const lines = [];
-    for (let i = 0; i < text.length; i += maxCharsPerLine) {
-      lines.push(text.slice(i, i + maxCharsPerLine));
-    }
-    return lines;
-  };
-
-  const lines = breakTextIntoLines(title, 9);
-
   useEffect(() => {
     if (textRef.current) {
       textRef.current.geometry.center();
@@ -47,27 +37,27 @@ export default function Painting({
     if (lightRef.current && groupRef.current) {
       lightRef.current.target = groupRef.current;
     }
-
-    if (!isFocused) {
-      setOpacity((prev) => Math.max(prev - 0.05, 0));
-    } else {
-      setOpacity((prev) => Math.min(prev + 0.05, 1));
-    }
+    setOpacity((prev) => isFocused ? Math.min(prev + 0.05, 1) : Math.max(prev - 0.05, 0));
   });
 
-  const ArtworkMesh = (opacityValue = 1, isFocused = false) => (
+  const ArtworkMesh = (opacityValue = 1, isFocusedState = false) => (
     <mesh position={[0, 0, 0.01]}>
       <planeGeometry
         args={[
-          isFocused ? width * focusScale : width,
-          isFocused ? height * focusScale : height,
+          isFocusedState ? width * focusScale : width,
+          isFocusedState ? height * focusScale : height,
         ]}
       />
-      <meshStandardMaterial map={texture} transparent opacity={opacityValue} />
+      <meshStandardMaterial
+        map={texture}
+        transparent
+        opacity={opacityValue}
+        side={THREE.DoubleSide}
+      />
     </mesh>
   );
 
-  const FrameMeshes = (opacityValue = 1, isFocused = false) => (
+  const FrameMeshes = (opacityValue = 1, isFocusedState = false) => (
     <>
       {[
         [0, height / 2 + frameWidth / 2, 0],
@@ -75,24 +65,35 @@ export default function Painting({
         [-width / 2 - frameWidth / 2, 0, 0],
         [width / 2 + frameWidth / 2, 0, 0],
       ].map((pos, i) => (
-        <mesh key={i} position={pos.map((v) => (isFocused ? v * focusScale : v))}>
+        <mesh key={i} position={pos.map((v) => (isFocusedState ? v * focusScale : v))}>
           <boxGeometry
             args={i < 2
               ? [
-                  (width + frameWidth * 2) * (isFocused ? focusScale : 1),
-                  frameWidth * (isFocused ? focusScale : 1),
-                  frameDepth,
+                  (width + frameWidth * 2) * (isFocusedState ? focusScale : 1),
+                  frameWidth * (isFocusedState ? focusScale : 1),
+                  frameDepth
                 ]
               : [
-                  frameWidth * (isFocused ? focusScale : 1),
-                  height * (isFocused ? focusScale : 1),
-                  frameDepth,
+                  frameWidth * (isFocusedState ? focusScale : 1),
+                  height * (isFocusedState ? focusScale : 1),
+                  frameDepth
                 ]}
           />
           {theme === "circle" ? (
-            <meshStandardMaterial color="#333333" roughness={0.4} transparent opacity={opacityValue} />
+            <meshStandardMaterial
+              color="#333333"
+              roughness={0.4}
+              transparent
+              opacity={opacityValue}
+              side={THREE.DoubleSide}
+            />
           ) : (
-            <meshStandardMaterial map={woodTexture} transparent opacity={opacityValue} />
+            <meshStandardMaterial
+              map={woodTexture}
+              transparent
+              opacity={opacityValue}
+              side={THREE.DoubleSide}
+            />
           )}
         </mesh>
       ))}
@@ -101,8 +102,16 @@ export default function Painting({
 
   const FloatingGroup = (offsetX = 0, rotationY = 0) => (
     <group
-      position={[focusPosition[0] + offsetX, focusPosition[1], focusPosition[2]]}
-      rotation={[focusRotation[0], focusRotation[1] + rotationY, focusRotation[2]]}
+      position={[
+        focusPosition[0] + offsetX,
+        focusPosition[1],
+        focusPosition[2]
+      ]}
+      rotation={[
+        focusRotation[0],
+        focusRotation[1] + rotationY,
+        focusRotation[2]
+      ]}
     >
       {ArtworkMesh(opacity, true)}
       {FrameMeshes(opacity, true)}
@@ -111,16 +120,17 @@ export default function Painting({
 
   return (
     <>
+      {/* 원래 전시 위치 */}
       <group ref={groupRef} position={position} rotation={rotation}>
         <group name="ArtworkWithLights">
           {ArtworkMesh()}
           {FrameMeshes()}
 
-          {lines.map((line, idx) => (
+          {/* 제목 */}
+          {title && (
             <Text3D
-              key={idx}
-              ref={idx === 0 ? textRef : null}
-              position={[1.7, height / 2 - 0.5 - idx * 0.3, -0.07]}
+              ref={textRef}
+              position={[1.7, height / 2 - 0.5, -0.07]}
               size={0.15}
               bevelEnabled
               bevelSize={0.005}
@@ -129,11 +139,12 @@ export default function Painting({
               curveSegments={12}
               font="/fonts/Nanum NaMuJeongWeon_Regular.json"
             >
-              {line}
+              {title}
               <meshStandardMaterial color="black" />
             </Text3D>
-          ))}
+          )}
 
+          {/* modern 전시관만 조명/지지대 */}
           {theme !== "circle" && (
             <>
               {[-1, 1].map((side) => (
@@ -150,11 +161,11 @@ export default function Painting({
         </group>
       </group>
 
+      {/* 확대된 Floating 그림 */}
       {isFocused && (
         theme === "circle" ? (
           <>
-            {FloatingGroup(0, 0)}
-            {FloatingGroup(0, Math.PI)} {/* 오른쪽 복제본 180도 회전 */}
+            {FloatingGroup(0, 0)}  {/* 정면 */}
           </>
         ) : (
           FloatingGroup(0)

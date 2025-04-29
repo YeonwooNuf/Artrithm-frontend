@@ -24,7 +24,7 @@ export const getLayoutConfig = (theme) => {
       case "circle":
         return {
           galleryModelPath: "/models/art_gallery.glb",
-          environment: "sunset",
+          environment: "city",
           playerStart: [0, 0.8, -12],
   
           getPosition: (index, total) => {

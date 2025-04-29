@@ -14,7 +14,7 @@ export default function SceneContent({ layout, works, theme, focusedId, infoId }
 
   return (
     <>
-      <ambientLight intensity={0.9} />
+      <ambientLight intensity={0.5} />
       <Physics gravity={[0, -9.81, 0]}>
         <RigidBody type="fixed" colliders="cuboid">
           <mesh rotation={[-Math.PI / 2, 0, 0]} position={[0, -1, 0]} receiveShadow>

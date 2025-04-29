@@ -129,7 +129,7 @@ export default function Gallery3D() {
           onCreated={captureCamera}
         >
           <PointerLockControls ref={pointerLockRef} />
-          <Environment preset={layout.environment} background intensity={layout.environment === "night" ? 1.5 : 0.8} />
+          <Environment preset={layout.environment} background intensity={layout.environment === "night" ? 0.1 : 0.3} />
 
           <SceneContent
             layout={layout}
