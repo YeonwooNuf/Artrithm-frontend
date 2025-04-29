@@ -28,7 +28,8 @@ export default function Gallery3D() {
 
   useEffect(() => {
     if (infoId) {
-      const fullText = works.find((art) => art.id === infoId)?.description || "";
+      const fullText =
+        works.find((art) => art.id === infoId)?.description || "";
       setTypedText("");
       let index = 0;
       let currentText = "";
@@ -70,7 +71,8 @@ export default function Gallery3D() {
 
         if (closest) {
           if (e.key.toLowerCase() === "r") setFocusedId(closest);
-          if (e.key.toLowerCase() === "f") setInfoId((prev) => (prev === closest ? null : closest));
+          if (e.key.toLowerCase() === "f")
+            setInfoId((prev) => (prev === closest ? null : closest));
         }
       }
 
@@ -107,8 +109,12 @@ export default function Gallery3D() {
               zIndex: 10,
             }}
           >
-            <strong>{works.find((art) => art.id === infoId)?.title || "제목 없음"}</strong>
-            <p style={{ marginTop: "8px", whiteSpace: "pre-line" }}>{typedText || "설명 없음"}</p>
+            <strong>
+              {works.find((art) => art.id === infoId)?.title || "제목 없음"}
+            </strong>
+            <p style={{ marginTop: "8px", whiteSpace: "pre-line" }}>
+              {typedText || "설명 없음"}
+            </p>
           </div>
         )}
 
@@ -123,20 +129,39 @@ export default function Gallery3D() {
           <PointerLockControls />
 
           <primitive object={new THREE.AxesHelper(3)} position={[-26, 1, 15]} />
-          <primitive object={new THREE.GridHelper(10, 10)} position={[-26, 0, 15]} />
+          <primitive
+            object={new THREE.GridHelper(10, 10)}
+            position={[-26, 0, 15]}
+          />
 
           <Physics gravity={[0, -9.81, 0]}>
             <RigidBody type="fixed" colliders="cuboid">
-              <mesh rotation={[-Math.PI / 2, 0, 0]} position={[0, -1, 0]} receiveShadow>
+              <mesh
+                rotation={[-Math.PI / 2, 0, 0]}
+                position={[0, -1, 0]}
+                receiveShadow
+              >
                 <planeGeometry args={[300, 300]} />
               </mesh>
             </RigidBody>
 
             <GalleryModel scale={2} />
             <Player />
-            <Painting position={[-5, 2, 3.01]} imageUrl="/art1.png" title="작품 1" />
-            <Painting position={[0, 2, 3.01]} imageUrl="/art2.jpeg" title="작품 2" />
-            <Painting position={[5, 2, 3.01]} imageUrl="/art3.jpeg" title="작품 3" />
+            <Painting
+              position={[-5, 2, 3.01]}
+              imageUrl="/art1.png"
+              title="작품 1"
+            />
+            <Painting
+              position={[0, 2, 3.01]}
+              imageUrl="/art2.jpeg"
+              title="작품 2"
+            />
+            <Painting
+              position={[5, 2, 3.01]}
+              imageUrl="/art3.jpeg"
+              title="작품 3"
+            />
 
             {works.map((art, idx) => (
               <Painting
