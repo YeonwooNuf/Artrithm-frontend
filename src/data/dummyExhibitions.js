@@ -54,8 +54,8 @@ export const dummyExhibitions = [
           { id: 8, src: "/art1.png", title: "그림 8", description: "그림 8 사과는 영어로 에아뽀으" },
           { id: 9, src: "/flower2.png", title: "그림 9", description: "그림 9 사과는 영어로 에아뽀으" },
           { id: 10, src: "/art2.jpeg", title: "그림 10", description: "그림 10 사과는 영어로 에아뽀으" },
-          { id: 11, src: "/brush1.jpg", title: "그림 10", description: "그림 11 사과는 영어로 에아뽀으" },
-          { id: 12, src: "/brush2.png", title: "그림 10", description: "그림 12 사과는 영어로 에아뽀으" },
+          { id: 11, src: "/brush1.jpg", title: "그림 11", description: "그림 11 사과는 영어로 에아뽀으" },
+          { id: 12, src: "/brush2.png", title: "그림 12", description: "그림 12 사과는 영어로 에아뽀으" },
         ],
       },
       guestbook: [

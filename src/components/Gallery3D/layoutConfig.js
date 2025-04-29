@@ -18,7 +18,7 @@ export const getLayoutConfig = (theme) => {
           position: [7.5, 3, 0],
           rotation: [0, -Math.PI / 2, 0],
         }),
-        focusScale: 16,
+        focusScale: 2.5,
       };
 
       case "circle":
@@ -46,7 +46,7 @@ export const getLayoutConfig = (theme) => {
             rotation: [0, 0, 0],
           }),
   
-          focusScale: 8,
+          focusScale: 2,
         };
   
       default:
