@@ -13,21 +13,25 @@ import { getLayoutConfig } from "./layoutConfig";
 import "./Gallery3D.css";
 
 export default function Gallery3D() {
+  // 라우팅된 페이지의 상태에서 작품 리스트와 테마 정보 가져오기
   const location = useLocation();
   const { works = [], theme = "modern" } = location.state || {};
-  const layout = getLayoutConfig(theme);
+  const layout = getLayoutConfig(theme);  // 테마별 레이아웃 설정 가져오기
 
-  const [focusedId, setFocusedId] = useState(null);
-  const [infoId, setInfoId] = useState(null);
-  const [chatId, setChatId] = useState(null);
-  const [cameraRef, setCameraRef] = useState(null);
-  const [typedText, setTypedText] = useState("");
-  const pointerLockRef = useRef();
+  // 상태 관리
+  const [focusedId, setFocusedId] = useState(null); // 확대된 작품 ID
+  const [infoId, setInfoId] = useState(null);       // 설명창에 표시 중인 작품 ID
+  const [chatId, setChatId] = useState(null);       // 채팅창에 표시 중인 작가 ID
+  const [cameraRef, setCameraRef] = useState(null); // 카메라 참조 저장
+  const [typedText, setTypedText] = useState("");   // 설명 타이핑 효과 텍스트
+  const pointerLockRef = useRef();                  // 포인터 잠금 컨트롤용
 
+  // cameraRef 저장 (한 번만)
   const captureCamera = (state) => {
     if (!cameraRef) setCameraRef(state.camera);
   };
 
+  // 설명창이 열릴 때마다 글자 타이핑 효과 실행
   useEffect(() => {
     if (infoId) {
       const fullText = works.find((art) => art.id === infoId)?.description || "";
@@ -46,6 +50,7 @@ export default function Gallery3D() {
     }
   }, [infoId, works]);
 
+  // 채팅창 열릴 때 커서 보이도록 설정
   useEffect(() => {
     const canvasWrapper = document.querySelector(".gallery3d-wrapper");
     if (canvasWrapper) {
@@ -53,6 +58,7 @@ export default function Gallery3D() {
     }
   }, [chatId]);
 
+  // 키보드 입력 이벤트 처리 (R, F, T, ESC)
   useEffect(() => {
     const handleKeyDown = (e) => {
       const activeTag = document.activeElement?.tagName;
@@ -62,11 +68,12 @@ export default function Gallery3D() {
       const camPos = new THREE.Vector3();
       cameraRef.getWorldPosition(camPos);
 
-      const threshold = 3;
+      const threshold = 3; // 근처 판정 거리
       let closest = null;
       let minDist = Infinity;
 
       if (["r", "f", "t"].includes(e.key.toLowerCase())) {
+        // 가장 가까운 작품 찾기
         works.forEach((art, idx) => {
           const { position } = layout.getPosition(idx, works.length);
           const artPos = new THREE.Vector3(...position);
@@ -77,17 +84,18 @@ export default function Gallery3D() {
           }
         });
 
+        // 키보드 입력에 따라 상태 변경
         if (closest) {
-          if (e.key.toLowerCase() === "r") setFocusedId(closest);
-          if (e.key.toLowerCase() === "f") {
+          if (e.key.toLowerCase() === "r") setFocusedId(closest); // 확대
+          if (e.key.toLowerCase() === "f") {                      // 설명
             setInfoId((prev) => (prev === closest ? null : closest));
             setChatId(null);
           }
-          if (e.key.toLowerCase() === "t") {
+          if (e.key.toLowerCase() === "t") {                      // 채팅
             setChatId((prev) => (prev === closest ? null : closest));
             setInfoId(null);
             setTimeout(() => {
-              pointerLockRef.current?.unlock();
+              pointerLockRef.current?.unlock(); // 채팅 시 포인터 잠금 해제
             }, 50);
           }
         }
@@ -96,7 +104,7 @@ export default function Gallery3D() {
       if (e.key === "Escape") {
         setFocusedId(null);
         setInfoId(null);
-        setChatId(null);
+        setChatId(null); // ESC로 모두 닫기
       }
     };
 
@@ -109,6 +117,7 @@ export default function Gallery3D() {
       <h2 className="gallery-title">3D 작품 전시관</h2>
 
       <div className="gallery3d-container">
+        {/* 설명창 */}
         {infoId && (
           <div className="hud-description">
             <strong>{works.find((art) => art.id === infoId)?.title || "제목 없음"}</strong>
@@ -116,12 +125,14 @@ export default function Gallery3D() {
           </div>
         )}
 
+        {/* 채팅창 */}
         {chatId && (
           <div className="hud-chat">
             <ArtistChatRoom artist={works.find((art) => art.id === chatId)?.artist} />
           </div>
         )}
 
+        {/* 렌더링 캔버스 */}
         <Canvas
           shadows
           camera={{ fov: 60, position: [-26, 2.5, 15] }}
@@ -129,8 +140,19 @@ export default function Gallery3D() {
           onCreated={captureCamera}
         >
           <PointerLockControls ref={pointerLockRef} />
-          <Environment preset={layout.environment} background intensity={layout.environment === "night" ? 0.1 : 0.3} />
+          
+          {/* 환경광 설정 (배경 포함) */}
+          <Environment
+            preset={layout.environment}         // city / night / sunset 등
+            background                          // 하늘 배경 렌더링
+            intensity={
+              layout.environment === "night"    // ✨ 문제는 여기: background=true이므로
+                ? 0.1                           // intensity는 조명에 적용되지 않음!
+                : 0.3
+            }
+          />
 
+          {/* 본 컨텐츠 */}
           <SceneContent
             layout={layout}
             works={works}
