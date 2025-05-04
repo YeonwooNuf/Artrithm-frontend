@@ -30,7 +30,7 @@ export const getLayoutConfig = (theme) => {
           getPosition: (index, total) => {
             const totalSlots = 12; // 항상 12개 슬롯 기준
             const outerRadius = 16.2;
-            const angle = (index / totalSlots) * 2 * Math.PI + 0.1; // 12등분
+            const angle = (index / totalSlots) * 2 * Math.PI + 0.09; // 12등분
             const x = Math.sin(angle) * outerRadius;
             const z = Math.cos(angle) * outerRadius;
             const y = 3.5;
