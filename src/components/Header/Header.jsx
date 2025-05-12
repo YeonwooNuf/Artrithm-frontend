@@ -77,7 +77,7 @@ const Header = ({ user }) => {
           )}
 
           <li>
-            <a href="/mypage">마이페이지</a>
+            <Link to="/mypage">마이페이지</Link>
           </li>
         </ul>
       </nav>
