@@ -1,0 +1,101 @@
+/* 전체 배경 및 폼 박스 */
+.upload-container {
+  max-width: 900px;
+  margin: 4rem auto;
+  padding: 3rem;
+  background: #f8f3eb;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+  border-radius: 20px;
+  font-family: 'Noto Sans KR', sans-serif;
+}
+
+.upload-title {
+  font-size: 2rem;
+  color: #3e3e3e;
+  margin-bottom: 2rem;
+  text-align: center;
+}
+
+.upload-form label {
+  font-weight: 600;
+  color: #5c5c5c;
+  margin-top: 1.5rem;
+  display: block;
+}
+
+.input,
+.textarea,
+.select {
+  width: 100%;
+  padding: 0.8rem 1rem;
+  margin-top: 0.5rem;
+  border: 1px solid #ccc;
+  border-radius: 12px;
+  font-size: 1rem;
+  background: #fff;
+  transition: border-color 0.3s ease;
+}
+
+.input:focus,
+.textarea:focus,
+.select:focus {
+  outline: none;
+  border-color: #967e76;
+}
+
+.works-section {
+  margin-top: 2rem;
+  background: #f0eae3;
+  padding: 1rem;
+  border-radius: 12px;
+}
+
+.work-item {
+  margin-bottom: 2rem;
+  border-bottom: 1px dashed #ccc;
+  padding-bottom: 1rem;
+}
+
+.add-work-button {
+  background: #967e76;
+  color: #fff;
+  border: none;
+  padding: 0.6rem 1.2rem;
+  border-radius: 10px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: background 0.3s;
+}
+
+.add-work-button:hover {
+  background: #7b655d;
+}
+
+.submit-button {
+  margin-top: 2rem;
+  background: #3e3e3e;
+  color: #fff;
+  border: none;
+  padding: 0.8rem 2rem;
+  border-radius: 10px;
+  font-size: 1rem;
+  cursor: pointer;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  transition: background 0.3s;
+}
+
+.submit-button:hover {
+  background: #222222;
+}
+
+@media (max-width: 768px) {
+  .upload-container {
+    padding: 2rem;
+  }
+
+  .upload-title {
+    font-size: 1.5rem;
+  }
+}
