@@ -29,7 +29,7 @@ const Header = ({ user }) => {
             {openExhibition && (
               <ul className="dropdown__menu">
                 <li>
-                  <a href="/create">개설하기</a>
+                  <Link to="/upload">개설하기</Link>
                 </li>
                 <li>
                   <a href="/view">감상하기</a>
