@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import axios from "axios";
 
@@ -15,7 +15,7 @@ import Exhibition3D from "./pages/Exhibition/Exhibition3D";
 import ExhibitionDetailPage from "./pages/Exhibition/ExhibitionDetailPage"; // 필요 시
 
 function App() {
-  const [user, setUser] = useState(null); // 로그인한 사용자 상태
+  const [user, setUser] = useState(null);
 
   useEffect(() => {
     const userId = localStorage.getItem("userId");
@@ -41,7 +41,10 @@ function App() {
           <Route path="/mypage" element={<MyPage user={user} />} />
           <Route path="/upload" element={<ExhibitionUpload user={user} />} />
           <Route path="/exhibitions/:id" element={<ExhibitionPage />} />
-          <Route path="/exhibitions/Gallery3D/:exhibitionId" element={<Exhibition3D />} />
+          <Route
+            path="/exhibitions/Gallery3D/:exhibitionId"
+            element={<Exhibition3D />}
+          />
           {/* <Route path="/exhibitions/detail/:id" element={<ExhibitionDetailPage />} /> */}
         </Routes>
         <Footer />

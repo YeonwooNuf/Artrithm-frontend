@@ -4,7 +4,7 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
 const LoginForm = ({ setUser }) => {
-  const [loginId, setLoginId] = useState("");  // 기존 username → loginId로 변경
+  const [loginId, setLoginId] = useState("");
   const [password, setPassword] = useState("");
   const [message, setMessage] = useState("");
   const navigate = useNavigate();
@@ -20,10 +20,11 @@ const LoginForm = ({ setUser }) => {
 
       const userData = response.data;
 
-      // ✅ userId localStorage에 저장
+      // ✅ userId, user 전체 정보 저장
       localStorage.setItem("userId", userData.id);
+      localStorage.setItem("user", JSON.stringify(userData));
 
-      // ✅ 전체 사용자 객체 상태로 설정
+      // ✅ 상태 갱신
       setUser(userData);
 
       // ✅ 홈으로 이동
