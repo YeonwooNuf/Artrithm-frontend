@@ -9,7 +9,6 @@ import "./Home.css";
 const Home = () => {
   return (
     <div>
-      <Header />
       <HeroSection />
       <ScrollRevealImage />
       <ExhibitionMasonry />
