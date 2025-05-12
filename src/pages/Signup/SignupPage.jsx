@@ -7,6 +7,7 @@ import "./SignupPage.css";
 const SignupPage = () => {
   const [form, setForm] = useState({
     username: "",
+    nickname: "",
     email: "",
     password: "",
     confirmPassword: "",
@@ -31,6 +32,7 @@ const SignupPage = () => {
 
     const payload = {
       loginId: form.username, // ✅ 백엔드 기준 필드명
+      nickname: form.nickname,
       email: form.email,
       password: form.password,
       phoneNumber: form.phone,
@@ -71,6 +73,15 @@ const SignupPage = () => {
             value={form.username}
             onChange={handleChange}
             maxLength={12}
+            required
+          />
+
+          <input
+            type="text"
+            name="nickname"
+            placeholder="닉네임"
+            value={form.nickname}
+            onChange={handleChange}
             required
           />
 
