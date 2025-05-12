@@ -4,7 +4,7 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
 const LoginForm = ({ setUser }) => {
-  const [username, setUsername] = useState("");
+  const [loginId, setLoginId] = useState("");
   const [password, setPassword] = useState("");
   const [message, setMessage] = useState("");
   const navigate = useNavigate();
@@ -16,17 +16,23 @@ const LoginForm = ({ setUser }) => {
       const response = await axios.post(
         "http://localhost:8080/api/users/login",
         {
-          username,
+          loginId,
           password,
-        },
-        {
-          withCredentials: true,
         }
       );
-      setUser({ username }); // 사용자 상태 업데이트
-      navigate("/"); //홈으로 감
 
-      setMessage(response.data); // ex: "testuser님 로그인 성공"
+      const user = response.data;
+
+      // ✅ userId 전역 저장
+      localStorage.setItem("userId", user.id);
+
+      // ✅ 상위 상태 업데이트
+      setUser(user);
+
+      // ✅ 홈으로 이동
+      navigate("/");
+
+      setMessage(`${user.nickname}님 로그인 성공!`);
     } catch (error) {
       console.error(error);
       setMessage("로그인 실패 😢");
@@ -34,21 +40,17 @@ const LoginForm = ({ setUser }) => {
   };
 
   return (
-    <div
-      className="login-container"
-      style={{ maxWidth: 300, margin: "100px auto", textAlign: "center" }}
-    >
+    <div className="login-container" style={{ maxWidth: 300, margin: "100px auto", textAlign: "center" }}>
       <h2>로그인</h2>
       <form onSubmit={handleLogin}>
         <input
           type="text"
           placeholder="아이디"
-          value={username}
-          onChange={(e) => setUsername(e.target.value)}
+          value={loginId}
+          onChange={(e) => setLoginId(e.target.value)}
           required
         />
-        <br />
-        <br />
+        <br /><br />
         <input
           type="password"
           placeholder="비밀번호"
@@ -56,8 +58,7 @@ const LoginForm = ({ setUser }) => {
           onChange={(e) => setPassword(e.target.value)}
           required
         />
-        <br />
-        <br />
+        <br /><br />
         <button type="submit">로그인</button>
       </form>
       <p>{message}</p>
