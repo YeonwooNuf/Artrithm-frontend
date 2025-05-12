@@ -8,6 +8,7 @@ import ExhibitionPage from "./pages/Exhibition/ExhibitionPage";
 import Exhibition3D from "./pages/Exhibition/Exhibition3D";
 import Footer from "./components/Footer/Footer";
 import ExhibitionUpload from "./pages/Exhibition/ExhibitionUpload";
+import MyPage from "./pages/MyPage/MyPage";
 //import GalleryWalkable from "./pages/GalleryWalkable";
 
 function App() {
@@ -25,6 +26,7 @@ function App() {
           />
           <Route path="/upload" element={<ExhibitionUpload />} />
           <Route path="/login" element={<LoginForm setUser={setUser} />} />
+          <Route path="/mypage" element={<MyPage />} />
         </Routes>
         <Footer />
       </div>
