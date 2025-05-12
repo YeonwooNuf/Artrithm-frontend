@@ -94,7 +94,7 @@ export default function ExhibitionUpload({ onSubmit }) {
           </button>
         </div>
 
-        <button type="submit" className="submit-button">전시 업로드</button>
+        <button type="submit" className="ex-upload-button">전시 업로드</button>
       </form>
     </div>
   );
