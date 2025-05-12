@@ -71,7 +71,7 @@
   background: #7b655d;
 }
 
-.submit-button {
+.ex-upload-button {
   margin-top: 2rem;
   background: #3e3e3e;
   color: #fff;
@@ -86,7 +86,7 @@
   transition: background 0.3s;
 }
 
-.submit-button:hover {
+.ex-upload-button:hover {
   background: #222222;
 }
 
