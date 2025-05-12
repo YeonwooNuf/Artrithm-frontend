@@ -7,6 +7,7 @@ import { BrowserRouter, Routes, Route, Router } from "react-router-dom";
 import ExhibitionPage from "./pages/Exhibition/ExhibitionPage";
 import Exhibition3D from "./pages/Exhibition/Exhibition3D";
 import Footer from "./components/Footer/Footer";
+import SignupPage from "./pages/Signup/SignupPage";
 //import GalleryWalkable from "./pages/GalleryWalkable";
 
 function App() {
@@ -23,6 +24,7 @@ function App() {
             element={<Exhibition3D />}
           />
           <Route path="/login" element={<LoginForm setUser={setUser} />} />
+          <Route path="/signup" element={<SignupPage />} />
         </Routes>
         <Footer />
       </div>
