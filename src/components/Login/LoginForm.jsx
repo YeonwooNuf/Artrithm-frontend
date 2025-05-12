@@ -4,7 +4,7 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
 const LoginForm = ({ setUser }) => {
-  const [loginId, setLoginId] = useState("");
+  const [loginId, setLoginId] = useState("");  // 기존 username → loginId로 변경
   const [password, setPassword] = useState("");
   const [message, setMessage] = useState("");
   const navigate = useNavigate();
@@ -13,26 +13,23 @@ const LoginForm = ({ setUser }) => {
     e.preventDefault();
 
     try {
-      const response = await axios.post(
-        "http://localhost:8080/api/users/login",
-        {
-          loginId,
-          password,
-        }
-      );
+      const response = await axios.post("http://localhost:8080/api/users/login", {
+        loginId,
+        password,
+      });
 
-      const user = response.data;
+      const userData = response.data;
 
-      // ✅ userId 전역 저장
-      localStorage.setItem("userId", user.id);
+      // ✅ userId localStorage에 저장
+      localStorage.setItem("userId", userData.id);
 
-      // ✅ 상위 상태 업데이트
-      setUser(user);
+      // ✅ 전체 사용자 객체 상태로 설정
+      setUser(userData);
 
       // ✅ 홈으로 이동
       navigate("/");
 
-      setMessage(`${user.nickname}님 로그인 성공!`);
+      setMessage(`${userData.nickname}님 로그인 성공`);
     } catch (error) {
       console.error(error);
       setMessage("로그인 실패 😢");

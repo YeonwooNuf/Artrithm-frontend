@@ -1,40 +1,48 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import axios from "axios";
+
 import Header from "./components/Header/Header";
-import LoginForm from "./components/login/LoginForm";
-import ExhibitionDetailPage from "./pages/Exhibition/ExhibitionDetailPage";
+import Footer from "./components/Footer/Footer";
+
 import Home from "./pages/Home/Home";
-import { BrowserRouter, Routes, Route, Router } from "react-router-dom";
+import LoginForm from "./components/login/LoginForm";
+import SignupPage from "./pages/Signup/SignupPage";
+import MyPage from "./pages/MyPage/MyPage";
+import ExhibitionUpload from "./pages/Exhibition/ExhibitionUpload";
 import ExhibitionPage from "./pages/Exhibition/ExhibitionPage";
 import Exhibition3D from "./pages/Exhibition/Exhibition3D";
-import Footer from "./components/Footer/Footer";
-<<<<<<< HEAD
-import ExhibitionUpload from "./pages/Exhibition/ExhibitionUpload";
-import MyPage from "./pages/MyPage/MyPage";
-=======
-import SignupPage from "./pages/Signup/SignupPage";
->>>>>>> 21bec7d2e59b61e08a8ca91b92a907c757301c5d
-//import GalleryWalkable from "./pages/GalleryWalkable";
+import ExhibitionDetailPage from "./pages/Exhibition/ExhibitionDetailPage"; // 필요 시
 
 function App() {
-  const [user, setUser] = useState(null); //로그인 된 사용자 정보
+  const [user, setUser] = useState(null); // 로그인한 사용자 상태
+
+  useEffect(() => {
+    const userId = localStorage.getItem("userId");
+    if (userId) {
+      axios
+        .get(`http://localhost:8080/api/users/${userId}`)
+        .then((res) => setUser(res.data))
+        .catch((err) => {
+          console.error("❌ 사용자 정보 불러오기 실패:", err);
+          setUser(null);
+        });
+    }
+  }, []);
+
   return (
     <BrowserRouter>
       <div className="w-full h-full">
-        <Header user={user} /> {/* 공통 헤더는 라우터 밖에서도 보이게 */}
+        <Header user={user} setUser={setUser} />
         <Routes>
           <Route path="/" element={<Home />} />
-          <Route path="/exhibitions/:id" element={<ExhibitionPage />} />
-          <Route
-            path="/exhibitions/Gallery3D/:exhibitionId"
-            element={<Exhibition3D />}
-          />
-          <Route path="/upload" element={<ExhibitionUpload />} />
           <Route path="/login" element={<LoginForm setUser={setUser} />} />
-<<<<<<< HEAD
-          <Route path="/mypage" element={<MyPage />} />
-=======
           <Route path="/signup" element={<SignupPage />} />
->>>>>>> 21bec7d2e59b61e08a8ca91b92a907c757301c5d
+          <Route path="/mypage" element={<MyPage user={user} />} />
+          <Route path="/upload" element={<ExhibitionUpload user={user} />} />
+          <Route path="/exhibitions/:id" element={<ExhibitionPage />} />
+          <Route path="/exhibitions/Gallery3D/:exhibitionId" element={<Exhibition3D />} />
+          {/* <Route path="/exhibitions/detail/:id" element={<ExhibitionDetailPage />} /> */}
         </Routes>
         <Footer />
       </div>
