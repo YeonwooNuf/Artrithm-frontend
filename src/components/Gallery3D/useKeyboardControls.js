@@ -1,4 +1,3 @@
-// components/Gallery3D/useKeyboardControls.js
 import { useRef, useEffect } from "react";
 
 // 키보드 입력 추적용 커스텀 훅

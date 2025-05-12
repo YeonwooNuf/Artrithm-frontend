@@ -1,10 +1,19 @@
 import React, { useState } from "react";
 import "./Header.css";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
-const Header = ({ user }) => {
+const Header = ({ user, setUser }) => {
   const [openExhibition, setOpenExhibition] = useState(false);
   const [openArtwork, setOpenArtwork] = useState(false);
+  const navigate = useNavigate();
+
+  const handleLogout = () => {
+    localStorage.removeItem("user");
+    localStorage.removeItem("userId");
+    setUser(null);
+    navigate("/");
+  };
+
   return (
     <header className="header">
       <div className="header__logo">
@@ -29,7 +38,7 @@ const Header = ({ user }) => {
             {openExhibition && (
               <ul className="dropdown__menu">
                 <li>
-                  <a href="/create">개설하기</a>
+                  <Link to="/upload">개설하기</Link>
                 </li>
                 <li>
                   <a href="/view">감상하기</a>
@@ -64,7 +73,14 @@ const Header = ({ user }) => {
           </li>
 
           {user ? (
-            <li>{user.username}님, 환영합니다!</li>
+            <>
+              <li>{user.nickname}님, 환영합니다!</li>
+              <li>
+                <button className="logout-btn" onClick={handleLogout}>
+                  로그아웃
+                </button>
+              </li>
+            </>
           ) : (
             <>
               <li>
@@ -77,7 +93,7 @@ const Header = ({ user }) => {
           )}
 
           <li>
-            <a href="/mypage">마이페이지</a>
+            <Link to="/mypage">마이페이지</Link>
           </li>
         </ul>
       </nav>

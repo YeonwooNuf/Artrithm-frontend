@@ -4,7 +4,7 @@ import { RigidBody } from "@react-three/rapier";
 import { Vector3 } from "three";
 import useKeyboardControls from "./useKeyboardControls";
 
-export default function Player({ position = [-26, 0.8, 15] }) {
+export default function Player({ position = [-13, 0.8, 15] }) {    // 전시관 1:26 2:20
   const ref = useRef();
   const keys = useKeyboardControls();
   const { camera } = useThree();

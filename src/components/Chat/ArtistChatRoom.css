@@ -1,0 +1,63 @@
+.chat-room {
+    position: absolute;
+    top: 80px;
+    right: 370px;
+    width: 300px;
+    height: 400px;
+    background: white;
+    border: 1px solid #ccc;
+    display: flex;
+    flex-direction: column;
+    z-index: 11;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+  }
+  
+  .chat-header {
+    padding: 10px;
+    background: #444;
+    color: white;
+    font-weight: bold;
+  }
+  
+  .chat-messages {
+    flex: 1;
+    padding: 10px;
+    overflow-y: auto;
+    background: #f9f9f9;
+  }
+  
+  .chat-message {
+    margin: 4px 0;
+  }
+  
+  .chat-message.user {
+    text-align: right;
+    color: #333;
+  }
+  
+  .chat-message.artist {
+    text-align: left;
+    color: #0077cc;
+  }
+  
+  .chat-input {
+    display: flex;
+    border-top: 1px solid #ccc;
+  }
+  
+  .chat-input input {
+    flex: 1;
+    padding: 8px;
+    border: none;
+    outline: none;
+  }
+  
+  .chat-input button {
+    padding: 8px 12px;
+    border: none;
+    background: #333;
+    color: white;
+    cursor: pointer;
+  }
