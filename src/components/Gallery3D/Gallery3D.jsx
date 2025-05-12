@@ -34,7 +34,8 @@ export default function Gallery3D() {
   // 설명창이 열릴 때마다 글자 타이핑 효과 실행
   useEffect(() => {
     if (infoId) {
-      const fullText = works.find((art) => art.id === infoId)?.description || "";
+      const fullText =
+        works.find((art) => art.id === infoId)?.description || "";
       setTypedText("");
       let index = 0;
       let currentText = "";
@@ -86,6 +87,7 @@ export default function Gallery3D() {
 
         // 키보드 입력에 따라 상태 변경
         if (closest) {
+
           if (e.key.toLowerCase() === "r") setFocusedId(closest); // 확대
           if (e.key.toLowerCase() === "f") {                      // 설명
             setInfoId((prev) => (prev === closest ? null : closest));
@@ -119,9 +121,28 @@ export default function Gallery3D() {
       <div className="gallery3d-container">
         {/* 설명창 */}
         {infoId && (
-          <div className="hud-description">
-            <strong>{works.find((art) => art.id === infoId)?.title || "제목 없음"}</strong>
-            <p>{typedText || "설명 없음"}</p>
+          <div
+            className="hud-description"
+            style={{
+              position: "absolute",
+              top: "80px",
+              right: "50px",
+              width: "300px",
+              background: "rgba(0, 0, 0, 0.8)",
+              color: "white",
+              padding: "16px",
+              borderRadius: "8px",
+              fontSize: "14px",
+              lineHeight: "1.5",
+              zIndex: 10,
+            }}
+          >
+            <strong>
+              {works.find((art) => art.id === infoId)?.title || "제목 없음"}
+            </strong>
+            <p style={{ marginTop: "8px", whiteSpace: "pre-line" }}>
+              {typedText || "설명 없음"}
+            </p>
           </div>
         )}
 
@@ -160,6 +181,54 @@ export default function Gallery3D() {
             focusedId={focusedId}
             infoId={infoId}
           />
+
+          <primitive object={new THREE.AxesHelper(3)} position={[-26, 1, 15]} />
+          <primitive
+            object={new THREE.GridHelper(10, 10)}
+            position={[-26, 0, 15]}
+          />
+
+          <Physics gravity={[0, -9.81, 0]}>
+            <RigidBody type="fixed" colliders="cuboid">
+              <mesh
+                rotation={[-Math.PI / 2, 0, 0]}
+                position={[0, -1, 0]}
+                receiveShadow
+              >
+                <planeGeometry args={[300, 300]} />
+              </mesh>
+            </RigidBody>
+
+            <GalleryModel scale={2} />
+            <Player />
+            <Painting
+              position={[-5, 2, 3.01]}
+              imageUrl="/art1.png"
+              title="작품 1"
+            />
+            <Painting
+              position={[0, 2, 3.01]}
+              imageUrl="/art2.jpeg"
+              title="작품 2"
+            />
+            <Painting
+              position={[5, 2, 3.01]}
+              imageUrl="/art3.jpeg"
+              title="작품 3"
+            />
+
+            {works.map((art, idx) => (
+              <Painting
+                key={art.id}
+                index={idx}
+                imageUrl={art.src}
+                title={art.title}
+                description={art.description}
+                isFocused={focusedId === art.id}
+                isInfoShown={infoId === art.id}
+              />
+            ))}
+          </Physics>
         </Canvas>
 
         <div className="walk-guide">

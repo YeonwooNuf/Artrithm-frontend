@@ -17,6 +17,7 @@
   font-size: 20px;
   font-weight: bold;
   color: #faf1dc;
+  text-shadow: 0 1px 6px rgba(0, 0, 0, 0.3);
 }
 
 .logo-title {
@@ -48,6 +49,7 @@
   font-size: 16px;
   color: #faf1dc;
   transition: color 0.2s ease-in-out;
+  text-shadow: 0 1px 6px rgba(0, 0, 0, 0.562);
 }
 
 .header__nav li a:hover {
@@ -69,6 +71,7 @@
 
 .dropdown {
   position: relative;
+  text-shadow: 0 1px 6px rgba(0, 0, 0, 0.562);
 }
 
 .dropdown__title {

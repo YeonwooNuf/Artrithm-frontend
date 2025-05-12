@@ -7,8 +7,12 @@ import { BrowserRouter, Routes, Route, Router } from "react-router-dom";
 import ExhibitionPage from "./pages/Exhibition/ExhibitionPage";
 import Exhibition3D from "./pages/Exhibition/Exhibition3D";
 import Footer from "./components/Footer/Footer";
+<<<<<<< HEAD
 import ExhibitionUpload from "./pages/Exhibition/ExhibitionUpload";
 import MyPage from "./pages/MyPage/MyPage";
+=======
+import SignupPage from "./pages/Signup/SignupPage";
+>>>>>>> 21bec7d2e59b61e08a8ca91b92a907c757301c5d
 //import GalleryWalkable from "./pages/GalleryWalkable";
 
 function App() {
@@ -26,7 +30,11 @@ function App() {
           />
           <Route path="/upload" element={<ExhibitionUpload />} />
           <Route path="/login" element={<LoginForm setUser={setUser} />} />
+<<<<<<< HEAD
           <Route path="/mypage" element={<MyPage />} />
+=======
+          <Route path="/signup" element={<SignupPage />} />
+>>>>>>> 21bec7d2e59b61e08a8ca91b92a907c757301c5d
         </Routes>
         <Footer />
       </div>

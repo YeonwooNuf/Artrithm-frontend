@@ -18,6 +18,8 @@ export default function ExhibitionDetail({ exhibition }) {
         />
       </div>
       <div className="keyword-box">
+        <div className="keyword-background-dot"></div> {/* 문양 배경 */}
+        <div className="keyword-background-dot-2"></div>
         <h3 className="keyword-title">AI Generated Keywords</h3>
         <div className="keywords">
           {exhibition.keywords.map((word, idx) => (
