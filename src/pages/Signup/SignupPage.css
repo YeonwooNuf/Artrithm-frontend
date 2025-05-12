@@ -32,7 +32,7 @@
   text-shadow: -1px -1px 1px #fff, /* 위에서 들어오는 빛 */ 1px 1px 2px #999;
 }
 
-.signup-container .subtitle {
+.signup-container .signup-subtitle {
   font-size: 14px;
   color: #b3a79f;
   margin-bottom: 28px;
@@ -55,7 +55,7 @@
   border-color: #5e6e71;
 }
 
-.signup-container .submit-button {
+.signup-container .signup-submit-button {
   display: inlin-block;
   width: 100%;
   padding: 12px;
@@ -68,7 +68,7 @@
   transition: background-color 0.3s ease;
 }
 
-.signup-container .submit-button:hover {
+.signup-container .signup-submit-button:hover {
   background-color: #3f4b4e;
 }
 
@@ -123,7 +123,7 @@
   margin-left: 10px;
 }
 
-.err-msg {
+.signup-err-msg {
   color: red;
   font-size: 13px;
   margin-top: 0px;
