@@ -26,9 +26,12 @@ const LoginForm = ({ setUser }) => {
 
       // ✅ 상태 갱신
       setUser(userData);
+      setMessage(`${userData.nickname}님 로그인 성공`);
 
-      // ✅ 홈으로 이동
-      navigate("/");
+      // ✅ setUser 반영 이후 리렌더링 보장
+      setTimeout(() => {
+        navigate("/", { replace: true }); // 기존 기록 대체
+      }, 0);
 
       setMessage(`${userData.nickname}님 로그인 성공`);
     } catch (error) {
