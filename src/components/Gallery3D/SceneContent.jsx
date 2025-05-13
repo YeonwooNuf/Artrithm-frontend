@@ -26,7 +26,7 @@ export default function SceneContent({ layout, works, theme, focusedId, infoId }
         <Player key={theme} position={layout.playerStart} />
 
         {works.flatMap((art, idx) => {
-          const texture = useTexture(art.src);
+          const texture = useTexture(art.imageUrl);
           texture.encoding = THREE.sRGBEncoding;
 
           // lampScene을 작품별로 clone (useMemo로 최적화)
@@ -94,3 +94,4 @@ export default function SceneContent({ layout, works, theme, focusedId, infoId }
     </>
   );
 }
+
