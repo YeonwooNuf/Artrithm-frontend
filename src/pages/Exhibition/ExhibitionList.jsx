@@ -8,6 +8,7 @@ export default function ExhibitionList() {
   useEffect(() => {
     axios.get("/api/exhibitions")
       .then((res) => {
+        console.log("📦 전시 목록 응답 데이터:", res.data); // ✅ 로그 찍기
         setExhibitions(res.data);
       })
       .catch((err) => {
