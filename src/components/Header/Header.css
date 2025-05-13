@@ -7,26 +7,16 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  /* background-color: rgba(250, 241, 220, 0.6); 아이보리 투명 배경 */
-  backdrop-filter: blur(8px);
+  backdrop-filter: blur(6px);
   z-index: 1000;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
 }
 
-.header__logo {
+.header_logo {
   font-size: 20px;
   font-weight: bold;
   color: #faf1dc;
   text-shadow: 0 1px 6px rgba(0, 0, 0, 0.3);
-}
-
-.logo-title {
-  display: flex;
-  align-items: center;
-  gap: 8px; /* 글자와 이미지 간격 */
-  font-size: 24px;
-  font-weight: bold;
-  color: #5e6e71;
 }
 
 .logo-icon {
@@ -44,74 +34,81 @@
   padding-right: 50px;
 }
 
-.header__nav li a {
-  text-decoration: none;
-  font-size: 16px;
-  color: #faf1dc;
-  transition: color 0.2s ease-in-out;
-  text-shadow: 0 1px 6px rgba(0, 0, 0, 0.562);
+.header__nav li {
+  position: relative;
+  z-index: 1;
 }
 
-.header__nav li a:hover {
-  color: #b3a79f;
-}
-
+.header__nav li a,
 .header__nav li span {
   text-decoration: none;
   font-size: 16px;
   color: #faf1dc;
   transition: color 0.2s ease-in-out;
+  text-shadow: 0 1px 6px rgba(0, 0, 0, 1);
 }
 
+.header__nav li a:hover,
 .header__nav li span:hover {
   color: #b3a79f;
 }
 
-/* 기존 스타일 유지하면서 아래 추가 */
-
-.dropdown {
+.nav-dropdown {
   position: relative;
-  text-shadow: 0 1px 6px rgba(0, 0, 0, 0.562);
 }
 
-.dropdown__title {
+.dropdown_title {
   cursor: pointer;
 }
-.header__menu > li {
-  position: relative;
-}
+
 .dropdown__menu {
   position: absolute;
-  top: 100%;
+  top: 120%;
   left: 0;
-  background: rgba(255, 255, 255, 0.05); /* 거의 투명 */
-  backdrop-filter: blur(6px); /* 흐릿한 유리 느낌 */
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  background: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(6px);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+  /* border-radius: 8px; */
   list-style: none;
-  padding: 8px 0;
+  padding: 1px 0;
   margin: 0;
-  min-width: 140px;
+  min-width: 160px;
   z-index: 999;
-  display: none;
-  flex-direction: column; /* ✅ 세로 나열 */
-  gap: 4px;
-  animation: dropdownFade 0.25s ease;
+  display: flex;
+  flex-direction: column;
 }
 
 .dropdown__menu li {
-  padding: 15px 16px;
-  line-height: 0;
+  padding: 10px 16px;
+  line-height: 1.4;
+  white-space: nowrap;
 }
 
 .dropdown__menu li a {
-  font-size: 14px;
-  font-weight: 500;
-  color: #faf1dc;
+  font-size: 15px;
+  font-weight: 600;
+  color: #222;
   text-decoration: none;
   display: block;
   transition: background-color 0.2s ease;
+  text-shadow: 0 1px 1px rgba(200, 200, 200, 0.4);
 }
 
 .dropdown__menu li a:hover {
-  text-shadow: 1px 1px 4px rgba(234, 225, 225, 0.527);
+  background-color: rgba(0, 0, 0, 0.05);
+  border-radius: 4px;
+}
+
+/* 로그아웃 텍스트 스타일 */
+.logout-link {
+  font-size: 16px;
+  color: #faf1dc;
+  text-decoration: none;
+  cursor: pointer;
+  text-shadow: 0 1px 6px rgba(0, 0, 0, 0.562);
+  transition: color 0.2s ease-in-out;
+}
+
+.logout-link:hover {
+  color: #b3a79f;
 }
