@@ -23,7 +23,7 @@ export default function SceneContent({ layout, works, theme, focusedId, infoId }
         </RigidBody>
 
         <GalleryModel path={layout.galleryModelPath} />
-        <Player key={theme} position={layout.playerStart} />
+        <Player key={theme} position={layout.playerStart} theme={theme} />
 
         {works.flatMap((art, idx) => {
           const texture = useTexture(art.imageUrl);
