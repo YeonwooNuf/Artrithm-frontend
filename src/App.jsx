@@ -24,7 +24,10 @@ function App() {
     if (userId && !user) {
       axios
         .get(`http://localhost:8080/api/users/${userId}`)
-        .then((res) => setUser(res.data))
+        .then((res) => {
+          console.log("✅ 사용자 정보:", res.data);
+          setUser(res.data);
+        })
         .catch((err) => {
           console.error("❌ 사용자 정보 불러오기 실패:", err);
           setUser(null);
