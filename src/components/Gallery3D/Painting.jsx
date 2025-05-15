@@ -22,8 +22,9 @@ export default function Painting({
   const textRef = useRef();
   const [opacity, setOpacity] = useState(0);
 
-  const width = 2.5;
-  const height = 1.8;
+  const width = theme === "masterpiece" ? 7.5 : 2.5;
+  const height = theme === "masterpiece" ? 5.4 : 1.8;
+
   const frameWidth = 0.15;
   const frameDepth = 0.3;
 
@@ -37,7 +38,7 @@ export default function Painting({
     if (lightRef.current && groupRef.current) {
       lightRef.current.target = groupRef.current;
     }
-    setOpacity((prev) => isFocused ? Math.min(prev + 0.05, 1) : Math.max(prev - 0.05, 0));
+    setOpacity((prev) => (isFocused ? Math.min(prev + 0.05, 1) : Math.max(prev - 0.05, 0)));
   });
 
   const ArtworkMesh = (opacityValue = 1, isFocusedState = false) => (
@@ -67,19 +68,21 @@ export default function Painting({
       ].map((pos, i) => (
         <mesh key={i} position={pos.map((v) => (isFocusedState ? v * focusScale : v))}>
           <boxGeometry
-            args={i < 2
-              ? [
+            args={
+              i < 2
+                ? [
                   (width + frameWidth * 2) * (isFocusedState ? focusScale : 1),
                   frameWidth * (isFocusedState ? focusScale : 1),
-                  frameDepth
+                  frameDepth,
                 ]
-              : [
+                : [
                   frameWidth * (isFocusedState ? focusScale : 1),
                   height * (isFocusedState ? focusScale : 1),
-                  frameDepth
-                ]}
+                  frameDepth,
+                ]
+            }
           />
-          {theme === "circle" ? (
+          {theme === "circle" || theme === "masterpiece" ? (
             <meshStandardMaterial
               color="#333333"
               roughness={0.4}
@@ -105,13 +108,9 @@ export default function Painting({
       position={[
         focusPosition[0] + offsetX,
         focusPosition[1],
-        focusPosition[2]
+        focusPosition[2],
       ]}
-      rotation={[
-        focusRotation[0],
-        focusRotation[1] + rotationY,
-        focusRotation[2]
-      ]}
+      rotation={[focusRotation[0], focusRotation[1] + rotationY, focusRotation[2]]}
     >
       {ArtworkMesh(opacity, true)}
       {FrameMeshes(opacity, true)}
@@ -120,13 +119,11 @@ export default function Painting({
 
   return (
     <>
-      {/* 원래 전시 위치 */}
       <group ref={groupRef} position={position} rotation={rotation}>
         <group name="ArtworkWithLights">
           {ArtworkMesh()}
           {FrameMeshes()}
 
-          {/* 제목 */}
           {title && (
             <Text3D
               ref={textRef}
@@ -144,7 +141,7 @@ export default function Painting({
             </Text3D>
           )}
 
-          {/* modern 전시관만 조명/지지대 */}
+          {/* masterpiece나 modern 테마만 조명 */}
           {theme !== "circle" && (
             <>
               {[-1, 1].map((side) => (
@@ -153,24 +150,36 @@ export default function Painting({
                   <meshStandardMaterial color="#666" metalness={1} roughness={0.4} />
                 </mesh>
               ))}
-              <primitive object={lamp} position={[0, -height / 2 - 7.1, 0.17]} scale={6} rotation={[Math.PI, Math.PI, Math.PI]} />
-              <pointLight color="#ffdca8" decay={2} position={[0, height / 2 + 1.14, 0.23]} intensity={10} distance={0.27} />
-              <spotLight color="#ffdca8" decay={2} ref={lightRef} position={[0, height / 2 + 1.5, 0.9]} angle={0.6} penumbra={0.01} intensity={20} distance={4} castShadow />
+              <primitive
+                object={lamp}
+                position={[0, -height / 2 - 7.1, 0.17]}
+                scale={6}
+                rotation={[Math.PI, Math.PI, Math.PI]}
+              />
+              <pointLight
+                color="#ffdca8"
+                decay={2}
+                position={[0, height / 2 + 1.14, 0.23]}
+                intensity={10}
+                distance={0.27}
+              />
+              <spotLight
+                color="#ffdca8"
+                decay={2}
+                ref={lightRef}
+                position={[0, height / 2 + 1.5, 0.9]}
+                angle={0.6}
+                penumbra={0.01}
+                intensity={20}
+                distance={4}
+                castShadow
+              />
             </>
           )}
         </group>
       </group>
 
-      {/* 확대된 Floating 그림 */}
-      {isFocused && (
-        theme === "circle" ? (
-          <>
-            {FloatingGroup(0, 0)}  {/* 정면 */}
-          </>
-        ) : (
-          FloatingGroup(0)
-        )
-      )}
+      {isFocused && (theme === "circle" ? FloatingGroup(0, 0) : FloatingGroup(0))}
     </>
   );
 }
