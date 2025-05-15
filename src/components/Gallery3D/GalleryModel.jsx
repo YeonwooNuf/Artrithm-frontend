@@ -3,9 +3,9 @@ import { useGLTF } from "@react-three/drei";
 import { RigidBody } from "@react-three/rapier";
 
 export default function GalleryModel({
-  path = "/models/vr_art_gallery_01.glb", // ✅ 테마별 경로
+  path = "/models/vr_art_gallery_01.glb", // 테마별 경로
   scale = 2,
-  position = [0, 0, 0],                   // ✅ 위치도 조절 가능하게
+  position, // 명시적 전달 없을 시 자동 처리
 }) {
   const { scene } = useGLTF(path);
 
@@ -18,9 +18,14 @@ export default function GalleryModel({
     });
   }, [scene]);
 
+  // ✅ 명화 전시관(dark_room.glb)일 경우 바닥을 살짝 올림
+  const adjustedPosition = position || (
+    path.includes("dark_room") ? [0, 1.2, 0] : [0, 0.02, 0]
+  );
+
   return (
     <RigidBody type="fixed" colliders="trimesh">
-      <primitive object={scene} scale={scale} position={position} />
+      <primitive object={scene} scale={scale} position={adjustedPosition} />
     </RigidBody>
   );
 }
