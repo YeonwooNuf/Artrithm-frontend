@@ -29,7 +29,7 @@ export default function ExhibitionList() {
                         />
                         <div className="exhibition-info">
                             <h3>{exhibition.title}</h3>
-                            <p>{exhibition.description}</p>
+                            <p style={{ whiteSpace: "pre-line" }}>{exhibition.description}</p>
                             <Link
                                 to={`/exhibitions/Gallery3D/${exhibition.id}`}
                                 state={{ works: exhibition.artworks, theme: exhibition.theme }}
