@@ -10,7 +10,7 @@ import SignupPage from "./pages/Signup/SignupPage";
 import MyPage from "./pages/MyPage/MyPage";
 import ExhibitionUpload from "./pages/Exhibition/ExhibitionUpload";
 import ExhibitionPage from "./pages/Exhibition/ExhibitionPage";
-import Exhibition3D from "./pages/Exhibition/Exhibition3D";
+import Exhibition3D from "./pages/3DGallery/Exhibition3D";
 import ExhibitionList from "./pages/Exhibition/ExhibitionList";
 
 function App() {
