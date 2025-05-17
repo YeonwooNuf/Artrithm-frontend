@@ -22,9 +22,8 @@ export default function Painting({
   const textRef = useRef();
   const [opacity, setOpacity] = useState(0);
 
-  const width = theme === "masterpiece" ? 7.5 : 2.5;
-  const height = theme === "masterpiece" ? 5.4 : 1.8;
-
+  const width = theme === "masterpiece" ? 11.25 : 2.5;
+  const height = theme === "masterpiece" ? 8.1 : 1.8;
   const frameWidth = 0.15;
   const frameDepth = 0.3;
 
@@ -60,56 +59,58 @@ export default function Painting({
 
   const FrameMeshes = (opacityValue = 1, isFocusedState = false) => (
     <>
-      {[
-        [0, height / 2 + frameWidth / 2, 0],
-        [0, -height / 2 - frameWidth / 2, 0],
-        [-width / 2 - frameWidth / 2, 0, 0],
-        [width / 2 + frameWidth / 2, 0, 0],
-      ].map((pos, i) => (
-        <mesh key={i} position={pos.map((v) => (isFocusedState ? v * focusScale : v))}>
-          <boxGeometry
-            args={
-              i < 2
-                ? [
-                  (width + frameWidth * 2) * (isFocusedState ? focusScale : 1),
-                  frameWidth * (isFocusedState ? focusScale : 1),
-                  frameDepth,
-                ]
-                : [
-                  frameWidth * (isFocusedState ? focusScale : 1),
-                  height * (isFocusedState ? focusScale : 1),
-                  frameDepth,
-                ]
-            }
-          />
-          {theme === "circle" || theme === "masterpiece" ? (
-            <meshStandardMaterial
-              color="#333333"
-              roughness={0.4}
-              transparent
-              opacity={opacityValue}
-              side={THREE.DoubleSide}
+      {[0, 1, 2, 3].map((i) => {
+        const pos = [
+          i === 0 ? 0 : i === 1 ? 0 : i === 2 ? -width / 2 - frameWidth / 2 : width / 2 + frameWidth / 2,
+          i === 0
+            ? height / 2 + frameWidth / 2
+            : i === 1
+            ? -height / 2 - frameWidth / 2
+            : 0,
+          0,
+        ];
+        return (
+          <mesh key={i} position={pos.map((v) => (isFocusedState ? v * focusScale : v))}>
+            <boxGeometry
+              args={
+                i < 2
+                  ? [
+                      (width + frameWidth * 2) * (isFocusedState ? focusScale : 1),
+                      frameWidth * (isFocusedState ? focusScale : 1),
+                      frameDepth,
+                    ]
+                  : [
+                      frameWidth * (isFocusedState ? focusScale : 1),
+                      height * (isFocusedState ? focusScale : 1),
+                      frameDepth,
+                    ]
+              }
             />
-          ) : (
-            <meshStandardMaterial
-              map={woodTexture}
-              transparent
-              opacity={opacityValue}
-              side={THREE.DoubleSide}
-            />
-          )}
-        </mesh>
-      ))}
+            {theme === "circle" || theme === "masterpiece" ? (
+              <meshStandardMaterial
+                color="#333333"
+                roughness={0.4}
+                transparent
+                opacity={opacityValue}
+                side={THREE.DoubleSide}
+              />
+            ) : (
+              <meshStandardMaterial
+                map={woodTexture}
+                transparent
+                opacity={opacityValue}
+                side={THREE.DoubleSide}
+              />
+            )}
+          </mesh>
+        );
+      })}
     </>
   );
 
   const FloatingGroup = (offsetX = 0, rotationY = 0) => (
     <group
-      position={[
-        focusPosition[0] + offsetX,
-        focusPosition[1],
-        focusPosition[2],
-      ]}
+      position={[focusPosition[0] + offsetX, focusPosition[1], focusPosition[2]]}
       rotation={[focusRotation[0], focusRotation[1] + rotationY, focusRotation[2]]}
     >
       {ArtworkMesh(opacity, true)}
@@ -127,8 +128,12 @@ export default function Painting({
           {title && (
             <Text3D
               ref={textRef}
-              position={[1.7, height / 2 - 0.5, -0.07]}
-              size={0.15}
+              position={[
+                theme === "masterpiece" ? width / 2 - 1.3 : 1.7,
+                theme === "masterpiece" ? height / 2 + 1 : height / 2 - 0.5,
+                -0.07,
+              ]}
+              size={theme === "masterpiece" ? 0.4 : 0.15}
               bevelEnabled
               bevelSize={0.005}
               height={0.001}
@@ -141,37 +146,48 @@ export default function Painting({
             </Text3D>
           )}
 
-          {/* masterpiece나 modern 테마만 조명 */}
           {theme !== "circle" && (
             <>
               {[-1, 1].map((side) => (
-                <mesh key={side} position={[side * (width / 2 - 0.2), height / 2 + 0.7, 0]}>
-                  <cylinderGeometry args={[0.01, 0.01, 1.4]} />
+                <mesh
+                  key={side}
+                  position={[
+                    side * (width / 2 - 0.2),
+                    height / 2 + (theme === "masterpiece" ? 2 : 0.7),
+                    0,
+                  ]}
+                >
+                  <cylinderGeometry
+                    args={[0.02, 0.02, theme === "masterpiece" ? 2.8 : 1.4]}
+                  />
                   <meshStandardMaterial color="#666" metalness={1} roughness={0.4} />
                 </mesh>
               ))}
+
               <primitive
                 object={lamp}
-                position={[0, -height / 2 - 7.1, 0.17]}
-                scale={6}
+                position={[0, -height / 2 - (theme === "masterpiece" ? 6 : 7.1), 0.17]}
+                scale={theme === "masterpiece" ? 10 : 6}
                 rotation={[Math.PI, Math.PI, Math.PI]}
               />
+
               <pointLight
                 color="#ffdca8"
                 decay={2}
-                position={[0, height / 2 + 1.14, 0.23]}
-                intensity={10}
-                distance={0.27}
+                position={[0, height / 2 + (theme === "masterpiece" ? 3 : 1.14), 0.23]}
+                intensity={theme === "masterpiece" ? 30 : 10}
+                distance={theme === "masterpiece" ? 2 : 0.27}
               />
+
               <spotLight
                 color="#ffdca8"
                 decay={2}
                 ref={lightRef}
-                position={[0, height / 2 + 1.5, 0.9]}
-                angle={0.6}
+                position={[0, height / 2 + (theme === "masterpiece" ? 3 : 1.5), 0.9]}
+                angle={(theme === "masterpiece" ? 1 :0.6)}
                 penumbra={0.01}
-                intensity={20}
-                distance={4}
+                intensity={theme === "masterpiece" ? 100 : 20}
+                distance={theme === "masterpiece" ? 30 : 4}
                 castShadow
               />
             </>
