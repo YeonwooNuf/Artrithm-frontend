@@ -49,23 +49,23 @@ export const getLayoutConfig = (theme) => {
       return {
         galleryModelPath: "/models/dark_room.glb",
         environment: "sunset",
-        playerStart: [110, 5, 85],
+        playerStart: [250, 5, 155],
         modelOffset: [0, 3, 0], // 모델 y축 위치 보정
         getPosition: (index, total) => {
-          const spacing = 15;
+          const spacing = 30;
           const isFrontWall = index < total / 2;
 
           const x = (index % (total / 2)) * spacing - ((spacing * (total / 2 - 1)) / 2);
           const y = 5;
-          const z = isFrontWall ? 53.5 : 53.5 + 57.5;
+          const z = isFrontWall ? 53.5 : 53.5 + 115;
 
           return {
-            position: [x + 130, y, z],
+            position: [x + 270, y, z + 53.5],
             rotation: [0, isFrontWall ? 0 : Math.PI, 0], // 뒤쪽 벽은 반대로 회전
           };
         },
         getFocusTransform: () => ({
-          position: [0, 2.5, 5],
+          position: [270, 10, 175],
           rotation: [0, Math.PI, 0],
         }),
         focusScale: 2.3,
