@@ -64,10 +64,13 @@ export const getLayoutConfig = (theme) => {
             rotation: [0, isFrontWall ? 0 : Math.PI, 0], // 뒤쪽 벽은 반대로 회전
           };
         },
-        getFocusTransform: () => ({
-          position: [270, 10, 175],
-          rotation: [0, Math.PI, 0],
-        }),
+        getFocusTransform: (art) => {
+          const isLeft = art.position[0] < 270; // 기준 x 좌표를 중심으로 왼쪽/오른쪽 판별
+          return {
+            position: [isLeft ? 230 : 310, 10, 175],
+            rotation: [0, isLeft ? Math.PI / 2 : -Math.PI / 2, 0],
+          };
+        },
         focusScale: 2.3,
       };
 
