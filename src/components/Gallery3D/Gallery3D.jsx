@@ -21,6 +21,9 @@ export default function Gallery3D() {
   const [leftFocusedId, setLeftFocusedId] = useState(null);
   const [rightFocusedId, setRightFocusedId] = useState(null);
 
+  const leftRef = useRef(null);
+  const rightRef = useRef(null);
+
   const [infoId, setInfoId] = useState(null);
   const [chatId, setChatId] = useState(null);
   const [chatbotMode, setChatbotMode] = useState(null);
@@ -33,6 +36,16 @@ export default function Gallery3D() {
   const captureCamera = (state) => {
     if (!cameraRef) setCameraRef(state.camera);
   };
+
+  useEffect(() => {
+    leftRef.current = leftFocusedId;
+    rightRef.current = rightFocusedId;
+  }, [leftFocusedId, rightFocusedId]);
+
+  useEffect(() => {
+    console.log("👀 leftFocusedId:", leftFocusedId);
+    console.log("👀 rightFocusedId:", rightFocusedId);
+  }, [leftFocusedId, rightFocusedId]);
 
   // 📜 설명창 타이핑 효과
   useEffect(() => {
@@ -87,35 +100,47 @@ export default function Gallery3D() {
         });
 
         if (closest) {
+
           if (e.key.toLowerCase() === "r") {
             const idx = works.findIndex((art) => art.id === closest);
             const { position } = layout.getPosition(idx, works.length);
-            const isLeft = position[0] < 0;
+
+            // 명화 전시관에서 정확한 좌/우 판별
+            const isFrontWall = position[2] < 200;
 
             if (theme === "masterpiece") {
-              if (isLeft) setLeftFocusedId(closest);
-              else setRightFocusedId(closest);
+              if (isFrontWall) {
+                if (leftRef.current !== closest) {
+                  setLeftFocusedId(closest);
+                }
+              } else {
+                if (rightRef.current !== closest) {
+                  setRightFocusedId(closest);
+                }
+              }
             } else {
               setFocusedId(closest);
             }
           }
-          if (e.key.toLowerCase() === "f") {
-            setInfoId((prev) => (prev === closest ? null : closest));
-            setChatId(null);
-          }
-          if (e.key.toLowerCase() === "t") {
-            setChatId((prev) => (prev === closest ? null : closest));
-            setInfoId(null);
-            setChatbotMode(theme === "masterpiece" ? "LLM" : "artist");
-            setTimeout(() => {
-              pointerLockRef.current?.unlock();
-            }, 50);
-          }
+        }
+        if (e.key.toLowerCase() === "f") {
+          setInfoId((prev) => (prev === closest ? null : closest));
+          setChatId(null);
+        }
+        if (e.key.toLowerCase() === "t") {
+          setChatId((prev) => (prev === closest ? null : closest));
+          setInfoId(null);
+          setChatbotMode(theme === "masterpiece" ? "LLM" : "artist");
+          setTimeout(() => {
+            pointerLockRef.current?.unlock();
+          }, 50);
         }
       }
 
       if (e.key === "Escape") {
-        setFocusedId(null);
+        setFocusedId(null);         // 일반 전시관 확대 초기화
+        setLeftFocusedId(null);     // 명화 전시관 왼쪽 초기화
+        setRightFocusedId(null);    // 명화 전시관 오른쪽 초기화
         setInfoId(null);
         setChatId(null);
         setChatbotMode(null);
