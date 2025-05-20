@@ -1,10 +1,10 @@
 import React, { useState } from "react";
-import "./Header.css";
 import { Link, useNavigate } from "react-router-dom";
+import "./Header.css";
 
 const Header = ({ user, setUser }) => {
   const [openExhibition, setOpenExhibition] = useState(false);
-  const [openArtwork, setOpenArtwork] = useState(false);
+  const [openArtwork, setOpenArtwork] = useState(false); // 👈 추가
   const navigate = useNavigate();
 
   const handleLogout = () => {
@@ -16,44 +16,36 @@ const Header = ({ user, setUser }) => {
 
   return (
     <header className="header">
-      <div className="header__logo">
+      <div className="header_logo">
         <h1>
-          Artrithm
-          <img src="/logo.png" alt="logo" className="logo-icon" />
+          Artrithm <img src="/logo.png" alt="logo" className="logo-icon" />
         </h1>
       </div>
+
       <nav className="header__nav">
         <ul>
-          <li>
-            <Link to="/">홈</Link>
-          </li>
+          <li><Link to="/">홈</Link></li>
 
           <li
-            className="dropdown"
+            className="nav-dropdown"
             onMouseEnter={() => setOpenExhibition(true)}
             onMouseLeave={() => setOpenExhibition(false)}
           >
-            <span className="dropdown__title">3D 전시회</span>
-
+            <span className="dropdown_title">3D 전시회</span>
             {openExhibition && (
               <ul className="dropdown__menu">
-                <li>
-                  <Link to="/upload">개설하기</Link>
-                </li>
-                <li>
-                  <a href="/view">감상하기</a>
-                </li>
+                <li><Link to="/upload">개설하기</Link></li>
+                <li><Link to="/view">감상하기</Link></li>
               </ul>
             )}
           </li>
 
           <li
-            className="dropdown"
+            className="nav-dropdown"
             onMouseEnter={() => setOpenArtwork(true)}
             onMouseLeave={() => setOpenArtwork(false)}
           >
-            <span className="dropdown__title">작품</span>
-
+            <span className="dropdown_title">작품 거래</span>
             {openArtwork && (
               <ul className="dropdown__menu">
                 <li>
@@ -65,36 +57,23 @@ const Header = ({ user, setUser }) => {
               </ul>
             )}
           </li>
-          <li>
-            <a href="/artist">작가</a>
-          </li>
-          <li>
-            <a href="/intro">소개</a>
-          </li>
+
+          <li><Link to="/artist">작가</Link></li>
+          <li><Link to="/intro">소개</Link></li>
 
           {user ? (
-            <>
-              <li>{user.nickname}님, 환영합니다!</li>
-              <li>
-                <button className="logout-btn" onClick={handleLogout}>
-                  로그아웃
-                </button>
-              </li>
-            </>
+            <li>
+              <span onClick={handleLogout} className="logout-link">
+                로그아웃
+              </span>
+            </li>
           ) : (
             <>
-              <li>
-                <Link to="/login">로그인</Link>
-              </li>
-              <li>
-                <Link to="/signup">회원가입</Link>
-              </li>
+              <li><Link to="/login">로그인</Link></li>
+              <li><Link to="/signup">회원가입</Link></li>
             </>
           )}
-
-          <li>
-            <Link to="/mypage">마이페이지</Link>
-          </li>
+          <li><Link to="/mypage">마이페이지</Link></li>
         </ul>
       </nav>
     </header>

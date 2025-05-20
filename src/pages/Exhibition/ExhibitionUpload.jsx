@@ -1,13 +1,26 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import axios from "axios";
 import "./ExhibitionUpload.css";
+import { useNavigate } from "react-router-dom";
 
-export default function ExhibitionUpload({ onSubmit }) {
+export default function ExhibitionUpload() {
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [theme, setTheme] = useState("modern");
   const [thumbnail, setThumbnail] = useState(null);
   const [keywords, setKeywords] = useState("");
   const [works, setWorks] = useState([]);
+  const [user, setUser] = useState(null);
+  const navigate = useNavigate();
+
+  const userId = localStorage.getItem("userId");
+
+  useEffect(() => {
+    const saved = localStorage.getItem("user");
+    if (saved) {
+      setUser(JSON.parse(saved));
+    }
+  }, []);
 
   const handleThumbnailChange = (e) => {
     setThumbnail(e.target.files[0]);
@@ -23,20 +36,32 @@ export default function ExhibitionUpload({ onSubmit }) {
     setWorks(updated);
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     const formData = new FormData();
+    formData.append("authorId", userId);
     formData.append("title", title);
     formData.append("description", description);
     formData.append("theme", theme);
     formData.append("thumbnail", thumbnail);
-    keywords.split(/[,\s]+/).forEach((kw, i) => formData.append(`keywords[${i}]`, kw));
+    keywords.split(/[\s,]+/).forEach((kw, i) => formData.append(`keywords[${i}]`, kw));
+
     works.forEach((w, i) => {
       formData.append(`works[${i}].title`, w.title);
       formData.append(`works[${i}].description`, w.description);
       formData.append(`works[${i}].image`, w.image);
     });
-    onSubmit(formData);
+
+    try {
+      await axios.post("/api/exhibitions", formData, {
+        headers: { "Content-Type": "multipart/form-data" },
+      });
+      alert("전시가 성공적으로 업로드되었습니다.");
+      navigate("/exhibitions");
+    } catch (err) {
+      console.error("전시 업로드 실패:", err);
+      alert("전시 업로드 중 오류가 발생했습니다.");
+    }
   };
 
   return (
@@ -53,6 +78,7 @@ export default function ExhibitionUpload({ onSubmit }) {
         <select className="select" value={theme} onChange={(e) => setTheme(e.target.value)}>
           <option value="modern">Modern</option>
           <option value="circle">Circle</option>
+          {user?.role === "ADMIN" && <option value="masterpiece">MasterPiece</option>}
         </select>
 
         <label>썸네일 이미지</label>
