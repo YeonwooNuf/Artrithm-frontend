@@ -60,7 +60,7 @@ const Header = ({ user, setUser }) => {
                   <a href="/fixed-price">지정가 구매</a>
                 </li>
                 <li>
-                  <a href="/auctions">진행중인 경매</a>
+                  <a href="/auction">진행중인 경매</a>
                 </li>
               </ul>
             )}

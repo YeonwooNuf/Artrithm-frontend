@@ -1,0 +1,56 @@
+.auction-container {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  gap: 40px;
+  padding: 40px;
+  max-width: 1000px;
+  margin: 0 auto;
+  margin-top: 130px;
+  margin-bottom: 80px;
+}
+
+.auction-image {
+  max-width: 400px;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.auction-info {
+  flex: 1;
+}
+
+.artist-name {
+  font-weight: 600;
+  margin-top: 10px;
+}
+
+.description {
+  margin: 15px 0;
+  color: #444;
+}
+
+.auction-status {
+  margin: 20px 0;
+  font-size: 1.1rem;
+}
+
+.bid-section {
+  display: flex;
+  gap: 10px;
+}
+
+.bid-section input {
+  padding: 8px;
+  font-size: 1rem;
+  width: 150px;
+}
+
+.bid-section button {
+  padding: 8px 16px;
+  background-color: #5e6e71;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+}
