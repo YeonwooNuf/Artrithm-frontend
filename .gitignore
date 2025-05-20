@@ -37,3 +37,4 @@ Thumbs.db
 *.njsproj
 *.sln
 *.sw?
+public/models/art_gallery.glb
