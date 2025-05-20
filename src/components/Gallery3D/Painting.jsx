@@ -37,15 +37,18 @@ export default function Painting({
     if (lightRef.current && groupRef.current) {
       lightRef.current.target = groupRef.current;
     }
-    setOpacity((prev) => (isFocused ? Math.min(prev + 0.05, 1) : Math.max(prev - 0.05, 0)));
+    setOpacity((prev) =>
+      isFocused ? Math.min(prev + 0.05, 1) : Math.max(prev - 0.05, 0)
+    );
   });
 
   const ArtworkMesh = (opacityValue = 1, isFocusedState = false) => (
-    <mesh position={[0, 0, 0.01]}>
-      <planeGeometry
+    <mesh position={[0, 0, 0.01]} castShadow receiveShadow>
+      <boxGeometry
         args={[
           isFocusedState ? width * focusScale : width,
           isFocusedState ? height * focusScale : height,
+          0.01,
         ]}
       />
       <meshStandardMaterial
@@ -53,6 +56,9 @@ export default function Painting({
         transparent
         opacity={opacityValue}
         side={THREE.DoubleSide}
+        toneMapped={false}
+        roughness={0.8}
+        metalness={0.1}
       />
     </mesh>
   );
@@ -65,8 +71,8 @@ export default function Painting({
           i === 0
             ? height / 2 + frameWidth / 2
             : i === 1
-            ? -height / 2 - frameWidth / 2
-            : 0,
+              ? -height / 2 - frameWidth / 2
+              : 0,
           0,
         ];
         return (
@@ -86,32 +92,24 @@ export default function Painting({
                     ]
               }
             />
-            {theme === "circle" || theme === "masterpiece" ? (
-              <meshStandardMaterial
-                color="#333333"
-                roughness={0.4}
-                transparent
-                opacity={opacityValue}
-                side={THREE.DoubleSide}
-              />
-            ) : (
-              <meshStandardMaterial
-                map={woodTexture}
-                transparent
-                opacity={opacityValue}
-                side={THREE.DoubleSide}
-              />
-            )}
+            <meshStandardMaterial
+              {...(theme === "circle" || theme === "masterpiece"
+                ? { color: "#333333", roughness: 0.4 }
+                : { map: woodTexture })}
+              transparent
+              opacity={opacityValue}
+              side={THREE.DoubleSide}
+            />
           </mesh>
         );
       })}
     </>
   );
 
-  const FloatingGroup = (offsetX = 0, rotationY = 0) => (
+  const FloatingGroup = (offsetX = 0) => (
     <group
       position={[focusPosition[0] + offsetX, focusPosition[1], focusPosition[2]]}
-      rotation={[focusRotation[0], focusRotation[1] + rotationY, focusRotation[2]]}
+      rotation={focusRotation}
     >
       {ArtworkMesh(opacity, true)}
       {FrameMeshes(opacity, true)}
@@ -184,7 +182,7 @@ export default function Painting({
                 decay={2}
                 ref={lightRef}
                 position={[0, height / 2 + (theme === "masterpiece" ? 3 : 1.5), 0.9]}
-                angle={(theme === "masterpiece" ? 1 :0.6)}
+                angle={theme === "masterpiece" ? 1 : 0.6}
                 penumbra={0.01}
                 intensity={theme === "masterpiece" ? 100 : 20}
                 distance={theme === "masterpiece" ? 30 : 4}
@@ -195,7 +193,7 @@ export default function Painting({
         </group>
       </group>
 
-      {isFocused && (theme === "circle" ? FloatingGroup(0, 0) : FloatingGroup(0))}
+      {isFocused && (theme === "circle" ? FloatingGroup(0) : FloatingGroup(0))}
     </>
   );
 }
