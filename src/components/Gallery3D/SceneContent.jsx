@@ -1,4 +1,4 @@
-import React, { useMemo } from "react";
+import React from "react";
 import { useGLTF } from "@react-three/drei";
 import { useLoader } from "@react-three/fiber";
 import { TextureLoader } from "three";
@@ -12,20 +12,19 @@ export default function SceneContent({
   works,
   theme,
   focusedId,
-  leftFocusedId,   // ✅ 추가
-  rightFocusedId,  // ✅ 추가
+  leftFocusedId,
+  rightFocusedId,
   infoId,
 }) {
-  // ✅ 텍스처 미리 로딩
   const texturePaths = works.map((art) => art.imageUrl);
   const textures = useLoader(TextureLoader, texturePaths);
   const woodTexture = useLoader(TextureLoader, "/wood.jpg");
-
   const { scene: lampScene } = useGLTF("/models/led_projector_lamp_vega_c100.glb");
 
   return (
     <>
       <ambientLight intensity={0.4} />
+
       <Physics gravity={[0, -9.81, 0]}>
         <RigidBody type="fixed" colliders="cuboid">
           <mesh rotation={[-Math.PI / 2, 0, 0]} position={[0, -1, 0]} receiveShadow>
@@ -40,6 +39,13 @@ export default function SceneContent({
           const texture = textures[idx];
           const lamp = lampScene.clone(true);
 
+          const isFocused =
+            theme === "masterpiece"
+              ? (art.id === leftFocusedId || art.id === rightFocusedId)
+              : (art.id === focusedId);
+
+          const { position: focusPos, rotation: focusRot } = layout.getFocusTransform(idx, works.length);
+
           if (theme === "circle" && works.length <= 6) {
             return [
               <Painting
@@ -49,15 +55,11 @@ export default function SceneContent({
                 lamp={lamp}
                 title={art.title}
                 description={art.description}
-                isFocused={
-                  theme === "masterpiece"
-                    ? (art.id === leftFocusedId || art.id === rightFocusedId)
-                    : (focusedId === art.id)
-                }
+                isFocused={isFocused}
                 isInfoShown={infoId === art.id}
                 {...layout.getPosition(idx, 12)}
-                focusPosition={layout.getFocusTransform().position}
-                focusRotation={layout.getFocusTransform().rotation}
+                focusPosition={focusPos}
+                focusRotation={focusRot}
                 focusScale={layout.focusScale}
                 theme={theme}
               />,
@@ -68,15 +70,11 @@ export default function SceneContent({
                 lamp={lamp}
                 title={art.title}
                 description={art.description}
-                isFocused={
-                  theme === "masterpiece"
-                    ? (art.id === leftFocusedId || art.id === rightFocusedId)
-                    : (focusedId === art.id)
-                }
+                isFocused={isFocused}
                 isInfoShown={infoId === art.id}
                 {...layout.getPosition(idx + 6, 12)}
-                focusPosition={layout.getFocusTransform().position}
-                focusRotation={layout.getFocusTransform().rotation}
+                focusPosition={focusPos}
+                focusRotation={focusRot}
                 focusScale={layout.focusScale}
                 theme={theme}
               />
@@ -91,11 +89,11 @@ export default function SceneContent({
               lamp={lamp}
               title={art.title}
               description={art.description}
-              isFocused={focusedId === art.id}
+              isFocused={isFocused}
               isInfoShown={infoId === art.id}
               {...layout.getPosition(idx, works.length)}
-              focusPosition={layout.getFocusTransform().position}
-              focusRotation={layout.getFocusTransform().rotation}
+              focusPosition={focusPos}
+              focusRotation={focusRot}
               focusScale={layout.focusScale}
               theme={theme}
             />
