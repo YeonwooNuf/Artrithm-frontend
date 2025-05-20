@@ -10,8 +10,13 @@ import SignupPage from "./pages/Signup/SignupPage";
 import MyPage from "./pages/MyPage/MyPage";
 import ExhibitionUpload from "./pages/Exhibition/ExhibitionUpload";
 import ExhibitionPage from "./pages/Exhibition/ExhibitionPage";
-import Exhibition3D from "./pages/3DGallery/Exhibition3D";
 import ExhibitionList from "./pages/Exhibition/ExhibitionList";
+import Exhibition3D from "./pages/Exhibition/Exhibition3D";
+import ExhibitionDetailPage from "./pages/Exhibition/ExhibitionDetailPage"; // 필요 시
+import ArtworkMarketpage from "./pages/ArtworkMarketpage/ArtworkMarketpage";
+import ArtworkAuctionpage from "./pages/ArtworkMarketpage/ArtworkAuctionpage";
+
+import { dummyArtists } from "./data/dummyArtists";
 
 function App() {
   const [user, setUser] = useState(() => {
@@ -59,8 +64,14 @@ function App() {
             path="/exhibitions/Gallery3D/:exhibitionId"
             element={<Exhibition3D />}
           />
-        </Route>
-      </Routes>
+
+          <Route path="/fixed-price" element={<ArtworkMarketpage />} />
+          {/* <Route path="/exhibitions/detail/:id" element={<ExhibitionDetailPage />} /> */}
+          <Route
+            path="/auction"
+            element={<ArtworkAuctionpage artwork={dummyArtists[0]} />}
+          />
+        </Routes>
     </BrowserRouter>
   );
 }

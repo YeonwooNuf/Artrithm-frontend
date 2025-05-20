@@ -48,8 +48,12 @@ const Header = ({ user, setUser }) => {
             <span className="dropdown_title">작품 거래</span>
             {openArtwork && (
               <ul className="dropdown__menu">
-                <li><Link to="/limit">지정가 방식</Link></li>
-                <li><Link to="/auction">경매 방식</Link></li>
+                <li>
+                  <a href="/fixed-price">지정가 구매</a>
+                </li>
+                <li>
+                  <a href="/auction">진행중인 경매</a>
+                </li>
               </ul>
             )}
           </li>
