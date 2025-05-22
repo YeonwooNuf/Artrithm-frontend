@@ -43,6 +43,28 @@
   border-color: #967e76;
 }
 
+/* ✅ 작가 선택 드롭다운 (기존 .select와 동일하게 적용됨) */
+.artist-select {
+  margin-top: 1rem;
+}
+
+/* ✅ 새 작가 등록 버튼 */
+.add-artist-button {
+  margin-top: 1rem;
+  background: #a89b8c;
+  color: white;
+  border: none;
+  padding: 0.5rem 1rem;
+  border-radius: 10px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: background 0.3s;
+}
+
+.add-artist-button:hover {
+  background: #6d5847;
+}
+
 .works-section {
   margin-top: 2rem;
   background: #f0eae3;
