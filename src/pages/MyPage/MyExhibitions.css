@@ -1,0 +1,74 @@
+.my-exhibitions {
+  margin-top: 3rem;
+  padding: 2rem;
+  background-color: #f8f3eb;
+  border-radius: 12px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.05);
+  font-family: 'Noto Sans KR', sans-serif;
+}
+
+.my-exhibitions h3 {
+  font-size: 1.5rem;
+  margin-bottom: 1.5rem;
+  color: #3e3e3e;
+}
+
+.my-exhibitions p {
+  color: #888;
+  font-size: 1rem;
+}
+
+.exhibition-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: #ffffff;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  padding: 1rem;
+  margin-bottom: 1rem;
+  transition: box-shadow 0.3s ease;
+}
+
+.exhibition-item:hover {
+  box-shadow: 0 0 8px rgba(0, 0, 0, 0.1);
+}
+
+.exhibition-item strong {
+  font-size: 1.1rem;
+  color: #444;
+}
+
+.exhibition-item span {
+  font-size: 0.95rem;
+  color: #666;
+  margin-left: 0.5rem;
+}
+
+.exhibition-item button {
+  margin-left: 0.5rem;
+  background: #967e76;
+  color: white;
+  border: none;
+  padding: 0.4rem 0.8rem;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 500;
+  transition: background-color 0.2s;
+}
+
+.exhibition-item button:hover {
+  background-color: #7b655d;
+}
+
+@media (max-width: 768px) {
+  .exhibition-item {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.5rem;
+  }
+
+  .exhibition-item button {
+    margin-left: 0;
+  }
+}
