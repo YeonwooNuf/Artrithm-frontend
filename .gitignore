@@ -38,3 +38,4 @@ Thumbs.db
 *.sln
 *.sw?
 *.sql
+public/models/art_gallery.glb

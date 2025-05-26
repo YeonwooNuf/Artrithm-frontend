@@ -24,7 +24,9 @@
     "react-router-dom": "^7.4.1",
     "react-slick": "^0.30.3",
     "slick-carousel": "^1.8.1",
-    "three": "^0.174.0"
+    "three": "^0.174.0",
+    "@dimforge/rapier3d": "^0.16.2",
+    "@dimforge/rapier3d-compat": "^0.16.2"
   },
   "devDependencies": {
     "@eslint/js": "^9.21.0",
