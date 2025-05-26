@@ -64,14 +64,13 @@ function App() {
             path="/exhibitions/Gallery3D/:exhibitionId"
             element={<Exhibition3D />}
           />
-
           <Route path="/fixed-price" element={<ArtworkMarketpage />} />
-          {/* <Route path="/exhibitions/detail/:id" element={<ExhibitionDetailPage />} /> */}
           <Route
             path="/auction"
             element={<ArtworkAuctionpage artwork={dummyArtists[0]} />}
           />
-        </Routes>
+        </Route>
+      </Routes>
     </BrowserRouter>
   );
 }
