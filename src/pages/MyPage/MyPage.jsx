@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import "./MyPage.css";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import MyExhibitions from "./MyExhibitions"; // ✅ 추가
 
 export default function MyPage({ user, setUser }) {
     const [nickname, setNickname] = useState(user.nickname || "");
@@ -11,6 +12,7 @@ export default function MyPage({ user, setUser }) {
     const [profileImage, setProfileImage] = useState(null);
     const [artistBio, setArtistBio] = useState(user.artistBio || "");
     const [isEditing, setIsEditing] = useState(false);
+    const [showExhibitions, setShowExhibitions] = useState(false); // ✅ 추가
     const navigate = useNavigate();
 
     const handleSubmit = async (e) => {
@@ -21,19 +23,17 @@ export default function MyPage({ user, setUser }) {
         formData.append("birth", birth);
         formData.append("phoneNumber", phoneNumber);
         if (profileImage) formData.append("profileImageFile", profileImage);
-        if (user.role === "ARTIST") formData.append("artistBio", artistBio);
+        if (user.role === "ARTIST" || user.role === "ADMIN") formData.append("artistBio", artistBio);
 
         try {
             const userId = localStorage.getItem("userId");
 
-            // 정보 업데이트
             await axios.put(`http://localhost:8080/api/users/${userId}`, formData, {
                 headers: {
                     "Content-Type": "multipart/form-data",
                 },
             });
 
-            // 업데이트된 정보 다시 불러오기
             const res = await axios.get(`http://localhost:8080/api/users/${userId}`);
             setUser(res.data);
             localStorage.setItem("user", JSON.stringify(res.data));
@@ -78,7 +78,7 @@ export default function MyPage({ user, setUser }) {
                                     : "일반 회원"
                         }
                     </p>
-                    {user.role == "USER" && (
+                    {user.role === "USER" && (
                         <button
                             className="request-artist-button"
                             onClick={handleRequestArtist}
@@ -96,6 +96,11 @@ export default function MyPage({ user, setUser }) {
                 <button className="mypage-button">구매 / 판매 내역</button>
                 <button className="mypage-button">주소 등록</button>
                 <button className="mypage-button">관심 전시</button>
+                {(user.role === "ARTIST" || user.role === "ADMIN") && (
+                    <button className="mypage-button" onClick={() => setShowExhibitions(!showExhibitions)}>
+                        {showExhibitions ? "내 전시 접기" : "내 전시 보기"}
+                    </button>
+                )}
             </div>
 
             {isEditing && (
@@ -138,7 +143,7 @@ export default function MyPage({ user, setUser }) {
                         onChange={(e) => setProfileImage(e.target.files[0])}
                     />
 
-                    {user.role === "ARTIST" && (
+                    {(user.role === "ARTIST" || user.role === "ADMIN") && (
                         <>
                             <label>작가 소개글</label>
                             <textarea
@@ -153,6 +158,10 @@ export default function MyPage({ user, setUser }) {
                         저장
                     </button>
                 </form>
+            )}
+
+            {showExhibitions && (
+                <MyExhibitions user={user} />
             )}
         </div>
     );
