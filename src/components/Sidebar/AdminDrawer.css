@@ -1,0 +1,62 @@
+.admin-drawer {
+  position: fixed;
+  top: 0;
+  right: 0;
+  width: 260px;
+  height: 100vh;
+  background: #222;
+  color: white;
+  padding: 2rem 1rem;
+  z-index: 1200;
+  box-shadow: -3px 0 10px rgba(0, 0, 0, 0.2);
+
+  transform: translateX(100%);
+  transition: transform 0.3s ease-in-out;
+}
+
+.admin-drawer.open {
+  transform: translateX(0);
+}
+
+.admin-drawer h3 {
+  margin-top: 0;
+  font-size: 1.4rem;
+  margin-bottom: 2rem;
+  border-bottom: 1px solid #444;
+  padding-bottom: 0.5rem;
+}
+
+.admin-drawer ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.admin-drawer li {
+  margin: 1rem 0;
+}
+
+.admin-drawer a {
+  color: #f0f0f0;
+  text-decoration: none;
+  font-size: 1rem;
+  display: block;
+  padding: 0.5rem 0;
+  transition: color 0.2s;
+}
+
+.admin-drawer a:hover {
+  color: #ffd700;
+}
+
+.close-btn {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  background: none;
+  border: none;
+  font-size: 1.8rem;
+  color: white;
+  cursor: pointer;
+  line-height: 1;
+}

@@ -8,12 +8,17 @@ import Home from "./pages/Home/Home";
 import LoginForm from "./components/login/LoginForm";
 import SignupPage from "./pages/Signup/SignupPage";
 import MyPage from "./pages/MyPage/MyPage";
-import ExhibitionUpload from "./pages/Exhibition/ExhibitionUpload";
+
+import ExhibitionUpload from "./pages/Exhibition/ExhibitionUpload"; // 일반 사용자용
+import ExhibitionUploadMasterpiece from "./pages/AdminFeature/ExhibitionUploadMasterpiece"; // 관리자용
+import UploadExplanationFile from "./pages/AdminFeature/UploadExplanationFile"; // 관리자용
+
 import ExhibitionPage from "./pages/Exhibition/ExhibitionPage";
 import ExhibitionList from "./pages/Exhibition/ExhibitionList";
 import ExhibitionEdit from "./pages/Exhibition/ExhibitionEdit";
 
 import Exhibition3D from "./pages/3DGallery/Exhibition3D";
+
 import ArtworkMarketpage from "./pages/ArtworkMarketpage/ArtworkMarketpage";
 import ArtworkAuctionpage from "./pages/ArtworkMarketpage/ArtworkAuctionpage";
 import MyExhibitions from "./pages/MyPage/MyExhibitions";
@@ -62,18 +67,28 @@ function App() {
           <Route path="/myexhibition" element={<MyExhibitions />} />
           <Route path="/exhibitions/edit/:id" element={<ExhibitionEdit />} />
 
+          {/* ✅ 전시 업로드 */}
           <Route path="/upload" element={<ExhibitionUpload user={user} />} />
+          <Route path="/admin/upload-masterpiece" element={<ExhibitionUploadMasterpiece user={user} />} />
+
+          {/* ✅ 작품 설명 PDF 업로드 */}
+          <Route path="/admin/upload-description" element={<UploadExplanationFile user={user} />} />
+
+          {/* ✅ 전시 관련 */}
           <Route path="/exhibitions/:id" element={<ExhibitionPage />} />
           <Route path="/view" element={<ExhibitionList />} />
           <Route
             path="/exhibitions/Gallery3D/:exhibitionId"
             element={<Exhibition3D />}
           />
+
+          {/* ✅ 마켓 / 경매 */}
           <Route path="/fixed-price" element={<ArtworkMarketpage />} />
           <Route
             path="/auction"
             element={<ArtworkAuctionpage artwork={dummyArtists[0]} />}
           />
+          <Route path="/auction" element={<ArtworkAuctionpage artwork={dummyArtists[0]} />} />
         </Route>
       </Routes>
     </BrowserRouter>

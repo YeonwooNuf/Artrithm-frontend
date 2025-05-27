@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import "./MyPage.css";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import AdminDrawer from "../../components/Sidebar/AdminDrawer";
 import MyExhibitions from "./MyExhibitions"; // ✅ 추가
 
 export default function MyPage({ user, setUser }) {
@@ -12,6 +13,7 @@ export default function MyPage({ user, setUser }) {
     const [profileImage, setProfileImage] = useState(null);
     const [artistBio, setArtistBio] = useState(user.artistBio || "");
     const [isEditing, setIsEditing] = useState(false);
+    const [drawerOpen, setDrawerOpen] = useState(false);
     const [showExhibitions, setShowExhibitions] = useState(false); // ✅ 추가
     const navigate = useNavigate();
 
@@ -51,7 +53,7 @@ export default function MyPage({ user, setUser }) {
     };
 
     return (
-        <div className="mypage-container">
+        <div className={`mypage-container ${drawerOpen ? "drawer-open" : ""}`}>
             <h2 className="mypage-title">마이페이지</h2>
 
             <div className="mypage-profile-section">
@@ -158,6 +160,18 @@ export default function MyPage({ user, setUser }) {
                         저장
                     </button>
                 </form>
+            )}
+
+            {user?.role === "ADMIN" && (
+                <>
+                    <button
+                        className="admin-circle-button"
+                        onClick={() => setDrawerOpen((prev) => !prev)}
+                    >
+                        ＋
+                    </button>
+                    <AdminDrawer onClose={() => setDrawerOpen(false)} isOpen={drawerOpen} />
+                </>
             )}
 
             {showExhibitions && (

@@ -111,7 +111,6 @@ export default function ExhibitionUpload() {
         <select className="select" value={theme} onChange={(e) => setTheme(e.target.value)}>
           <option value="modern">Modern</option>
           <option value="circle">Circle</option>
-          {user?.role === "ADMIN" && <option value="masterpiece">MasterPiece</option>}
         </select>
 
         <label>썸네일 이미지</label>
