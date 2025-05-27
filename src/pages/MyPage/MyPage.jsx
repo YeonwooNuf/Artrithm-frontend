@@ -3,6 +3,7 @@ import "./MyPage.css";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import AdminDrawer from "../../components/Sidebar/AdminDrawer";
+import MyExhibitions from "./MyExhibitions"; // ✅ 추가
 
 export default function MyPage({ user, setUser }) {
     const [nickname, setNickname] = useState(user.nickname || "");
@@ -13,6 +14,7 @@ export default function MyPage({ user, setUser }) {
     const [artistBio, setArtistBio] = useState(user.artistBio || "");
     const [isEditing, setIsEditing] = useState(false);
     const [drawerOpen, setDrawerOpen] = useState(false);
+    const [showExhibitions, setShowExhibitions] = useState(false); // ✅ 추가
     const navigate = useNavigate();
 
     const handleSubmit = async (e) => {
@@ -23,10 +25,11 @@ export default function MyPage({ user, setUser }) {
         formData.append("birth", birth);
         formData.append("phoneNumber", phoneNumber);
         if (profileImage) formData.append("profileImageFile", profileImage);
-        if (user.role === "ARTIST") formData.append("artistBio", artistBio);
+        if (user.role === "ARTIST" || user.role === "ADMIN") formData.append("artistBio", artistBio);
 
         try {
             const userId = localStorage.getItem("userId");
+
             await axios.put(`http://localhost:8080/api/users/${userId}`, formData, {
                 headers: {
                     "Content-Type": "multipart/form-data",
@@ -95,12 +98,11 @@ export default function MyPage({ user, setUser }) {
                 <button className="mypage-button">구매 / 판매 내역</button>
                 <button className="mypage-button">주소 등록</button>
                 <button className="mypage-button">관심 전시</button>
-                <button
-                    className="mypage-button"
-                    onClick={() => navigate("/my-exhibitions")}
-                >
-                    나의 전시회 보기
-                </button>
+                {(user.role === "ARTIST" || user.role === "ADMIN") && (
+                    <button className="mypage-button" onClick={() => setShowExhibitions(!showExhibitions)}>
+                        {showExhibitions ? "내 전시 접기" : "내 전시 보기"}
+                    </button>
+                )}
             </div>
 
             {isEditing && (
@@ -143,7 +145,7 @@ export default function MyPage({ user, setUser }) {
                         onChange={(e) => setProfileImage(e.target.files[0])}
                     />
 
-                    {user.role === "ARTIST" && (
+                    {(user.role === "ARTIST" || user.role === "ADMIN") && (
                         <>
                             <label>작가 소개글</label>
                             <textarea
@@ -185,6 +187,10 @@ export default function MyPage({ user, setUser }) {
                     </button>
                     <AdminDrawer onClose={() => setDrawerOpen(false)} isOpen={drawerOpen} />
                 </>
+            )}
+
+            {showExhibitions && (
+                <MyExhibitions user={user} />
             )}
         </div>
     );
