@@ -167,21 +167,6 @@ export default function MyPage({ user, setUser }) {
                     <button
                         className="admin-circle-button"
                         onClick={() => setDrawerOpen((prev) => !prev)}
-                        style={{
-                            position: "fixed",
-                            bottom: "2rem",
-                            right: drawerOpen ? "260px" : "2rem",
-                            transition: "right 0.3s ease-in-out",
-                            width: "60px",
-                            height: "60px",
-                            borderRadius: "50%",
-                            fontSize: "2rem",
-                            backgroundColor: "#222",
-                            color: "white",
-                            border: "none",
-                            cursor: "pointer",
-                            zIndex: 1100
-                        }}
                     >
                         ＋
                     </button>
