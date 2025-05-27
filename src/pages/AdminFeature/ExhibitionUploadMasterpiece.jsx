@@ -11,6 +11,13 @@ export default function ExhibitionUploadMasterpiece() {
   const [works, setWorks] = useState([]);
   const [artistList, setArtistList] = useState([]);
   const [selectedArtistId, setSelectedArtistId] = useState("");
+  const [showArtistForm, setShowArtistForm] = useState(false);
+  const [newArtistName, setNewArtistName] = useState("");
+  const [newArtistBio, setNewArtistBio] = useState("");
+  const [newArtistNationality, setNewArtistNationality] = useState("");
+  const [newArtistBirthDate, setNewArtistBirthDate] = useState("");
+  const [newArtistDeathDate, setNewArtistDeathDate] = useState("");
+  const [newArtistProfileImage, setNewArtistProfileImage] = useState(null);
   const navigate = useNavigate();
   const userId = localStorage.getItem("userId");
 
@@ -49,7 +56,7 @@ export default function ExhibitionUploadMasterpiece() {
     formData.append("thumbnail", thumbnail);
     formData.append("artistId", selectedArtistId);
 
-    keywords.split(/[,\s]+/).forEach((kw, i) => formData.append(`keywords[${i}]`, kw));
+    keywords.split(/[\,\s]+/).forEach((kw, i) => formData.append(`keywords[${i}]`, kw));
 
     works.forEach((w, i) => {
       formData.append(`works[${i}].title`, w.title);
@@ -66,6 +73,39 @@ export default function ExhibitionUploadMasterpiece() {
     } catch (err) {
       console.error("전시 업로드 실패:", err);
       alert("전시 업로드 중 오류가 발생했습니다.");
+    }
+  };
+
+  const handleArtistRegister = async () => {
+    const formData = new FormData();
+    formData.append("name", newArtistName);
+    formData.append("bio", newArtistBio);
+    formData.append("nationality", newArtistNationality);
+    formData.append("birthDate", newArtistBirthDate);
+    formData.append("deathDate", newArtistDeathDate);
+    if (newArtistProfileImage) {
+      formData.append("profileImageFile", newArtistProfileImage);
+    }
+
+    try {
+      await axios.post("/api/artists", formData, {
+        headers: { "Content-Type": "multipart/form-data" },
+      });
+      alert("작가가 등록되었습니다.");
+      const newList = await axios.get("/api/artists");
+      setArtistList(newList.data);
+      const newArtist = newList.data.find((a) => a.name === newArtistName);
+      if (newArtist) setSelectedArtistId(newArtist.id);
+      setShowArtistForm(false);
+      setNewArtistName("");
+      setNewArtistBio("");
+      setNewArtistNationality("");
+      setNewArtistBirthDate("");
+      setNewArtistDeathDate("");
+      setNewArtistProfileImage(null);
+    } catch (err) {
+      console.error("작가 등록 실패", err);
+      alert("작가 등록 중 오류가 발생했습니다.");
     }
   };
 
@@ -86,12 +126,83 @@ export default function ExhibitionUploadMasterpiece() {
         <input className="input" value={keywords} onChange={(e) => setKeywords(e.target.value)} />
 
         <label>작가 선택</label>
-        <select className="select" value={selectedArtistId} onChange={(e) => setSelectedArtistId(e.target.value)} required>
-          <option value="">작가를 선택해주세요</option>
-          {artistList.map((artist) => (
-            <option key={artist.id} value={artist.id}>{artist.name}</option>
-          ))}
-        </select>
+        <div className="artist-select-container">
+          <select
+            className="select"
+            value={selectedArtistId}
+            onChange={(e) => setSelectedArtistId(e.target.value)}
+            required
+          >
+            <option value="">작가를 선택해주세요</option>
+            {artistList.map((artist) => (
+              <option key={artist.id} value={artist.id}>{artist.name}</option>
+            ))}
+          </select>
+          <button
+            type="button"
+            className="small-button"
+            onClick={() => setShowArtistForm((prev) => !prev)}
+          >
+            + 새 작가 등록
+          </button>
+        </div>
+
+        {showArtistForm && (
+          <div className="new-artist-form">
+            <label>작가 이름</label>
+            <input
+              className="input"
+              value={newArtistName}
+              onChange={(e) => setNewArtistName(e.target.value)}
+            />
+
+            <label>작가 소개</label>
+            <textarea
+              className="textarea"
+              value={newArtistBio}
+              onChange={(e) => setNewArtistBio(e.target.value)}
+            />
+
+            <label>국적</label>
+            <input
+              className="input"
+              value={newArtistNationality}
+              onChange={(e) => setNewArtistNationality(e.target.value)}
+            />
+
+            <label>출생일</label>
+            <input
+              className="input"
+              type="date"
+              value={newArtistBirthDate}
+              onChange={(e) => setNewArtistBirthDate(e.target.value)}
+            />
+
+            <label>사망일</label>
+            <input
+              className="input"
+              type="date"
+              value={newArtistDeathDate}
+              onChange={(e) => setNewArtistDeathDate(e.target.value)}
+            />
+
+            <label>프로필 이미지</label>
+            <input
+              className="input"
+              type="file"
+              accept="image/*"
+              onChange={(e) => setNewArtistProfileImage(e.target.files[0])}
+            />
+
+            <button
+              type="button"
+              className="ex-upload-button"
+              onClick={handleArtistRegister}
+            >
+              작가 등록 완료
+            </button>
+          </div>
+        )}
 
         <div className="works-section">
           <h3>작품 목록</h3>
