@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import "./MyPage.css";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import AdminDrawer from "../../components/Sidebar/AdminDrawer";
 
 export default function MyPage({ user, setUser }) {
     const [nickname, setNickname] = useState(user.nickname || "");
@@ -11,6 +12,7 @@ export default function MyPage({ user, setUser }) {
     const [profileImage, setProfileImage] = useState(null);
     const [artistBio, setArtistBio] = useState(user.artistBio || "");
     const [isEditing, setIsEditing] = useState(false);
+    const [drawerOpen, setDrawerOpen] = useState(false);
     const navigate = useNavigate();
 
     const handleSubmit = async (e) => {
@@ -25,15 +27,12 @@ export default function MyPage({ user, setUser }) {
 
         try {
             const userId = localStorage.getItem("userId");
-
-            // 정보 업데이트
             await axios.put(`http://localhost:8080/api/users/${userId}`, formData, {
                 headers: {
                     "Content-Type": "multipart/form-data",
                 },
             });
 
-            // 업데이트된 정보 다시 불러오기
             const res = await axios.get(`http://localhost:8080/api/users/${userId}`);
             setUser(res.data);
             localStorage.setItem("user", JSON.stringify(res.data));
@@ -51,7 +50,7 @@ export default function MyPage({ user, setUser }) {
     };
 
     return (
-        <div className="mypage-container">
+        <div className={`mypage-container ${drawerOpen ? "drawer-open" : ""}`}>
             <h2 className="mypage-title">마이페이지</h2>
 
             <div className="mypage-profile-section">
@@ -78,7 +77,7 @@ export default function MyPage({ user, setUser }) {
                                     : "일반 회원"
                         }
                     </p>
-                    {user.role == "USER" && (
+                    {user.role === "USER" && (
                         <button
                             className="request-artist-button"
                             onClick={handleRequestArtist}
@@ -96,6 +95,12 @@ export default function MyPage({ user, setUser }) {
                 <button className="mypage-button">구매 / 판매 내역</button>
                 <button className="mypage-button">주소 등록</button>
                 <button className="mypage-button">관심 전시</button>
+                <button
+                    className="mypage-button"
+                    onClick={() => navigate("/my-exhibitions")}
+                >
+                    나의 전시회 보기
+                </button>
             </div>
 
             {isEditing && (
@@ -153,6 +158,33 @@ export default function MyPage({ user, setUser }) {
                         저장
                     </button>
                 </form>
+            )}
+
+            {user?.role === "ADMIN" && (
+                <>
+                    <button
+                        className="admin-circle-button"
+                        onClick={() => setDrawerOpen((prev) => !prev)}
+                        style={{
+                            position: "fixed",
+                            bottom: "2rem",
+                            right: drawerOpen ? "260px" : "2rem",
+                            transition: "right 0.3s ease-in-out",
+                            width: "60px",
+                            height: "60px",
+                            borderRadius: "50%",
+                            fontSize: "2rem",
+                            backgroundColor: "#222",
+                            color: "white",
+                            border: "none",
+                            cursor: "pointer",
+                            zIndex: 1100
+                        }}
+                    >
+                        ＋
+                    </button>
+                    <AdminDrawer onClose={() => setDrawerOpen(false)} isOpen={drawerOpen} />
+                </>
             )}
         </div>
     );
