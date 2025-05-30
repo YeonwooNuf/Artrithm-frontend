@@ -5,13 +5,21 @@ export default defineConfig({
   plugins: [react()],
   server: {
     proxy: {
+      // 🔁 FastAPI (LLM)
+      '/api/artchat': {
+        target: 'http://localhost:8000',
+        changeOrigin: true,
+        rewrite: (path) => path.replace(/^\/api\/artchat/, '/api/artchat'),
+      },
+      // 🔁 Spring Boot 백엔드
       '/api': {
         target: 'http://localhost:8080',
         changeOrigin: true,
         secure: false,
       },
+      // 🔁 이미지
       '/uploads': {
-        target: 'http://localhost:8080', // ✅ 이미지도 백엔드에서
+        target: 'http://localhost:8080',
         changeOrigin: true,
         secure: false,
       },
