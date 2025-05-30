@@ -39,10 +39,11 @@ export default function UploadExplanationFile() {
     }
 
     const formData = new FormData();
+    formData.append("artworkId", selectedArtworkId);
     formData.append("file", file);
 
     try {
-      await axios.post(`/api/artworks/${selectedArtworkId}/upload-explanation`, formData, {
+      await axios.post("/api/artchat/upload", formData, {
         headers: { "Content-Type": "multipart/form-data" }
       });
       alert("설명 파일이 성공적으로 업로드되었습니다.");
@@ -50,7 +51,7 @@ export default function UploadExplanationFile() {
     } catch (err) {
       console.error("업로드 실패:", err);
       alert("업로드 중 오류가 발생했습니다.");
-    }
+    }formData.append("artworkId", selectedArtworkId);
   };
 
   return (
