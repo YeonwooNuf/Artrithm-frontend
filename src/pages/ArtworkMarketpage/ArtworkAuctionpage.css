@@ -12,7 +12,7 @@
 
 .auction-image {
   max-width: 400px;
-  border-radius: 12px;
+  border-radius: 0px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
 }
 
@@ -51,6 +51,51 @@
   background-color: #5e6e71;
   color: white;
   border: none;
-  border-radius: 6px;
+  border-radius: 0px;
   cursor: pointer;
+}
+
+/* 낙찰 후 */
+.auction-container.ended {
+  animation: glow 1.5s ease-in-out infinite alternate;
+  animation: fadeInUp 1s ease;
+  background-color: #fffbe6;
+  border-radius: 0px;
+  padding: 20px;
+  box-shadow: 0 0 12px #eae0a6;
+}
+
+.congrats {
+  color: #d6336c;
+  font-size: 1.8rem;
+  animation: pulse 0.8s infinite alternate;
+}
+
+@keyframes fadeInUp {
+  from {
+    transform: translateY(50px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+@keyframes pulse {
+  from {
+    transform: scale(1);
+  }
+  to {
+    transform: scale(1.1);
+  }
+}
+
+@keyframes glow {
+  from {
+    box-shadow: 0 0 8px #ffd700, 0 0 16px #ffec99;
+  }
+  to {
+    box-shadow: 0 0 18px #ffcc00, 0 0 32px #ffe066;
+  }
 }

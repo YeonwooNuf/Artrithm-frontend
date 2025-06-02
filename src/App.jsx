@@ -11,12 +11,10 @@ import MyPage from "./pages/MyPage/MyPage";
 import ExhibitionUpload from "./pages/Exhibition/ExhibitionUpload";
 import ExhibitionPage from "./pages/Exhibition/ExhibitionPage";
 import ExhibitionList from "./pages/Exhibition/ExhibitionList";
-import Exhibition3D from "./pages/Exhibition/Exhibition3D";
+import Exhibition3D from "./pages/3DGallery/Exhibition3D";
 import ExhibitionDetailPage from "./pages/Exhibition/ExhibitionDetailPage"; // 필요 시
 import ArtworkMarketpage from "./pages/ArtworkMarketpage/ArtworkMarketpage";
 import ArtworkAuctionpage from "./pages/ArtworkMarketpage/ArtworkAuctionpage";
-
-import { dummyArtists } from "./data/dummyArtists";
 
 function App() {
   const [user, setUser] = useState(() => {
@@ -56,7 +54,10 @@ function App() {
           <Route path="/" element={<Home />} />
           <Route path="/login" element={<LoginForm setUser={setUser} />} />
           <Route path="/signup" element={<SignupPage />} />
-          <Route path="/mypage" element={<MyPage user={user} setUser={setUser} />} />
+          <Route
+            path="/mypage"
+            element={<MyPage user={user} setUser={setUser} />}
+          />
           <Route path="/upload" element={<ExhibitionUpload user={user} />} />
           <Route path="/exhibitions/:id" element={<ExhibitionPage />} />
           <Route path="/view" element={<ExhibitionList />} />
@@ -64,14 +65,11 @@ function App() {
             path="/exhibitions/Gallery3D/:exhibitionId"
             element={<Exhibition3D />}
           />
-
           <Route path="/fixed-price" element={<ArtworkMarketpage />} />
           {/* <Route path="/exhibitions/detail/:id" element={<ExhibitionDetailPage />} /> */}
-          <Route
-            path="/auction"
-            element={<ArtworkAuctionpage artwork={dummyArtists[0]} />}
-          />
-        </Routes>
+          <Route path="/auction" element={<ArtworkAuctionpage user={user} />} />
+        </Route>
+      </Routes>
     </BrowserRouter>
   );
 }
