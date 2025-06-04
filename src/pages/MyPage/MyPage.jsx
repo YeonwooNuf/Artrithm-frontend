@@ -83,7 +83,7 @@ export default function MyPage({ user, setUser }) {
                     {user.role === "USER" && (
                         <button
                             className="request-artist-button"
-                            onClick={handleRequestArtist}
+                            onClick={() => navigate("/request-artist")}
                         >
                             작가 승인 요청하기
                         </button>
