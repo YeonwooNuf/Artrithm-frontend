@@ -11,6 +11,7 @@ export default function AdminDrawer({ onClose, isOpen }) {
         <li><Link to="/admin/upload-masterpiece">명화 전시 업로드</Link></li>
         <li><Link to="/admin/artists/new">작가 등록</Link></li>
         <li><Link to="/admin/upload-description">작품 설명 업로드</Link></li>
+        <li><Link to="/admin/approve-promotion">작가 승인 요청 목록</Link></li>
       </ul>
     </div>
   );
