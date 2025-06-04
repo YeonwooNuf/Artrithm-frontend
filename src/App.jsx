@@ -24,6 +24,9 @@ import Exhibition3D from "./pages/3DGallery/Exhibition3D";
 import ArtworkMarketpage from "./pages/ArtworkMarketpage/ArtworkMarketpage";
 import ArtworkAuctionpage from "./pages/ArtworkMarketpage/ArtworkAuctionpage";
 import MyExhibitions from "./pages/MyPage/MyExhibitions";
+import RequestArtistPage from "./pages/MyPage/RequestArtistPage";
+
+import ApprovePromotionPage from "./pages/AdminFeature/ApprovePromotionPage";
 
 function App() {
   const [user, setUser] = useState(() => {
@@ -67,9 +70,11 @@ function App() {
           <Route path="/mypage" element={<MyPage user={user} setUser={setUser} />} />
           <Route path="/myexhibition" element={<MyExhibitions />} />
           <Route path="/exhibitions/edit/:id" element={<ExhibitionEdit />} />
+          <Route path="/admin/approve-promotion" element={<ApprovePromotionPage />} />
+
+          <Route path="/request-artist" element={<RequestArtistPage />} />
 
           {/* ✅ 전시 업로드 */}
-
           <Route path="/upload" element={<ExhibitionUpload user={user} />} />
           <Route path="/admin/upload-masterpiece" element={<ExhibitionUploadMasterpiece user={user} />} />
 
