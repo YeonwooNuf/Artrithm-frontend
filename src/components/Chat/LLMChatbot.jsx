@@ -15,7 +15,7 @@ export default function LLMChatbot({ artwork }) {
     setInput("");
 
     try {
-      const response = await fetch("/api/llm/query", {
+      const response = await fetch("/api/artchat/query", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -25,9 +25,21 @@ export default function LLMChatbot({ artwork }) {
       });
 
       const data = await response.json();
-      const botMessage = { from: "bot", text: data.answer || "답변을 불러오지 못했습니다." };
+      console.log("📦 LLM 응답 데이터:", data); // ✅ 응답 구조 확인
+
+      // ✅ 객체 방지: 문자열만 text로 넘기기
+      let text = "";
+
+      if (typeof data.answer === "string") {
+        text = data.answer;
+      } else {
+        text = JSON.stringify(data, null, 2); // fallback (디버깅용)
+      }
+
+      const botMessage = { from: "bot", text };
       setMessages((prev) => [...prev, botMessage]);
     } catch (err) {
+      console.error("❌ 서버 응답 오류:", err);
       setMessages((prev) => [
         ...prev,
         { from: "bot", text: "⚠️ 서버 응답에 문제가 발생했습니다." }
@@ -44,6 +56,7 @@ export default function LLMChatbot({ artwork }) {
       <div className="llm-chatbot-header">
         🧠 LLM 챗봇 - <strong>{artwork?.title}</strong>
       </div>
+
       <div className="llm-chatbot-messages">
         {messages.map((msg, idx) => (
           <div key={idx} className={`llm-message-bubble ${msg.from}`}>
@@ -51,6 +64,7 @@ export default function LLMChatbot({ artwork }) {
           </div>
         ))}
       </div>
+
       <div className="llm-chatbot-input">
         <input
           type="text"

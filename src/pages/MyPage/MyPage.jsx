@@ -90,6 +90,39 @@ export default function MyPage({ user, setUser }) {
           )}
         </div>
       </div>
+      <div className="mypage-profile-section">
+        <div className="profile-image-preview">
+          <img
+            src={
+              profileImage
+                ? URL.createObjectURL(profileImage)
+                : user.profileImage
+                ? `http://localhost:8080${user.profileImage}`
+                : "/default-profile.png"
+            }
+            alt="프로필"
+          />
+        </div>
+        <div className="profile-info">
+          <h3>{user.nickname} 님</h3>
+          <p>
+            회원 유형:{" "}
+            {user.role === "ADMIN"
+              ? "관리자"
+              : user.role === "ARTIST"
+              ? "작가 회원"
+              : "일반 회원"}
+          </p>
+          {user.role === "USER" && (
+            <button
+              className="request-artist-button"
+              onClick={() => navigate("/request-artist")}
+            >
+              작가 승인 요청하기
+            </button>
+          )}
+        </div>
+      </div>
 
       <div className="mypage-menu">
         <button className="mypage-button" onClick={() => setIsEditing(true)}>
