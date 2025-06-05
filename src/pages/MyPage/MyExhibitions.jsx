@@ -36,7 +36,7 @@ export default function MyExhibitions({ user }) {
                     {exhibitions.map((ex) => (
                         <li key={ex.id} className="exhibition-item">
                             <strong>{ex.title}</strong>
-                            <span> / {ex.theme}</span>
+                            <span>{ex.theme} 테마</span>
                             <button onClick={() => handleEdit(ex.id)}>수정</button>
                             <button onClick={() => handleDelete(ex.id)}>삭제</button>
                         </li>
