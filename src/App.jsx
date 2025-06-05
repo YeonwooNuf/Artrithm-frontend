@@ -8,6 +8,7 @@ import Home from "./pages/Home/Home";
 import LoginForm from "./components/login/LoginForm";
 import SignupPage from "./pages/Signup/SignupPage";
 import MyPage from "./pages/MyPage/MyPage";
+import AddressPage from "./pages/MyPage/AddressPage";
 
 import ExhibitionUpload from "./pages/Exhibition/ExhibitionUpload"; // 일반 사용자용
 import ExhibitionUploadMasterpiece from "./pages/AdminFeature/ExhibitionUploadMasterpiece"; // 관리자용
@@ -69,6 +70,7 @@ function App() {
 
           <Route path="/mypage" element={<MyPage user={user} setUser={setUser} />} />
           <Route path="/myexhibition" element={<MyExhibitions />} />
+          <Route path="/mypage/address" element={<AddressPage />} />
           <Route path="/exhibitions/edit/:id" element={<ExhibitionEdit />} />
           <Route path="/admin/approve-promotion" element={<ApprovePromotionPage />} />
 
