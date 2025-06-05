@@ -33,7 +33,7 @@ const Header = ({ user, setUser }) => {
               onMouseEnter={() => setOpenExhibition(true)}
               onMouseLeave={() => setOpenExhibition(false)}
             >
-              <span className="dropdown_title">3D 전시회</span>
+              <span className="dropdown_title">전시</span>
               {openExhibition && (
                 <ul className="dropdown__menu">
                   <li><Link to="/upload">개설하기</Link></li>
