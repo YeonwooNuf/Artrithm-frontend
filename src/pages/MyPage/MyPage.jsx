@@ -96,7 +96,9 @@ export default function MyPage({ user, setUser }) {
                     회원정보 수정
                 </button>
                 <button className="mypage-button">구매 / 판매 내역</button>
-                <button className="mypage-button">주소 등록</button>
+                <button className="mypage-button" onClick={() => navigate("/mypage/address")}>
+                    주소 등록
+                </button>
                 <button className="mypage-button">관심 전시</button>
                 {(user.role === "ARTIST" || user.role === "ADMIN") && (
                     <button className="mypage-button" onClick={() => setShowExhibitions(!showExhibitions)}>
