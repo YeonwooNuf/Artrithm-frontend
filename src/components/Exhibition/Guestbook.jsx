@@ -2,54 +2,68 @@ import React, { useState } from "react";
 import "./Guestbook.css";
 
 export default function Guestbook({ guestbook }) {
+  const currentUser = JSON.parse(localStorage.getItem("user")); // ✅ 로그인한 사용자 정보
+  const [content, setContent] = useState("");
   const [messages, setMessages] = useState([]);
-  const [name, setName] = useState("");
-  const [msg, setMsg] = useState("");
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (name && msg) {
-      setMessages([{ name, msg }, ...messages]);
-      setName("");
-      setMsg("");
-    }
+    if (!content.trim()) return;
+
+    // 임시 저장 (실제로는 API 호출 필요)
+    const newMessage = {
+      id: Date.now(),
+      nickname: currentUser.nickname,
+      userId: currentUser.id,
+      content,
+    };
+    setMessages([newMessage, ...messages]);
+    setContent("");
+  };
+
+  const handleDelete = (id) => {
+    setMessages((prev) => prev.filter((msg) => msg.id !== id));
   };
 
   return (
     <div className="guestbook-wrapper">
-      <div className="guestbook-background-dot"></div> {/* 문양 배경 */}
+      <div className="guestbook-background-dot"></div>
       <div className="guestbook-background-dot-2"></div>
       <div className="guestbook-container">
         <h3 className="guestbook-title">📝 방명록</h3>
+
         <form onSubmit={handleSubmit} className="guestbook-form">
-          <input
-            className="guestbook-input"
-            placeholder="이름을 입력해주세요"
-            value={name}
-            onChange={(e) => setName(e.target.value)}
-          />
           <textarea
             className="guestbook-textarea"
             placeholder="응원의 메시지를 남겨주세요!"
-            value={msg}
-            onChange={(e) => setMsg(e.target.value)}
+            value={content}
+            onChange={(e) => setContent(e.target.value)}
           />
           <button className="guestbook-button" type="submit">
             작성하기
           </button>
         </form>
+
         <div className="guestbook-messages">
-          {messages.map((m, idx) => (
-            <div key={idx} className="guestbook-message">
-              <strong>{m.name}</strong> : {m.msg}
+          {[...messages, ...guestbook].map((entry, i) => (
+            <div key={entry.id || i} className="guestbook-message">
+              <strong>{entry.nickname}</strong>: {entry.content}
+
+              {/* ✅ 본인 작성글에만 수정/삭제 버튼 표시 */}
+              {entry.userId === currentUser?.id && (
+                <span className="guestbook-actions">
+                  <button className="edit-guest-btn">수정</button>
+                  <button
+                    className="delete-guest-btn"
+                    onClick={() => handleDelete(entry.id)}
+                  >
+                    삭제
+                  </button>
+                </span>
+              )}
             </div>
           ))}
         </div>
-        {guestbook.map((entry, i) => (
-          <li key={i} className="guestbook-message">
-            <strong>{entry.id}</strong>: {entry.message}
-          </li>
-        ))}
       </div>
     </div>
   );
