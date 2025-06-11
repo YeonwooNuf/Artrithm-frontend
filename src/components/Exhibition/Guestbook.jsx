@@ -49,49 +49,75 @@ export default function Guestbook({ exhibitionId }) {
 
   return (
     <div className="guestbook-wrapper">
-      <h3 className="guestbook-title">📝 방명록</h3>
+      {/* 배경 문양 */}
+      <div className="guestbook-background-dot"></div>
+      <div className="guestbook-background-dot-2"></div>
 
-      <form onSubmit={handleSubmit} className="guestbook-form">
-        <textarea
-          className="guestbook-textarea"
-          placeholder="응원의 메시지를 남겨주세요!"
-          value={content}
-          onChange={(e) => setContent(e.target.value)}
-        />
-        <button className="guestbook-button" type="submit">
-          작성하기
-        </button>
-      </form>
+      <div className="guestbook-container">
+        <h3 className="guestbook-title">📝 방명록</h3>
 
-      <div className="guestbook-messages">
-        {guestbook.map((entry) => (
-          <div key={entry.id} className="guestbook-message">
-            <strong>{entry.nickname}</strong>:
-            {editId === entry.id ? (
-              <>
-                <textarea
-                  value={editContent}
-                  onChange={(e) => setEditContent(e.target.value)}
-                />
-                <button onClick={() => handleUpdate(entry.id)}>저장</button>
-                <button onClick={() => setEditId(null)}>취소</button>
-              </>
-            ) : (
-              <>
-                <span> {entry.content}</span>
-                {entry.nickname === currentUser.nickname && (
-                  <div className="guestbook-actions">
-                    <button onClick={() => {
-                      setEditId(entry.id);
-                      setEditContent(entry.content);
-                    }}>수정</button>
-                    <button onClick={() => handleDelete(entry.id)}>삭제</button>
-                  </div>
-                )}
-              </>
-            )}
-          </div>
-        ))}
+        <form onSubmit={handleSubmit} className="guestbook-form">
+          <textarea
+            className="guestbook-textarea"
+            placeholder="응원의 메시지를 남겨주세요!"
+            value={content}
+            onChange={(e) => setContent(e.target.value)}
+          />
+          <button className="guestbook-button" type="submit">
+            작성하기
+          </button>
+        </form>
+
+        <div className="guestbook-messages">
+          {guestbook.map((entry) => (
+            <div key={entry.id} className="guestbook-message">
+              <strong>{entry.nickname}</strong>:
+              {editId === entry.id ? (
+                <>
+                  <textarea
+                    value={editContent}
+                    onChange={(e) => setEditContent(e.target.value)}
+                  />
+                  <button
+                    className="guestbook-button"
+                    onClick={() => handleUpdate(entry.id)}
+                  >
+                    저장
+                  </button>
+                  <button
+                    className="guestbook-button"
+                    onClick={() => setEditId(null)}
+                  >
+                    취소
+                  </button>
+                </>
+              ) : (
+                <>
+                  <span> {entry.content}</span>
+                  {entry.nickname === currentUser.nickname && (
+                    <div className="guestbook-actions">
+                      <button
+                        className="guestbook-button"
+                        onClick={() => {
+                          setEditId(entry.id);
+                          setEditContent(entry.content);
+                        }}
+                      >
+                        수정
+                      </button>
+                      <button
+                        className="guestbook-button"
+                        onClick={() => handleDelete(entry.id)}
+                      >
+                        삭제
+                      </button>
+                    </div>
+                  )}
+                </>
+              )}
+            </div>
+          ))}
+        </div>
       </div>
     </div>
   );
