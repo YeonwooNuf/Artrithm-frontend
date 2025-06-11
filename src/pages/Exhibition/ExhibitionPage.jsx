@@ -39,7 +39,7 @@ export const ExhibitionPage = () => {
       <ExhibitionFeed exhibition={exhibition} />
       <ExhibitionDetail exhibition={exhibition} />
       <ArtistInfo exhibition={exhibition} />
-      <Guestbook guestbook={exhibition.guestbook || []} />
+      <Guestbook exhibitionId={exhibition.id} />
     </div>
   );
 };
