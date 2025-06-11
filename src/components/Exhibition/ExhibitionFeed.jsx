@@ -29,15 +29,12 @@ export default function ExhibitionFeed({ exhibition }) {
   return (
     <div className="exhibition-card">
       <Link
-        to={exhibition.path}
-        state={{
-          works: exhibition.artist.works,
-          theme: exhibition.theme   // ✅ theme도 함께 전달
-        }}
+        to={`/exhibitions/Gallery3D/${exhibition.id}`}
+        state={{ works: exhibition.artworks, theme: exhibition.theme }}
         className="thumbnail-wrapper"
       >
         <img
-          src={exhibition.thumbnail}
+          src={exhibition.thumbnailUrl}
           alt={exhibition.title}
           className="card-thumbnail"
         />
