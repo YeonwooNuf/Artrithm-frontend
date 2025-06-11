@@ -23,7 +23,7 @@ export default function SceneContent({
 
   return (
     <>
-      <ambientLight intensity={0.4} />
+      <ambientLight intensity={0.7} />
 
       <Physics gravity={[0, -9.81, 0]}>
         <RigidBody type="fixed" colliders="cuboid">
