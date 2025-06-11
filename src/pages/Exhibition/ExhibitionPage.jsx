@@ -13,6 +13,7 @@ export const ExhibitionPage = () => {
   const [exhibition, setExhibition] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const user = JSON.parse(localStorage.getItem("user"));
 
   useEffect(() => {
     const fetchExhibitionDetail = async () => {
@@ -36,7 +37,7 @@ export const ExhibitionPage = () => {
 
   return (
     <div>
-      <ExhibitionFeed exhibition={exhibition} />
+      <ExhibitionFeed exhibition={exhibition} userId={user.id}/>
       <ExhibitionDetail exhibition={exhibition} />
       <ArtistInfo exhibition={exhibition} />
       <Guestbook exhibitionId={exhibition.id} />
