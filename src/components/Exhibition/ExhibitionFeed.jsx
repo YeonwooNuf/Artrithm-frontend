@@ -1,31 +1,57 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
+import axios from "axios";
 import "./ExhibitionFeed.css";
-import { useState } from "react";
 
-// const exhibition = {
-//   title: "짱구",
-//   thumbnail: "/exhibition1.png",
-//   views: 0,
-//   likes: 0,
-//   path: "/exhibitions/Gallery3D",
-//   description:
-//     "이 전시는 빛과 색의 조화를 통해 현대 예술의 새로운 해석을 시도합니다. 작품 하나하나에 담긴 작가의 감정을 느껴보세요. 짱구 엉덩이춤 볼래?",
-// };
-
-export default function ExhibitionFeed({ exhibition }) {
-  const [likes, setLikes] = useState(0);
+export default function ExhibitionFeed({ exhibition, userId }) {
   const [liked, setLiked] = useState(false);
+  const [loading, setLoading] = useState(true);
+  const [showOverlay, setShowOverlay] = useState(false); // 💖 하트 오버레이 상태
 
-  const handleLike = () => {
-    if (liked) {
-      setLikes(likes - 1);
-    } else {
-      setLikes(likes + 1);
+  useEffect(() => {
+    if (userId && exhibition?.id) {
+      axios
+        .get(`/api/user/likes/${exhibition.id}`, { params: { userId } })
+        .then((res) => {
+          setLiked(res.data.liked);
+          setLoading(false);
+        })
+        .catch((err) => {
+          console.error("좋아요 여부 불러오기 실패:", err);
+          setLoading(false);
+        });
     }
-    setLiked(!liked);
+  }, [userId, exhibition?.id]);
+
+  const handleLike = async (e) => {
+    e.stopPropagation();
+    e.preventDefault();
+
+    if (!userId || !exhibition?.id) return;
+
+    try {
+      if (liked) {
+        await axios.delete(`/api/user/likes/${exhibition.id}`, {
+          params: { userId },
+        });
+      } else {
+        await axios.post(`/api/user/likes/${exhibition.id}`, null, {
+          params: { userId },
+        });
+
+        // 🤍 하트 효과 표시
+        setShowOverlay(true);
+        setTimeout(() => setShowOverlay(false), 3000);
+      }
+
+      setLiked(!liked);
+    } catch (err) {
+      console.error("좋아요 처리 중 오류:", err);
+    }
   };
-  if (!exhibition) return <p>전시 정보를 불러오는 중입니다...</p>;
+
+  if (!exhibition || loading) return <p>전시 정보를 불러오는 중입니다...</p>;
+
   return (
     <div className="exhibition-card">
       <Link
@@ -39,15 +65,24 @@ export default function ExhibitionFeed({ exhibition }) {
           className="card-thumbnail"
         />
       </Link>
+
       <div className="card-content">
         <h2 className="card-title">{exhibition.title}</h2>
         <p className="card-desc">{exhibition.description}</p>
+
         <div className="card-meta">
           <span onClick={handleLike} style={{ cursor: "pointer" }}>
-            {liked ? "❤️" : "🤍"} &nbsp; {likes}
+            {liked ? "❤️ 관심 있음" : "🤍 관심 없음"}
           </span>
         </div>
       </div>
+
+      {/* 💖 하트 팝업 오버레이 */}
+      {showOverlay && (
+        <div className="card-overlay">
+          <div className="heart-pop">🤍</div>
+        </div>
+      )}
     </div>
   );
 }
