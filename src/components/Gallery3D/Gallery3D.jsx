@@ -20,17 +20,18 @@ export default function Gallery3D() {
   const [focusedId, setFocusedId] = useState(null);
   const [leftFocusedId, setLeftFocusedId] = useState(null);
   const [rightFocusedId, setRightFocusedId] = useState(null);
-
-  const leftRef = useRef(null);
-  const rightRef = useRef(null);
-
   const [infoId, setInfoId] = useState(null);
   const [chatId, setChatId] = useState(null);
   const [chatbotMode, setChatbotMode] = useState(null);
   const [typedText, setTypedText] = useState("");
   const [cameraRef, setCameraRef] = useState(null);
+  const [roomId, setRoomId] = useState(null);
 
   const pointerLockRef = useRef();
+  const leftRef = useRef(null);
+  const rightRef = useRef(null);
+
+  const user = JSON.parse(localStorage.getItem("user"));
 
   // 📸 카메라 캡처
   const captureCamera = (state) => {
@@ -42,12 +43,7 @@ export default function Gallery3D() {
     rightRef.current = rightFocusedId;
   }, [leftFocusedId, rightFocusedId]);
 
-  useEffect(() => {
-    console.log("👀 leftFocusedId:", leftFocusedId);
-    console.log("👀 rightFocusedId:", rightFocusedId);
-  }, [leftFocusedId, rightFocusedId]);
-
-  // 📜 설명창 타이핑 효과
+  // 설명창 타이핑 효과
   useEffect(() => {
     if (infoId) {
       const fullText = works.find((art) => art.id === infoId)?.description || "";
@@ -66,12 +62,35 @@ export default function Gallery3D() {
     }
   }, [infoId, works]);
 
-  // 🖱️ 커서 상태
   useEffect(() => {
+    // 🖱️ 커서 상태
     const canvasWrapper = document.querySelector(".gallery3d-wrapper");
     if (canvasWrapper) {
       canvasWrapper.style.cursor = chatId ? "default" : "none";
     }
+  }, [chatId]);
+
+  // 💬 채팅방 생성 API 호출
+  useEffect(() => {
+    const startChat = async () => {
+      if (!chatId || !user) return;
+
+      const artwork = works.find((art) => art.id === chatId);
+      const artistId = artwork?.artist?.id;
+      const exhibitionId = artwork?.exhibitionId;
+
+      try {
+        const res = await fetch(`/api/chatroom/create?exhibitionId=${exhibitionId}&artistId=${artistId}&viewerId=${user.id}`, {
+          method: "POST"
+        });
+        const room = await res.json();
+        setRoomId(room.id);
+      } catch (e) {
+        console.error("채팅방 생성 실패:", e);
+      }
+    };
+
+    startChat();
   }, [chatId]);
 
   // 🎹 키보드 조작
@@ -100,7 +119,6 @@ export default function Gallery3D() {
         });
 
         if (closest) {
-
           if (e.key.toLowerCase() === "r") {
             const idx = works.findIndex((art) => art.id === closest);
             const { position } = layout.getPosition(idx, works.length);
@@ -123,10 +141,12 @@ export default function Gallery3D() {
             }
           }
         }
+
         if (e.key.toLowerCase() === "f") {
           setInfoId((prev) => (prev === closest ? null : closest));
           setChatId(null);
         }
+
         if (e.key.toLowerCase() === "t") {
           setChatId((prev) => (prev === closest ? null : closest));
           setInfoId(null);
@@ -164,11 +184,16 @@ export default function Gallery3D() {
 
         {chatId && (
           <div className="hud-chat">
-            {chatbotMode === "artist" ? (
-              <ArtistChatRoom artist={works.find((art) => art.id === chatId)?.artist} />
-            ) : (
+            {chatbotMode === "artist" && roomId ? (
+              <ArtistChatRoom
+                artist={works.find((art) => art.id === chatId)?.artist}
+                roomId={roomId}
+                senderId={user.id}
+                senderRole="viewer"
+              />
+            ) : chatbotMode === "LLM" ? (
               <LLMChatbot artwork={works.find((art) => art.id === chatId)} />
-            )}
+            ) : null}
           </div>
         )}
 
