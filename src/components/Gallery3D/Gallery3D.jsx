@@ -7,7 +7,7 @@ import { useLocation } from "react-router-dom";
 import Player from "./Player";
 import GalleryModel from "./GalleryModel";
 import SceneContent from "./SceneContent";
-import ArtistChatRoom from "../Chat/ArtistChatRoom";
+import ChatForViewer from "../Chat/ChatForViewer";
 import LLMChatbot from "../Chat/LLMChatbot";
 import { getLayoutConfig } from "./layoutConfig";
 import "./Gallery3D.css";
@@ -33,7 +33,6 @@ export default function Gallery3D() {
 
   const user = JSON.parse(localStorage.getItem("user"));
 
-  // 📸 카메라 캡처
   const captureCamera = (state) => {
     if (!cameraRef) setCameraRef(state.camera);
   };
@@ -43,7 +42,6 @@ export default function Gallery3D() {
     rightRef.current = rightFocusedId;
   }, [leftFocusedId, rightFocusedId]);
 
-  // 설명창 타이핑 효과
   useEffect(() => {
     if (infoId) {
       const fullText = works.find((art) => art.id === infoId)?.description || "";
@@ -63,14 +61,12 @@ export default function Gallery3D() {
   }, [infoId, works]);
 
   useEffect(() => {
-    // 🖱️ 커서 상태
     const canvasWrapper = document.querySelector(".gallery3d-wrapper");
     if (canvasWrapper) {
       canvasWrapper.style.cursor = chatId ? "default" : "none";
     }
   }, [chatId]);
 
-  // 💬 채팅방 생성 API 호출
   useEffect(() => {
     const startChat = async () => {
       if (!chatId || !user) return;
@@ -81,7 +77,10 @@ export default function Gallery3D() {
 
       try {
         const res = await fetch(`/api/chatroom/create?exhibitionId=${exhibitionId}&artistId=${artistId}&viewerId=${user.id}`, {
-          method: "POST"
+          method: "POST",
+          headers: {
+            "Content-Type": "application/x-www-form-urlencoded"
+          }
         });
         const room = await res.json();
         setRoomId(room.id);
@@ -91,9 +90,8 @@ export default function Gallery3D() {
     };
 
     startChat();
-  }, [chatId]);
+  }, [chatId, user, works]);
 
-  // 🎹 키보드 조작
   useEffect(() => {
     const handleKeyDown = (e) => {
       const activeTag = document.activeElement?.tagName;
@@ -122,8 +120,6 @@ export default function Gallery3D() {
           if (e.key.toLowerCase() === "r") {
             const idx = works.findIndex((art) => art.id === closest);
             const { position } = layout.getPosition(idx, works.length);
-
-            // 명화 전시관에서 정확한 좌/우 판별
             const isFrontWall = position[2] < 200;
 
             if (theme === "masterpiece") {
@@ -158,9 +154,9 @@ export default function Gallery3D() {
       }
 
       if (e.key === "Escape") {
-        setFocusedId(null);         // 일반 전시관 확대 초기화
-        setLeftFocusedId(null);     // 명화 전시관 왼쪽 초기화
-        setRightFocusedId(null);    // 명화 전시관 오른쪽 초기화
+        setFocusedId(null);
+        setLeftFocusedId(null);
+        setRightFocusedId(null);
         setInfoId(null);
         setChatId(null);
         setChatbotMode(null);
@@ -182,10 +178,10 @@ export default function Gallery3D() {
           </div>
         )}
 
-        {chatId && (
+        {chatId && roomId && (
           <div className="hud-chat">
-            {chatbotMode === "artist" && roomId ? (
-              <ArtistChatRoom
+            {chatbotMode === "artist" ? (
+              <ChatForViewer
                 artist={works.find((art) => art.id === chatId)?.artist}
                 roomId={roomId}
                 senderId={user.id}
