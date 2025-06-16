@@ -70,7 +70,7 @@ export default function LLMChatbot({ artwork }) {
           type="text"
           value={input}
           onChange={(e) => setInput(e.target.value)}
-          onKeyDown={handleKeyPress}
+          onKeyUp={handleKeyPress}
           placeholder="질문을 입력하세요..."
         />
         <button onClick={handleSend}>전송</button>
