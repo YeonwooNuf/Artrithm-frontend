@@ -33,7 +33,7 @@ export default function ChatRoom({ user }) {
         fetchMessages();
         fetchRoomInfo();
 
-        ws.current = new WebSocket(`ws://localhost:8080/ws/chat?roomId=${roomId}`);
+        ws.current = new WebSocket(`ws://192.168.0.56:8080/ws/chat?roomId=${roomId}`);
 
         ws.current.onmessage = (event) => {
             const received = JSON.parse(event.data);
@@ -70,14 +70,14 @@ export default function ChatRoom({ user }) {
     const exitChat = async () => {
         try {
             await axios.delete(`http://localhost:8080/api/chatroom/${roomId}?userId=${user.id}`);
-            window.history.back();
+            window.location.href = "/chat/list"; // 목록으로 이동
         } catch (err) {
             console.error("❌ 채팅방 종료 실패:", err);
         }
     };
 
     return (
-        <div className="chatroom-container">
+        <div className="chatroom-container-page">
             <div className="chatroom-header">
                 <img
                     src={roomInfo?.otherProfileImage ? `http://localhost:8080${roomInfo.otherProfileImage}` : "/default-profile.png"}
@@ -110,7 +110,7 @@ export default function ChatRoom({ user }) {
                     className="chatroom-input"
                     value={input}
                     onChange={(e) => setInput(e.target.value)}
-                    onKeyDown={handleKeyPress}
+                    onKeyUp={handleKeyPress}
                     placeholder="메시지를 입력하세요"
                 />
                 <button className="chatroom-send-button" onClick={sendMessage}>전송</button>
