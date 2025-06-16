@@ -1,19 +1,15 @@
-.chatroom-container {
-  position: fixed;
-  bottom: 80px;
-  right: 30px;
-  width: 360px;
-  height: 520px;
-  background-color: #fff;
-  border-radius: 16px;
-  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.2);
+/* 채팅방 전체 컨테이너 (페이지 기준) */
+.chatroom-container-page {
+  width: 100%;
+  height: 100vh;
   display: flex;
   flex-direction: column;
-  overflow: hidden;
-  z-index: 1000;
+  background-color: #fff;
   font-family: 'Noto Sans KR', sans-serif;
+  border-left: 1px solid #ccc;
 }
 
+/* 상단 헤더 */
 .chatroom-header {
   display: flex;
   align-items: center;
@@ -53,6 +49,7 @@
   cursor: pointer;
 }
 
+/* 메시지 영역 */
 .chatroom-messages {
   flex: 1;
   padding: 16px;
@@ -96,19 +93,7 @@
   border-bottom-left-radius: 4px;
 }
 
-.chatroom-time {
-  font-size: 0.75rem;
-  color: #999;
-  margin-top: 4px;
-  text-align: right;
-}
-
-.chatroom-status {
-  font-size: 0.75rem;
-  color: #999;
-  margin-left: 4px;
-}
-
+/* 입력창 영역 */
 .chatroom-input-box {
   border-top: 1px solid #ddd;
   display: flex;
