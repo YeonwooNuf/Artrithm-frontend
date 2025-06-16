@@ -1,0 +1,89 @@
+.address-page {
+  max-width: 64rem;
+  margin: 2rem auto;
+  padding: 1.5rem;
+  background-color: #FAEED1;
+  border-radius: 1rem;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.address-page h2 {
+  color: #607274;
+  font-size: 1.75rem;
+  font-weight: bold;
+  text-align: center;
+  margin-bottom: 1.5rem;
+}
+
+.address-form button,
+.address-form input {
+  width: 100%;
+  padding: 0.5rem 0.75rem;
+  border-radius: 0.5rem;
+  margin-bottom: 0.5rem;
+  font-size: 0.95rem;
+  box-sizing: border-box;
+}
+
+.address-form input {
+  border: 1px solid #ccc;
+  background-color: #fff;
+}
+
+.address-form button {
+  background-color: #B2A59B;
+  color: white;
+  border: none;
+  cursor: pointer;
+}
+
+.address-form button:hover {
+  background-color: #A09085;
+}
+
+.address-form button:last-of-type {
+  background-color: #607274;
+  color: #FAEED1;
+}
+
+.address-form button:last-of-type:hover {
+  background-color: #4F615E;
+}
+
+.address-table {
+  width: 100%;
+  border-collapse: collapse;
+  background-color: white;
+  border-radius: 0.75rem;
+  overflow: hidden;
+  box-shadow: 0 0 8px rgba(0, 0, 0, 0.06);
+  font-size: 0.95rem;
+}
+
+.address-table thead {
+  background-color: #DED0B6;
+  text-align: left;
+}
+
+.address-table th,
+.address-table td {
+  padding: 0.75rem 1rem;
+  border-top: 1px solid #ccc;
+}
+
+.address-table tr:hover {
+  background-color: #f9f5ee;
+}
+
+.address-table button {
+  background-color: #898989;
+  color: white;
+  padding: 0.25rem 0.75rem;
+  border: none;
+  border-radius: 0.375rem;
+  cursor: pointer;
+}
+
+.address-table button:hover {
+  background-color: #585858;
+}

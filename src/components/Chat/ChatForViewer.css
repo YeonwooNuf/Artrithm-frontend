@@ -1,0 +1,123 @@
+.viewer-chat-room {
+  position: absolute;
+  top: 80px;
+  right: 370px;
+  width: 320px;
+  height: 440px;
+  background: white;
+  border: 1px solid #ccc;
+  display: flex;
+  flex-direction: column;
+  z-index: 1000;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  font-family: sans-serif;
+}
+
+.viewer-chat-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px;
+  background: #444;
+  color: white;
+  font-weight: bold;
+}
+
+.viewer-chat-profile {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.viewer-chat-artist-name {
+  font-size: 1rem;
+}
+
+.viewer-chat-close-btn {
+  margin-left: auto;
+  background: #ff6961;
+  border: none;
+  padding: 6px 12px;
+  color: white;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 0.85rem;
+}
+
+.viewer-chat-messages {
+  flex: 1;
+  padding: 10px;
+  overflow-y: auto;
+  background: #f9f9f9;
+  display: flex;
+  flex-direction: column;
+}
+
+.viewer-chat-message-wrapper {
+  margin: 5px 0;
+  display: flex;
+  flex-direction: column;
+  max-width: 80%;
+}
+
+.viewer-chat-message-wrapper.me {
+  align-self: flex-end;
+  text-align: right;
+}
+
+.viewer-chat-message-wrapper.other {
+  align-self: flex-start;
+  text-align: left;
+}
+
+.viewer-chat-bubble {
+  background: #e2e2e2;
+  padding: 10px;
+  border-radius: 12px;
+  position: relative;
+  word-break: break-word;
+}
+
+.viewer-chat-message-wrapper.me .viewer-chat-bubble {
+  background: #d1edc1;
+}
+
+.viewer-chat-message-wrapper.other .viewer-chat-bubble {
+  background: #ffffff;
+}
+
+.viewer-chat-meta {
+  font-size: 0.75rem;
+  color: #666;
+  margin-top: 4px;
+}
+
+.viewer-chat-read {
+  margin-left: 6px;
+  color: #4caf50;
+}
+
+.viewer-chat-input {
+  display: flex;
+  border-top: 1px solid #ccc;
+}
+
+.viewer-chat-input input {
+  flex: 1;
+  padding: 10px;
+  border: none;
+  outline: none;
+  font-size: 1rem;
+}
+
+.viewer-chat-input button {
+  padding: 10px 16px;
+  border: none;
+  background: #333;
+  color: white;
+  cursor: pointer;
+  font-weight: bold;
+}

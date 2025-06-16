@@ -7,7 +7,7 @@ import { useLocation } from "react-router-dom";
 import Player from "./Player";
 import GalleryModel from "./GalleryModel";
 import SceneContent from "./SceneContent";
-import ArtistChatRoom from "../Chat/ArtistChatRoom";
+import ChatForViewer from "../Chat/ChatForViewer";
 import LLMChatbot from "../Chat/LLMChatbot";
 import { getLayoutConfig } from "./layoutConfig";
 import "./Gallery3D.css";
@@ -20,19 +20,20 @@ export default function Gallery3D() {
   const [focusedId, setFocusedId] = useState(null);
   const [leftFocusedId, setLeftFocusedId] = useState(null);
   const [rightFocusedId, setRightFocusedId] = useState(null);
-
-  const leftRef = useRef(null);
-  const rightRef = useRef(null);
-
   const [infoId, setInfoId] = useState(null);
   const [chatId, setChatId] = useState(null);
   const [chatbotMode, setChatbotMode] = useState(null);
   const [typedText, setTypedText] = useState("");
   const [cameraRef, setCameraRef] = useState(null);
+  const [roomId, setRoomId] = useState(null);
 
   const pointerLockRef = useRef();
+  const leftRef = useRef(null);
+  const rightRef = useRef(null);
 
-  // 📸 카메라 캡처
+  const user = JSON.parse(localStorage.getItem("user"));
+  const artwork = works.find((art) => art.id === chatId);
+
   const captureCamera = (state) => {
     if (!cameraRef) setCameraRef(state.camera);
   };
@@ -42,12 +43,6 @@ export default function Gallery3D() {
     rightRef.current = rightFocusedId;
   }, [leftFocusedId, rightFocusedId]);
 
-  useEffect(() => {
-    console.log("👀 leftFocusedId:", leftFocusedId);
-    console.log("👀 rightFocusedId:", rightFocusedId);
-  }, [leftFocusedId, rightFocusedId]);
-
-  // 📜 설명창 타이핑 효과
   useEffect(() => {
     if (infoId) {
       const fullText = works.find((art) => art.id === infoId)?.description || "";
@@ -66,7 +61,6 @@ export default function Gallery3D() {
     }
   }, [infoId, works]);
 
-  // 🖱️ 커서 상태
   useEffect(() => {
     const canvasWrapper = document.querySelector(".gallery3d-wrapper");
     if (canvasWrapper) {
@@ -74,7 +68,31 @@ export default function Gallery3D() {
     }
   }, [chatId]);
 
-  // 🎹 키보드 조작
+  useEffect(() => {
+    const startChat = async () => {
+      if (!chatId || !user) return;
+
+      const artwork = works.find((art) => art.id === chatId);
+      const artistId = artwork?.artistId ?? artwork?.userId;
+      const exhibitionId = artwork?.exhibitionId;
+
+      try {
+        const res = await fetch(`/api/chatroom/create?exhibitionId=${exhibitionId}&artistId=${artistId}&viewerId=${user.id}`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/x-www-form-urlencoded"
+          }
+        });
+        const room = await res.json();
+        setRoomId(room.id);
+      } catch (e) {
+        console.error("채팅방 생성 실패:", e);
+      }
+    };
+
+    startChat();
+  }, [chatId, user, works]);
+
   useEffect(() => {
     const handleKeyDown = (e) => {
       const activeTag = document.activeElement?.tagName;
@@ -100,12 +118,9 @@ export default function Gallery3D() {
         });
 
         if (closest) {
-
           if (e.key.toLowerCase() === "r") {
             const idx = works.findIndex((art) => art.id === closest);
             const { position } = layout.getPosition(idx, works.length);
-
-            // 명화 전시관에서 정확한 좌/우 판별
             const isFrontWall = position[2] < 200;
 
             if (theme === "masterpiece") {
@@ -123,10 +138,12 @@ export default function Gallery3D() {
             }
           }
         }
+
         if (e.key.toLowerCase() === "f") {
           setInfoId((prev) => (prev === closest ? null : closest));
           setChatId(null);
         }
+
         if (e.key.toLowerCase() === "t") {
           setChatId((prev) => (prev === closest ? null : closest));
           setInfoId(null);
@@ -138,9 +155,9 @@ export default function Gallery3D() {
       }
 
       if (e.key === "Escape") {
-        setFocusedId(null);         // 일반 전시관 확대 초기화
-        setLeftFocusedId(null);     // 명화 전시관 왼쪽 초기화
-        setRightFocusedId(null);    // 명화 전시관 오른쪽 초기화
+        setFocusedId(null);
+        setLeftFocusedId(null);
+        setRightFocusedId(null);
         setInfoId(null);
         setChatId(null);
         setChatbotMode(null);
@@ -162,13 +179,23 @@ export default function Gallery3D() {
           </div>
         )}
 
-        {chatId && (
+        {chatbotMode === "artist" && chatId && roomId && (
+          <div className="viewer-chat-wrapper">
+            <ChatForViewer
+              artist={{
+                name: artwork?.userNickname,
+                profileImage: artwork?.userProfileImage,
+              }}
+              roomId={roomId}
+              senderId={user.id}
+              senderRole="viewer"
+            />
+          </div>
+        )}
+
+        {chatbotMode === "LLM" && chatId && (
           <div className="hud-chat">
-            {chatbotMode === "artist" ? (
-              <ArtistChatRoom artist={works.find((art) => art.id === chatId)?.artist} />
-            ) : (
-              <LLMChatbot artwork={works.find((art) => art.id === chatId)} />
-            )}
+            <LLMChatbot artwork={works.find((art) => art.id === chatId)} />
           </div>
         )}
 

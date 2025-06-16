@@ -8,6 +8,7 @@ import Home from "./pages/Home/Home";
 import LoginForm from "./components/login/LoginForm";
 import SignupPage from "./pages/Signup/SignupPage";
 import MyPage from "./pages/MyPage/MyPage";
+import AddressPage from "./pages/MyPage/AddressPage";
 
 import ExhibitionUpload from "./pages/Exhibition/ExhibitionUpload"; // 일반 사용자용
 import ExhibitionUploadMasterpiece from "./pages/AdminFeature/ExhibitionUploadMasterpiece"; // 관리자용
@@ -29,6 +30,9 @@ import ApprovePromotionPage from "./pages/AdminFeature/ApprovePromotionPage";
 import AuctionRequestpage from "./pages/ArtworkMarketpage/AuctionRequestpage";
 import AuctionRegisterpage from "./pages/ArtworkMarketpage/AuctionRegistpage";
 import Cartpage from "./pages/ArtworkMarketpage/Cartpage";
+
+import ChatList from "./pages/Chat/ChatList";
+import ChatPage from "./pages/Chat/ChatPage";
 
 function App() {
   const [user, setUser] = useState(() => {
@@ -74,6 +78,7 @@ function App() {
             element={<MyPage user={user} setUser={setUser} />}
           />
           <Route path="/myexhibition" element={<MyExhibitions />} />
+          <Route path="/mypage/address" element={<AddressPage />} />
           <Route path="/exhibitions/edit/:id" element={<ExhibitionEdit />} />
           <Route
             path="/admin/approve-promotion"
@@ -110,6 +115,9 @@ function App() {
             element={<AuctionRequestpage user={user} />}
           />
           <Route path="/auction-regist" element={<AuctionRegisterpage />} />
+            
+          <Route path="/chat/list" element={<ChatList user={user} />} />
+          <Route path="/chat/:roomId" element={<ChatPage user={user} />} />
 
           {/* 지정가 구매/판매 페이지 */}
           <Route
