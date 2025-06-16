@@ -29,7 +29,7 @@ import RequestArtistPage from "./pages/MyPage/RequestArtistPage";
 
 import ApprovePromotionPage from "./pages/AdminFeature/ApprovePromotionPage";
 import ChatList from "./pages/Chat/ChatList";
-import ChatRoom from "./pages/Chat/ChatRoom";
+import ChatPage from "./pages/Chat/ChatPage";
 
 function App() {
   const [user, setUser] = useState(() => {
@@ -97,7 +97,7 @@ function App() {
           {/* <Route path="/exhibitions/detail/:id" element={<ExhibitionDetailPage />} /> */}
           <Route path="/auction" element={<ArtworkAuctionpage user={user} />} />
           <Route path="/chat/list" element={<ChatList user={user} />} />
-          <Route path="/chat/:roomId" element={<ChatRoom user={user} />} />
+          <Route path="/chat/:roomId" element={<ChatPage user={user} />} />
 
         </Route>
       </Routes>
