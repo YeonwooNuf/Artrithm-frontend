@@ -20,13 +20,15 @@ import ExhibitionEdit from "./pages/Exhibition/ExhibitionEdit";
 
 import Exhibition3D from "./pages/3DGallery/Exhibition3D";
 
-
 import ArtworkMarketpage from "./pages/ArtworkMarketpage/ArtworkMarketpage";
 import ArtworkAuctionpage from "./pages/ArtworkMarketpage/ArtworkAuctionpage";
 import MyExhibitions from "./pages/MyPage/MyExhibitions";
 import RequestArtistPage from "./pages/MyPage/RequestArtistPage";
 
 import ApprovePromotionPage from "./pages/AdminFeature/ApprovePromotionPage";
+import AuctionRequestpage from "./pages/ArtworkMarketpage/AuctionRequestpage";
+import AuctionRegisterpage from "./pages/ArtworkMarketpage/AuctionRegistpage";
+import Cartpage from "./pages/ArtworkMarketpage/Cartpage";
 
 function App() {
   const [user, setUser] = useState(() => {
@@ -67,19 +69,31 @@ function App() {
           <Route path="/login" element={<LoginForm setUser={setUser} />} />
           <Route path="/signup" element={<SignupPage />} />
 
-          <Route path="/mypage" element={<MyPage user={user} setUser={setUser} />} />
+          <Route
+            path="/mypage"
+            element={<MyPage user={user} setUser={setUser} />}
+          />
           <Route path="/myexhibition" element={<MyExhibitions />} />
           <Route path="/exhibitions/edit/:id" element={<ExhibitionEdit />} />
-          <Route path="/admin/approve-promotion" element={<ApprovePromotionPage />} />
+          <Route
+            path="/admin/approve-promotion"
+            element={<ApprovePromotionPage />}
+          />
 
           <Route path="/request-artist" element={<RequestArtistPage />} />
 
           {/* ✅ 전시 업로드 */}
           <Route path="/upload" element={<ExhibitionUpload user={user} />} />
-          <Route path="/admin/upload-masterpiece" element={<ExhibitionUploadMasterpiece user={user} />} />
+          <Route
+            path="/admin/upload-masterpiece"
+            element={<ExhibitionUploadMasterpiece user={user} />}
+          />
 
           {/* ✅ 작품 설명 PDF 업로드 */}
-          <Route path="/admin/upload-description" element={<UploadExplanationFile user={user} />} />
+          <Route
+            path="/admin/upload-description"
+            element={<UploadExplanationFile user={user} />}
+          />
 
           {/* ✅ 전시 관련 */}
           <Route path="/exhibitions/:id" element={<ExhibitionPage />} />
@@ -89,10 +103,20 @@ function App() {
             element={<Exhibition3D />}
           />
 
-          <Route path="/fixed-price" element={<ArtworkMarketpage />} />
           {/* <Route path="/exhibitions/detail/:id" element={<ExhibitionDetailPage />} /> */}
           <Route path="/auction" element={<ArtworkAuctionpage user={user} />} />
+          <Route
+            path="/auction-request"
+            element={<AuctionRequestpage user={user} />}
+          />
+          <Route path="/auction-regist" element={<AuctionRegisterpage />} />
 
+          {/* 지정가 구매/판매 페이지 */}
+          <Route
+            path="/fixed-price"
+            element={<ArtworkMarketpage user={user} />}
+          />
+          <Route path="/cart" element={<Cartpage user={user} />} />
         </Route>
       </Routes>
     </BrowserRouter>

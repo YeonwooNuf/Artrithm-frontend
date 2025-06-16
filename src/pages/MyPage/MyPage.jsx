@@ -49,47 +49,9 @@ export default function MyPage({ user, setUser }) {
     }
   };
 
-  const handleRequestArtist = () => {
-    navigate("/request-artist");
-  };
-
   return (
     <div className={`mypage-container ${drawerOpen ? "drawer-open" : ""}`}>
       <h2 className="mypage-title">마이페이지</h2>
-
-      <div className="mypage-profile-section">
-        <div className="profile-image-preview">
-          <img
-            src={
-              profileImage
-                ? URL.createObjectURL(profileImage)
-                : user.profileImage
-                ? `http://localhost:8080${user.profileImage}`
-                : "/default-profile.png"
-            }
-            alt="프로필"
-          />
-        </div>
-        <div className="profile-info">
-          <h3>{user.nickname} 님</h3>
-          <p>
-            회원 유형:{" "}
-            {user.role === "ADMIN"
-              ? "관리자"
-              : user.role === "ARTIST"
-              ? "작가 회원"
-              : "일반 회원"}
-          </p>
-          {user.role === "USER" && (
-            <button
-              className="request-artist-button"
-              onClick={handleRequestArtist}
-            >
-              작가 승인 요청하기
-            </button>
-          )}
-        </div>
-      </div>
       <div className="mypage-profile-section">
         <div className="profile-image-preview">
           <img
@@ -140,9 +102,14 @@ export default function MyPage({ user, setUser }) {
           </button>
         )}
         {user.role === "ADMIN" ? (
-          <button className="mypage-button">경매등록</button>
+          ""
         ) : (
-          <button className="mypage-button">경매신청</button>
+          <button
+            className="mypage-button"
+            onClick={() => navigate("/auction-request")}
+          >
+            경매신청
+          </button>
         )}
       </div>
 
