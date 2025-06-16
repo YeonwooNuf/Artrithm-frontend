@@ -1,0 +1,116 @@
+.approval-container {
+  max-width: 800px;
+  margin: 50px auto;
+  padding: 20px;
+  font-family: "Pretendard", sans-serif;
+}
+
+.approval-title {
+  font-size: 24px;
+  font-weight: bold;
+  margin-bottom: 24px;
+  text-align: center;
+}
+
+.request-card {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  padding: 16px;
+  margin-bottom: 16px;
+  background-color: #fff;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+.request-info {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.request-thumbnail {
+  width: 80px;
+  height: 80px;
+  object-fit: cover;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+}
+
+.request-text h3 {
+  margin: 0 0 8px 0;
+  font-size: 18px;
+  font-weight: 600;
+}
+
+.request-text p {
+  margin: 0;
+  color: #555;
+  font-size: 14px;
+}
+
+.request-actions {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 8px;
+}
+
+.request-actions input[type="datetime-local"] {
+  padding: 6px 10px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  font-size: 14px;
+}
+
+.request-actions button {
+  padding: 6px 12px;
+  background-color: #2563eb;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.request-actions button:hover {
+  background-color: #1d4ed8;
+}
+
+/* 지정가 판매 페이지 */
+.fixed-sale-container {
+  max-width: 400px;
+  margin: 30px auto;
+  padding: 20px;
+  border: 1px solid #ccc;
+  border-radius: 12px;
+  background: #fafafa;
+}
+
+.fixed-sale-container h2 {
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+.fixed-sale-container label {
+  display: block;
+  margin: 12px 0 5px;
+}
+
+.fixed-sale-container select,
+.fixed-sale-container input {
+  width: 100%;
+  padding: 8px;
+  margin-bottom: 15px;
+}
+
+.fixed-sale-container button {
+  width: 100%;
+  padding: 10px;
+  background-color: #222;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+}
