@@ -3,53 +3,85 @@ import "./ArtworkAuctionpage.css";
 
 const ArtworkAuctionpage = ({ user }) => {
   const userId = user.id;
+  const [auctionId, setAuctionId] = useState(null);
+  const [auctionData, setAuctionData] = useState(null);
   const [lastestPrice, setLatestPrice] = useState(0);
   const [currentPrice, setCurrentPrice] = useState(0);
   const [bid, setBid] = useState("");
-  const [timeLeft, setTimeLeft] = useState(10); // 5분 남았다고 가정
-  const socket = useRef(null);
-  const auctionId = 1;
-  const [auctionData, setAuctionData] = useState(null);
-
+  const [timeLeft, setTimeLeft] = useState(10);
   const [isEnded, setIsEnded] = useState(false);
-  //초기 가격 정보
+  const socket = useRef(null);
+
+  // 1. 가장 첫 ongoing 경매 가져오기
   useEffect(() => {
-    fetch(`/api/auctions/bid/${auctionId}`)
-      .then((res) => res.json())
-      .then((data) => {
-        console.log("📦 초기 입찰 정보:", data);
-        if (data.top1Price) {
-          setLatestPrice(data.top1Price);
-          setCurrentPrice(data.top1Price);
+    fetch("/api/auctions/ongoing")
+      .then((res) => {
+        if (res.status === 404) throw new Error("진행 중인 경매 없음");
+        return res.json();
+      })
+      .then((id) => {
+        setAuctionId(id); // ✅ 단일 auctionId
+      })
+      .catch((err) => {
+        alert(err.message);
+      });
+  }, []);
+
+  // 2. auctionId 받아오면 상세 정보 요청
+  useEffect(() => {
+    if (auctionId !== null) {
+      fetch(`/api/auctions/${auctionId}`)
+        .then((res) => res.json())
+        .then((data) => setAuctionData(data));
+    }
+  }, [auctionId]);
+
+  // 3. 입찰 정보 및 남은 시간 계산
+  useEffect(() => {
+    if (auctionId && auctionData) {
+      fetch(`/api/auctions/bid/${auctionId}`)
+        .then((res) => res.json())
+        .then((data) => {
+          if (data.top1Price) {
+            setLatestPrice(data.top1Price);
+            setCurrentPrice(data.top1Price);
+          } else {
+            setLatestPrice(auctionData.startPrice);
+            setCurrentPrice(auctionData.startPrice);
+          }
           setTimeLeft(
             getRemainingSeconds(auctionData.startTime, auctionData.endTime)
           );
-        }
-      })
-      .catch((err) => {
-        console.error("❌ 입찰 정보 가져오기 실패:", err);
-        setLatestPrice(auctionData.startPrice);
-        setCurrentPrice(auctionData.startPrice);
-        setTimeLeft(
-          getRemainingSeconds(auctionData.startTime, auctionData.endTime)
-        );
-      });
-  }, [auctionId]);
+        })
+        .catch((err) => {
+          console.error("❌ 입찰 정보 가져오기 실패:", err);
+          setLatestPrice(auctionData.startPrice);
+          setCurrentPrice(auctionData.startPrice);
+          setTimeLeft(
+            getRemainingSeconds(auctionData.startTime, auctionData.endTime)
+          );
+        });
+    }
+  }, [auctionId, auctionData]);
 
-  //타이머 끝나면 낙찰 상태로 전환
+  // 4. 타이머 종료 시 낙찰 처리
   useEffect(() => {
-    if (timeLeft <= 0) {
+    if (timeLeft <= 0 && auctionId) {
       setIsEnded(true);
 
       fetch(`/api/auctions/${auctionId}/finalize`, { method: "POST" })
-        .then((res) => res.ok && console.log("🏁 낙찰 처리 완료"))
-        .catch((err) => console.error("❌ 낙찰 처리 실패:", err));
-
-      socket.current.close();
+        .then((res) => {
+          if (res.ok) {
+            console.log("🏁 낙찰 처리 완료");
+            return fetch(`/api/auctions/${auctionId}`); // ✅ 최신 정보 재요청
+          }
+        })
+        .then((res) => res.json())
+        .then((data) => setAuctionData(data)); // ✅ winnerNickname 포함
     }
   }, [timeLeft]);
 
-  // 웹소켓 연결
+  // 5. 웹소켓 연결
   useEffect(() => {
     socket.current = new WebSocket("ws://localhost:8080/ws/auction");
 
@@ -68,13 +100,13 @@ const ArtworkAuctionpage = ({ user }) => {
     socket.current.onmessage = (event) => {
       const data = JSON.parse(event.data);
       console.log("📩 서버에서 받은 가격:", data.price);
-      console.log(event.data);
       setCurrentPrice((prev) => (data.price > prev ? data.price : prev));
     };
 
     return () => socket.current.close();
   }, []);
 
+  // 6. 타이머 감소
   useEffect(() => {
     const timer = setInterval(() => {
       setTimeLeft((prev) => (prev > 0 ? prev - 1 : 0));
@@ -82,27 +114,17 @@ const ArtworkAuctionpage = ({ user }) => {
     return () => clearInterval(timer);
   }, []);
 
-  //auctionData 불러오기
-  useEffect(() => {
-    fetch(`/api/auctions/${auctionId}`)
-      .then((res) => res.json())
-      .then((data) => setAuctionData(data));
-  }, []);
-
   if (!auctionData) return <p>로딩 중...</p>;
 
-  // 시간 계산 함수
-  function getRemainingSeconds(startTimeStr, endTimeStr) {
+  const getRemainingSeconds = (startTimeStr, endTimeStr) => {
     const now = new Date();
     const startTime = new Date(startTimeStr);
     const endTime = new Date(endTimeStr);
-
     const totalAuctionSeconds = Math.floor((endTime - startTime) / 1000);
     const elapsed = Math.floor((now - startTime) / 1000);
-
     const remaining = totalAuctionSeconds - elapsed;
     return Math.max(0, remaining);
-  }
+  };
 
   const formatTime = (sec) => {
     const min = Math.floor(sec / 60);
@@ -110,17 +132,12 @@ const ArtworkAuctionpage = ({ user }) => {
     return `${min}분 ${s}초`;
   };
 
-  // 입찰하기
   const handleBid = () => {
     const bidPrice = parseInt(bid);
     if (bidPrice > currentPrice) {
       if (socket.current && socket.current.readyState === WebSocket.OPEN) {
         socket.current.send(
-          JSON.stringify({
-            auctionId: auctionId,
-            userId: userId,
-            price: bidPrice,
-          })
+          JSON.stringify({ auctionId, userId, price: bidPrice })
         );
         setBid("");
       } else {
@@ -148,6 +165,7 @@ const ArtworkAuctionpage = ({ user }) => {
           <p>
             🏁 낙찰가: <strong>{currentPrice.toLocaleString()}원</strong>
           </p>
+
           <p>
             👤 낙찰자: <strong>{auctionData.winnerNickname}</strong>
           </p>
@@ -161,10 +179,15 @@ const ArtworkAuctionpage = ({ user }) => {
         src={auctionData.artwork.imageUrl}
         alt={auctionData.artwork.title}
       />
-
       <div className="auction-info">
         <h2>{auctionData.artwork.title}</h2>
-        <p className="artist-name">👤 {auctionData.artwork.artistName}</p>
+        <p className="artist-name">
+          {" "}
+          👤{" "}
+          {auctionData.artwork.artistName
+            ? auctionData.artwork.artistName
+            : auctionData.artwork.userNickname}
+        </p>
         <p className="description">{auctionData.artwork.description}</p>
 
         <div className="auction-status">
