@@ -2,7 +2,7 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 80px 20px;
+  padding: 50px 10px;
   background-color: #b3a79f;
   min-height: 100vh;
   text-align: center;
@@ -117,6 +117,13 @@
   border: 1px solid #ccc;
   border-radius: 6px;
   margin-top: auto;
+}
+
+.viewer-chat-wrapper {
+  position: absolute;
+  top: 80px;
+  right: 20px;
+  z-index: 1000;
 }
 
 @media (max-width: 768px) {
