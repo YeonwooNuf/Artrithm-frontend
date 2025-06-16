@@ -7,7 +7,17 @@ export default function ChatForViewer({ artist, roomId, senderId, senderRole }) 
   const socketRef = useRef(null);
 
   useEffect(() => {
-    const ws = new WebSocket(`ws://localhost:8080/ws/chat?roomId=${roomId}`);
+    if (!roomId) {
+      console.warn("⚠️ roomId가 없습니다. 채팅방을 생성하지 못했습니다.");
+      return;
+    }
+
+    if (socketRef.current) {
+      console.warn("⚠️ 기존 WebSocket이 이미 존재합니다. 중복 연결 방지");
+      return;
+    }
+
+    const ws = new WebSocket(`ws://192.168.0.56:8080/ws/chat?roomId=${roomId}`);
     socketRef.current = ws;
 
     ws.onopen = () => {
@@ -18,6 +28,8 @@ export default function ChatForViewer({ artist, roomId, senderId, senderRole }) 
       try {
         const data = JSON.parse(event.data);
         if (!data.message) return;
+
+        console.log("📨 수신된 메시지:", data);
 
         setMessages((prev) => [
           ...prev,
@@ -31,19 +43,26 @@ export default function ChatForViewer({ artist, roomId, senderId, senderRole }) 
           },
         ]);
       } catch (err) {
-        console.error("메시지 파싱 실패:", err);
+        console.error("❌ 메시지 파싱 실패:", err);
       }
     };
 
-    ws.onclose = () => {
-      console.log("❌ WebSocket 연결 종료");
+    ws.onclose = (event) => {
+      console.log("❎ WebSocket 연결 종료:", event.code, event.reason);
+      socketRef.current = null; // 연결 종료 시 초기화
     };
 
-    return () => ws.close();
-  }, [roomId]);
+    return () => {
+      if (socketRef.current) {
+        console.log("🧹 WebSocket 연결 해제");
+        socketRef.current.close();
+        socketRef.current = null;
+      }
+    };
+  }, [roomId]); // ✅ roomId 변경 시만 effect 재실행
 
   const sendMessage = () => {
-    if (!input.trim()) return;
+    if (!input.trim() || !socketRef.current || socketRef.current.readyState !== WebSocket.OPEN) return;
 
     const messageObj = {
       roomId,
@@ -54,23 +73,14 @@ export default function ChatForViewer({ artist, roomId, senderId, senderRole }) 
 
     socketRef.current.send(JSON.stringify(messageObj));
 
-    setMessages((prev) => [
-      ...prev,
-      {
-        from: senderRole,
-        text: input,
-        timestamp: new Date().toLocaleTimeString(),
-        read: true,
-        senderNickname: "나",
-        senderProfileImage: null,
-      },
-    ]);
-
     setInput("");
   };
 
   const handleKeyDown = (e) => {
-    if (e.key === "Enter") sendMessage();
+    if (e.key === "Enter") {
+      e.preventDefault(); // 👈 필수!
+      sendMessage();
+    }
   };
 
   const handleCloseChat = async () => {
@@ -116,7 +126,7 @@ export default function ChatForViewer({ artist, roomId, senderId, senderRole }) 
         <input
           value={input}
           onChange={(e) => setInput(e.target.value)}
-          onKeyDown={handleKeyDown}
+          onKeyUp={handleKeyDown}
           placeholder="메시지를 입력하세요"
           className="viewer-chat-input-field"
         />
