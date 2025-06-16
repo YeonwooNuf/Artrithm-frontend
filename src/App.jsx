@@ -97,7 +97,7 @@ function App() {
           {/* <Route path="/exhibitions/detail/:id" element={<ExhibitionDetailPage />} /> */}
           <Route path="/auction" element={<ArtworkAuctionpage user={user} />} />
           <Route path="/chat/list" element={<ChatList user={user} />} />
-          <Route path="/chat/room" element={<ChatRoom user={user} />} />
+          <Route path="/chat/:roomId" element={<ChatRoom user={user} />} />
 
         </Route>
       </Routes>
