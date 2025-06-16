@@ -32,6 +32,7 @@ export default function Gallery3D() {
   const rightRef = useRef(null);
 
   const user = JSON.parse(localStorage.getItem("user"));
+  const artwork = works.find((art) => art.id === chatId);
 
   const captureCamera = (state) => {
     if (!cameraRef) setCameraRef(state.camera);
@@ -72,7 +73,7 @@ export default function Gallery3D() {
       if (!chatId || !user) return;
 
       const artwork = works.find((art) => art.id === chatId);
-      const artistId = artwork?.artist?.id;
+      const artistId = artwork?.artistId ?? artwork?.userId;
       const exhibitionId = artwork?.exhibitionId;
 
       try {
@@ -178,18 +179,23 @@ export default function Gallery3D() {
           </div>
         )}
 
-        {chatId && roomId && (
+        {chatbotMode === "artist" && chatId && roomId && (
+          <div className="viewer-chat-wrapper">
+            <ChatForViewer
+              artist={{
+                name: artwork?.userNickname,
+                profileImage: artwork?.userProfileImage,
+              }}
+              roomId={roomId}
+              senderId={user.id}
+              senderRole="viewer"
+            />
+          </div>
+        )}
+
+        {chatbotMode === "LLM" && chatId && (
           <div className="hud-chat">
-            {chatbotMode === "artist" ? (
-              <ChatForViewer
-                artist={works.find((art) => art.id === chatId)?.artist}
-                roomId={roomId}
-                senderId={user.id}
-                senderRole="viewer"
-              />
-            ) : chatbotMode === "LLM" ? (
-              <LLMChatbot artwork={works.find((art) => art.id === chatId)} />
-            ) : null}
+            <LLMChatbot artwork={works.find((art) => art.id === chatId)} />
           </div>
         )}
 
