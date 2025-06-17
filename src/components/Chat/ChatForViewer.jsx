@@ -68,6 +68,8 @@ export default function ChatForViewer({ artist, roomId, senderId, senderRole }) 
       roomId,
       senderId,
       senderRole,
+      senderNickname: user.nickname,
+      senderProfileImage: user.profileImage,
       message: input,
     };
 

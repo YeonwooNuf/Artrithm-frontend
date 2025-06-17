@@ -88,32 +88,40 @@ export default function MyPage({ user, setUser }) {
                 </div>
             </div>
 
-      <div className="mypage-menu">
-        <button className="mypage-button" onClick={() => setIsEditing(true)}>
-          회원정보 수정
-        </button>
-        <button className="mypage-button">구매 / 판매 내역</button>
-        <button className="mypage-button">주소 등록</button>
-        <button className="mypage-button">관심 전시</button>
-        {(user.role === "ARTIST" || user.role === "ADMIN") && (
-          <button
-            className="mypage-button"
-            onClick={() => setShowExhibitions(!showExhibitions)}
-          >
-            {showExhibitions ? "내 전시 접기" : "내 전시 보기"}
-          </button>
-        )}
-        {user.role === "ADMIN" ? (
-          ""
-        ) : (
-          <button
-            className="mypage-button"
-            onClick={() => navigate("/auction-request")}
-          >
-            경매신청
-          </button>
-        )}
-      </div>
+            <div className="mypage-menu">
+                <button className="mypage-button" onClick={() => setIsEditing(true)}>
+                    회원정보 수정
+                </button>
+                <button className="mypage-button">구매 / 판매 내역</button>
+                <button className="mypage-button" onClick={() => navigate("/mypage/address")}>
+                    주소 등록
+                </button>
+                <button
+                    className="mypage-button"
+                    onClick={() => setShowLikesModal(true)} // ✅ 모달 열기
+                >
+                    관심 전시
+                </button>
+
+                {(user.role === "ARTIST" || user.role === "ADMIN") && (
+                    <button
+                        className="mypage-button"
+                        onClick={() => setShowExhibitions(!showExhibitions)}
+                    >
+                        {showExhibitions ? "내 전시 접기" : "내 전시 보기"}
+                    </button>
+                )}
+                {user.role === "ADMIN" ? (
+                    ""
+                ) : (
+                    <button
+                        className="mypage-button"
+                        onClick={() => navigate("/auction-request")}
+                    >
+                        경매신청
+                    </button>
+                )}
+            </div>
 
             {isEditing && (
                 <form className="mypage-form" onSubmit={handleSubmit}>
