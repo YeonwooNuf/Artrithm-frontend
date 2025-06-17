@@ -1,56 +1,87 @@
 import React, { useEffect, useState } from "react";
-import "./cartpage.css";
+import "./CartPage.css"; // CSS는 아래에 따로 제공할게
 
-const Cartpage = ({ user }) => {
+const CartPage = ({ user }) => {
   const [cartItems, setCartItems] = useState([]);
+  const [activeTab, setActiveTab] = useState("FIXED_PRICE");
 
   useEffect(() => {
     if (!user?.id) return;
+
     fetch(`/api/cart/${user.id}`)
       .then((res) => res.json())
       .then((data) => setCartItems(data))
-      .catch((err) => console.error("장바구니 불러오기 실패", err));
+      .catch((err) => console.error("❌ 장바구니 로드 실패", err));
   }, [user]);
 
-  const fixedItems = cartItems.filter((item) => item.type === "FIXED_PRICE");
-  const auctionItems = cartItems.filter((item) => item.type === "AUCTION");
+  const filteredItems = cartItems.filter((item) => item.type === activeTab);
+
+  const handleDelete = async (cartItemId) => {
+    const res = await fetch(`/api/cart/delete/${cartItemId}`, {
+      method: "DELETE",
+    });
+
+    if (res.ok) {
+      alert("삭제 완료!");
+      setCartItems((prev) =>
+        prev.filter((item) => item.cartItemId !== cartItemId)
+      );
+    } else {
+      alert("삭제 실패");
+    }
+  };
 
   return (
     <div className="cart-page">
-      <h2>🛍 장바구니</h2>
+      <h2>🛒 나의 장바구니</h2>
 
-      <section>
-        <h3>정가 구매 작품</h3>
-        {fixedItems.length === 0 ? (
-          <p>없음</p>
-        ) : (
-          <ul>
-            {fixedItems.map((item) => (
-              <li key={item.id}>
-                {item.artworkTitle} - {item.price.toLocaleString()}원
-              </li>
-            ))}
-          </ul>
-        )}
-      </section>
+      <div className="cart-tab-buttons">
+        <button
+          className={activeTab === "FIXED_PRICE" ? "active" : ""}
+          onClick={() => setActiveTab("FIXED_PRICE")}
+        >
+          🛍 지정가
+        </button>
+        <button
+          className={activeTab === "AUCTION" ? "active" : ""}
+          onClick={() => setActiveTab("AUCTION")}
+        >
+          🏆 경매
+        </button>
+      </div>
 
-      <section>
-        <h3>경매 낙찰 작품</h3>
-        {auctionItems.length === 0 ? (
-          <p>없음</p>
+      <div className="cart-list">
+        {filteredItems.length === 0 ? (
+          <p className="empty-message">장바구니에 담긴 작품이 없습니다.</p>
         ) : (
-          <ul>
-            {auctionItems.map((item) => (
-              <li key={item.id}>
-                {item.artworkTitle} - 낙찰가:{" "}
-                {item.price?.toLocaleString() || "?"}원
-              </li>
-            ))}
-          </ul>
+          filteredItems.map((item) => (
+            <div className="cart-item" key={item.cartItemId}>
+              <img
+                src={`http://localhost:8080${item.artworkImageUrl}`}
+                alt={item.artworkTitle}
+                className="cart-thumbnail"
+              />
+              <div className="cart-info">
+                <h4>{item.artworkTitle}</h4>
+                <p>
+                  {item.type === "FIXED_PRICE"
+                    ? `정가: ${item.price.toLocaleString()}원`
+                    : `낙찰가: ${item.price?.toLocaleString() || "?"}원`}
+                </p>
+              </div>
+              <button
+                className="remove-button"
+                onClick={() => handleDelete(item.cartItemId)}
+              >
+                삭제
+              </button>
+              <button className="purchase-button">구매</button>
+            </div>
+          ))
         )}
-      </section>
+      </div>
     </div>
   );
 };
 
-export default Cartpage;
+export default CartPage;
