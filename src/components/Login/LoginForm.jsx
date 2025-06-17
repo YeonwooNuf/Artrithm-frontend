@@ -2,6 +2,7 @@ import { useState } from "react";
 import "./LoginForm.css";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import api from "../../api/axios";
 
 const LoginForm = ({ setUser }) => {
   const [loginId, setLoginId] = useState("");
@@ -13,7 +14,7 @@ const LoginForm = ({ setUser }) => {
     e.preventDefault();
 
     try {
-      const response = await axios.post("http://192.168.0.56:8080/api/users/login", {
+      const response = await api.post("/api/users/login", {
         loginId,
         password,
       });
@@ -41,7 +42,10 @@ const LoginForm = ({ setUser }) => {
   };
 
   return (
-    <div className="login-container" style={{ maxWidth: 300, margin: "100px auto", textAlign: "center" }}>
+    <div
+      className="login-container"
+      style={{ maxWidth: 300, margin: "100px auto", textAlign: "center" }}
+    >
       <h2>로그인</h2>
       <form onSubmit={handleLogin}>
         <input
@@ -51,7 +55,8 @@ const LoginForm = ({ setUser }) => {
           onChange={(e) => setLoginId(e.target.value)}
           required
         />
-        <br /><br />
+        <br />
+        <br />
         <input
           type="password"
           placeholder="비밀번호"
@@ -59,7 +64,8 @@ const LoginForm = ({ setUser }) => {
           onChange={(e) => setPassword(e.target.value)}
           required
         />
-        <br /><br />
+        <br />
+        <br />
         <button type="submit">로그인</button>
       </form>
       <p>{message}</p>
