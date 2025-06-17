@@ -73,11 +73,18 @@ export default function Gallery3D() {
       if (!chatId || !user) return;
 
       const artwork = works.find((art) => art.id === chatId);
-      const artistId = artwork?.artistId ?? artwork?.userId;
       const exhibitionId = artwork?.exhibitionId;
+      const artistId = artwork?.artistId ?? artwork?.userId;
+
+      const queryParams = new URLSearchParams();
+      queryParams.append("exhibitionId", exhibitionId);
+      queryParams.append("viewerId", user.id);
+      if (artistId !== null && artistId !== undefined) {
+        queryParams.append("artistId", artistId);
+      }
 
       try {
-        const res = await fetch(`/api/chatroom/create?exhibitionId=${exhibitionId}&artistId=${artistId}&viewerId=${user.id}`, {
+        const res = await fetch(`/api/chatroom/create?${queryParams.toString()}`, {
           method: "POST",
           headers: {
             "Content-Type": "application/x-www-form-urlencoded"
