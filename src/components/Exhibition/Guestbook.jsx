@@ -49,6 +49,7 @@ export default function Guestbook({ exhibitionId }) {
 
   return (
     <div className="guestbook-wrapper">
+
       {/* 배경 문양 */}
       <div className="guestbook-background-dot"></div>
       <div className="guestbook-background-dot-2"></div>

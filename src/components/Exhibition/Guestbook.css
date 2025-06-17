@@ -82,6 +82,42 @@
   z-index: 11;
 }
 
+.guestbook-actions {
+  margin-top: 8px;
+  display: flex;
+  gap: 8px;
+}
+
+.edit-guest-btn,
+.delete-guest-btn {
+  font-size: 0.85rem;
+  padding: 4px 10px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+/* ✏️ 수정 버튼 */
+.edit-guest-btn {
+  background-color: #b2a59b;
+  color: #fff;
+}
+
+.edit-guest-btn:hover {
+  background-color: #a49488;
+}
+
+/* 🗑️ 삭제 버튼 */
+.delete-guest-btn {
+  background-color: #d9534f;
+  color: white;
+}
+
+.delete-guest-btn:hover {
+  background-color: #c9302c;
+}
+
 @keyframes pulseKeyword {
   0%,
   100% {
