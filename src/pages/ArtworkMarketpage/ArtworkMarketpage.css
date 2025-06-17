@@ -3,7 +3,7 @@
   align-items: center;
   gap: 60px;
   padding: 30px;
-  margin-top: 90px;
+  margin-top: 0px;
 }
 
 .marketplace-container {
@@ -11,7 +11,7 @@
   flex-direction: column;
   align-items: center;
   gap: 40px;
-  margin-bottom: 230px;
+  margin-bottom: 100px;
 }
 
 .marketplace-artist-info {
@@ -46,7 +46,7 @@
   grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
   gap: 12px;
   padding: 10px 0;
-  margin-top: 130px;
+  margin-top: 240px;
   margin-left: 480px;
   border: none;
   background: none;
@@ -145,7 +145,7 @@
   display: flex;
   justify-content: center;
   gap: 30px;
-  margin-top: -90px;
+  /* margin-top: -90px; */
   margin-bottom: 40px;
   align-items: flex-start;
 }
@@ -262,4 +262,50 @@
 
 .marketpage-buy-button:hover {
   background: #424d4f;
+}
+
+/* 카트 모달 */
+.cart-modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.cart-modal-content {
+  background-color: white;
+  padding: 2rem 3rem;
+  border-radius: 16px;
+  text-align: center;
+  box-shadow: 0 0 12px rgba(0, 0, 0, 0.25);
+}
+
+.cart-modal-buttons {
+  margin-top: 1.5rem;
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+}
+
+.cart-modal-buttons button {
+  padding: 0.6rem 1.2rem;
+  font-size: 1rem;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.cart-modal-buttons button:first-child {
+  background-color: #007bff;
+  color: white;
+}
+
+.cart-modal-buttons button:last-child {
+  background-color: #ddd;
 }

@@ -12,7 +12,11 @@ export default function ExhibitionDetail({ exhibition }) {
     <div className="detail-container">
       <div className="detail-image-wrapper">
         <img
-          src={exhibition.thumbnail}
+          src={
+            exhibition.thumbnailUrl
+              ? exhibition.artworks?.[0]?.imageUrl
+              : exhibition.thumbnailUrl || "/default-thumbnail.png"
+          }
           alt="Exhibition"
           className="detail-image"
         />

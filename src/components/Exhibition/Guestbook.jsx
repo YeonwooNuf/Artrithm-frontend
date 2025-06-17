@@ -1,34 +1,59 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import axios from "axios";
 import "./Guestbook.css";
 
-export default function Guestbook({ guestbook }) {
-  const currentUser = JSON.parse(localStorage.getItem("user")); // ✅ 로그인한 사용자 정보
+export default function Guestbook({ exhibitionId }) {
+  const currentUser = JSON.parse(localStorage.getItem("user"));
+  const [guestbook, setGuestbook] = useState([]);
   const [content, setContent] = useState("");
-  const [messages, setMessages] = useState([]);
+  const [editId, setEditId] = useState(null);
+  const [editContent, setEditContent] = useState("");
 
-  const handleSubmit = (e) => {
+  const fetchGuestbook = async () => {
+    const res = await axios.get(`/api/exhibitions/${exhibitionId}/guestbook`);
+    setGuestbook(res.data);
+  };
+
+  useEffect(() => {
+    fetchGuestbook();
+  }, [exhibitionId]);
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
     if (!content.trim()) return;
 
-    // 임시 저장 (실제로는 API 호출 필요)
-    const newMessage = {
-      id: Date.now(),
-      nickname: currentUser.nickname,
+    await axios.post(`/api/exhibitions/${exhibitionId}/guestbook`, {
       userId: currentUser.id,
       content,
-    };
-    setMessages([newMessage, ...messages]);
+    });
     setContent("");
+    fetchGuestbook();
   };
 
-  const handleDelete = (id) => {
-    setMessages((prev) => prev.filter((msg) => msg.id !== id));
+  const handleUpdate = async (id) => {
+    await axios.put(`/api/exhibitions/${exhibitionId}/guestbook/${id}`, {
+      userId: currentUser.id,
+      content: editContent,
+    });
+    setEditId(null);
+    setEditContent("");
+    fetchGuestbook();
+  };
+
+  const handleDelete = async (id) => {
+    await axios.delete(
+      `/api/exhibitions/${exhibitionId}/guestbook/${id}?userId=${currentUser.id}`
+    );
+    fetchGuestbook();
   };
 
   return (
     <div className="guestbook-wrapper">
+
+      {/* 배경 문양 */}
       <div className="guestbook-background-dot"></div>
       <div className="guestbook-background-dot-2"></div>
+
       <div className="guestbook-container">
         <h3 className="guestbook-title">📝 방명록</h3>
 
@@ -45,21 +70,51 @@ export default function Guestbook({ guestbook }) {
         </form>
 
         <div className="guestbook-messages">
-          {[...messages, ...guestbook].map((entry, i) => (
-            <div key={entry.id || i} className="guestbook-message">
-              <strong>{entry.nickname}</strong>: {entry.content}
-
-              {/* ✅ 본인 작성글에만 수정/삭제 버튼 표시 */}
-              {entry.userId === currentUser?.id && (
-                <span className="guestbook-actions">
-                  <button className="edit-guest-btn">수정</button>
+          {guestbook.map((entry) => (
+            <div key={entry.id} className="guestbook-message">
+              <strong>{entry.nickname}</strong>:
+              {editId === entry.id ? (
+                <>
+                  <textarea
+                    value={editContent}
+                    onChange={(e) => setEditContent(e.target.value)}
+                  />
                   <button
-                    className="delete-guest-btn"
-                    onClick={() => handleDelete(entry.id)}
+                    className="guestbook-button"
+                    onClick={() => handleUpdate(entry.id)}
                   >
-                    삭제
+                    저장
                   </button>
-                </span>
+                  <button
+                    className="guestbook-button"
+                    onClick={() => setEditId(null)}
+                  >
+                    취소
+                  </button>
+                </>
+              ) : (
+                <>
+                  <span> {entry.content}</span>
+                  {entry.nickname === currentUser.nickname && (
+                    <div className="guestbook-actions">
+                      <button
+                        className="guestbook-button"
+                        onClick={() => {
+                          setEditId(entry.id);
+                          setEditContent(entry.content);
+                        }}
+                      >
+                        수정
+                      </button>
+                      <button
+                        className="guestbook-button"
+                        onClick={() => handleDelete(entry.id)}
+                      >
+                        삭제
+                      </button>
+                    </div>
+                  )}
+                </>
               )}
             </div>
           ))}

@@ -1,0 +1,18 @@
+.chatpage-container {
+  display: flex;
+  height: 100vh;
+}
+
+.chatpage-sidebar {
+  width: 30%;
+  border-right: 1px solid #ccc;
+  overflow-y: auto;
+  background-color: #f8f8f8;
+}
+
+.chatpage-chatroom {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  background-color: #fff;
+}

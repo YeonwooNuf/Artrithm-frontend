@@ -8,40 +8,39 @@ import ExhibitionFeed from "../../components/Exhibition/ExhibitionFeed";
 import Guestbook from "../../components/Exhibition/Guestbook";
 import "./ExhibitionPage.css";
 
-// ✅ dummy 데이터 import
-import { dummyExhibitions } from "../../data/dummyExhibitions";
-
 export const ExhibitionPage = () => {
   const { id } = useParams();
   const [exhibition, setExhibition] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const user = JSON.parse(localStorage.getItem("user"));
 
   useEffect(() => {
     const fetchExhibitionDetail = async () => {
       try {
-        const response = await axios.get(
-          `http://localhost:8080/api/exhibitions/${id}`
-        );
+        const response = await axios.get(`/api/exhibitions/${id}`);
+        console.log("✅ exhibition 응답 데이터:", response.data); // ✅ 여기!
         setExhibition(response.data);
       } catch (err) {
-        console.error("임시 더미데이터 사용", err);
-
-        // ✅ import한 dummyExhibitions에서 id 매칭
-        const matchedExhibition = dummyExhibitions.find(
-          (item) => item.id === Number(id)
-        );
-        setExhibition(matchedExhibition || null);
+        console.error("전시 정보를 불러오지 못했습니다.", err);
+        setError("전시 정보를 불러오지 못했습니다.");
+      } finally {
+        setLoading(false);
       }
     };
 
     fetchExhibitionDetail();
   }, [id]);
 
+  if (loading) return <p>전시 정보를 불러오는 중입니다...</p>;
+  if (error) return <p>{error}</p>;
+
   return (
     <div>
-      <ExhibitionFeed exhibition={exhibition} />
+      <ExhibitionFeed exhibition={exhibition} userId={user.id}/>
       <ExhibitionDetail exhibition={exhibition} />
       <ArtistInfo exhibition={exhibition} />
-      <Guestbook guestbook={exhibition?.guestbook || []} />
+      <Guestbook exhibitionId={exhibition.id} />
     </div>
   );
 };

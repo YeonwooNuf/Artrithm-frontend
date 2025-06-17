@@ -3,7 +3,8 @@ import "./MyPage.css";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import AdminDrawer from "../../components/Sidebar/AdminDrawer";
-import MyExhibitions from "./MyExhibitions"; // ✅ 추가
+import MyExhibitions from "./MyExhibitions";
+import LikedExhibitionsModal from "../../components/Modal/LikedExhibitionsModal";
 
 export default function MyPage({ user, setUser }) {
     const [nickname, setNickname] = useState(user.nickname || "");
@@ -14,7 +15,9 @@ export default function MyPage({ user, setUser }) {
     const [artistBio, setArtistBio] = useState(user.artistBio || "");
     const [isEditing, setIsEditing] = useState(false);
     const [drawerOpen, setDrawerOpen] = useState(false);
-    const [showExhibitions, setShowExhibitions] = useState(false); // ✅ 추가
+    const [showExhibitions, setShowExhibitions] = useState(false);
+    const [showLikesModal, setShowLikesModal] = useState(false);
+    const [showChatMenu, setShowChatMenu] = useState(false); // ✅ 추가
     const navigate = useNavigate();
 
     const handleSubmit = async (e) => {
@@ -29,7 +32,6 @@ export default function MyPage({ user, setUser }) {
 
         try {
             const userId = localStorage.getItem("userId");
-
             await axios.put(`http://localhost:8080/api/users/${userId}`, formData, {
                 headers: {
                     "Content-Type": "multipart/form-data",
@@ -39,17 +41,12 @@ export default function MyPage({ user, setUser }) {
             const res = await axios.get(`http://localhost:8080/api/users/${userId}`);
             setUser(res.data);
             localStorage.setItem("user", JSON.stringify(res.data));
-
             alert("회원 정보가 저장되었습니다.");
             setIsEditing(false);
         } catch (err) {
             console.error("❌ 수정 실패:", err);
             alert("저장 중 오류가 발생했습니다.");
         }
-    };
-
-    const handleRequestArtist = () => {
-        navigate("/request-artist");
     };
 
     return (
@@ -91,21 +88,32 @@ export default function MyPage({ user, setUser }) {
                 </div>
             </div>
 
-            <div className="mypage-menu">
-                <button className="mypage-button" onClick={() => setIsEditing(true)}>
-                    회원정보 수정
-                </button>
-                <button className="mypage-button">구매 / 판매 내역</button>
-                <button className="mypage-button" onClick={() => navigate("/mypage/address")}>
-                    주소 등록
-                </button>
-                <button className="mypage-button">관심 전시</button>
-                {(user.role === "ARTIST" || user.role === "ADMIN") && (
-                    <button className="mypage-button" onClick={() => setShowExhibitions(!showExhibitions)}>
-                        {showExhibitions ? "내 전시 접기" : "내 전시 보기"}
-                    </button>
-                )}
-            </div>
+      <div className="mypage-menu">
+        <button className="mypage-button" onClick={() => setIsEditing(true)}>
+          회원정보 수정
+        </button>
+        <button className="mypage-button">구매 / 판매 내역</button>
+        <button className="mypage-button">주소 등록</button>
+        <button className="mypage-button">관심 전시</button>
+        {(user.role === "ARTIST" || user.role === "ADMIN") && (
+          <button
+            className="mypage-button"
+            onClick={() => setShowExhibitions(!showExhibitions)}
+          >
+            {showExhibitions ? "내 전시 접기" : "내 전시 보기"}
+          </button>
+        )}
+        {user.role === "ADMIN" ? (
+          ""
+        ) : (
+          <button
+            className="mypage-button"
+            onClick={() => navigate("/auction-request")}
+          >
+            경매신청
+          </button>
+        )}
+      </div>
 
             {isEditing && (
                 <form className="mypage-form" onSubmit={handleSubmit}>
@@ -115,7 +123,6 @@ export default function MyPage({ user, setUser }) {
                         value={nickname}
                         onChange={(e) => setNickname(e.target.value)}
                     />
-
                     <label>이메일</label>
                     <input
                         className="input"
@@ -123,7 +130,6 @@ export default function MyPage({ user, setUser }) {
                         value={email}
                         onChange={(e) => setEmail(e.target.value)}
                     />
-
                     <label>생년월일</label>
                     <input
                         className="input"
@@ -131,14 +137,12 @@ export default function MyPage({ user, setUser }) {
                         value={birth}
                         onChange={(e) => setBirth(e.target.value)}
                     />
-
                     <label>전화번호</label>
                     <input
                         className="input"
                         value={phoneNumber}
                         onChange={(e) => setPhoneNumber(e.target.value)}
                     />
-
                     <label>프로필 이미지</label>
                     <input
                         className="input"
@@ -146,7 +150,6 @@ export default function MyPage({ user, setUser }) {
                         accept="image/*"
                         onChange={(e) => setProfileImage(e.target.files[0])}
                     />
-
                     {(user.role === "ARTIST" || user.role === "ADMIN") && (
                         <>
                             <label>작가 소개글</label>
@@ -157,7 +160,6 @@ export default function MyPage({ user, setUser }) {
                             />
                         </>
                     )}
-
                     <button type="submit" className="profile-save-button">
                         저장
                     </button>
@@ -179,6 +181,26 @@ export default function MyPage({ user, setUser }) {
             {showExhibitions && (
                 <MyExhibitions user={user} />
             )}
+
+            {showLikesModal && (
+                <LikedExhibitionsModal
+                    userId={user.id}
+                    onClose={() => setShowLikesModal(false)}
+                />
+            )}
+
+            {/* ✅ 채팅 플로팅 버튼 */}
+            <div className="chat-fab-wrapper">
+                <div className="chat-fab-button" onClick={() => setShowChatMenu(!showChatMenu)}>
+                    💬
+                </div>
+                {showChatMenu && (
+                    <div className="chat-popup-menu">
+                        <button onClick={() => navigate("/chat/list")}>채팅보기</button>
+                        <button onClick={() => navigate("/mypage/inquiries")}>문의하기</button>
+                    </div>
+                )}
+            </div>
         </div>
     );
 }
