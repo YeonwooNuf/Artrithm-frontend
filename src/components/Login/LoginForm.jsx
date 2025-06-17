@@ -2,6 +2,7 @@ import { useState } from "react";
 import "./LoginForm.css";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import api from "../../api/axios";
 
 const LoginForm = ({ setUser }) => {
   const [loginId, setLoginId] = useState("");
@@ -13,7 +14,7 @@ const LoginForm = ({ setUser }) => {
     e.preventDefault();
 
     try {
-      const response = await axios.post("http://192.168.0.56:8080/api/users/login", {
+      const response = await api.post("/api/users/login", {
         loginId,
         password,
       });
