@@ -40,8 +40,8 @@ const SignupPage = () => {
     };
 
     try {
-      const response = await axios.post(
-        "http://localhost:8080/api/users/signup",
+      const response = await api.post(
+        "/api/users/signup",
         payload
       );
       alert("회원가입 성공! 🎉");

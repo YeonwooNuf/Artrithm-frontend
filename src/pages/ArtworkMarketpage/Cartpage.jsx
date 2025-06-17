@@ -57,7 +57,7 @@ const CartPage = ({ user }) => {
           filteredItems.map((item) => (
             <div className="cart-item" key={item.cartItemId}>
               <img
-                src={`http://localhost:8080${item.artworkImageUrl}`}
+                src={`${import.meta.env.VITE_API_BASE_URL}${item.artworkImageUrl}`}
                 alt={item.artworkTitle}
                 className="cart-thumbnail"
               />

@@ -33,6 +33,7 @@ import Cartpage from "./pages/ArtworkMarketpage/Cartpage";
 
 import ChatList from "./pages/Chat/ChatList";
 import ChatPage from "./pages/Chat/ChatPage";
+import api from './api/axios';
 
 function App() {
   const [user, setUser] = useState(() => {
@@ -43,8 +44,8 @@ function App() {
   useEffect(() => {
     const userId = localStorage.getItem("userId");
     if (userId && !user) {
-      axios
-        .get(`http://localhost:8080/api/users/${userId}`)
+      api
+        .get(`/api/users/${userId}`)
         .then((res) => {
           console.log("✅ 사용자 정보:", res.data);
           setUser(res.data);

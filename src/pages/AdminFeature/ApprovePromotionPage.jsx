@@ -1,13 +1,14 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import "./ApprovePromotionPage.css";
+import api from "../../api/axios";
 
 export default function ApprovePromotionPage() {
   const [requests, setRequests] = useState([]);
 
   useEffect(() => {
     // 대기 중인 작가 승격 요청 목록 조회
-    axios.get("http://localhost:8080/api/promotion-requests/pending")
+    api.get("/api/promotion-requests/pending")
       .then(res => {
         console.log("✅ 서버로부터 받은 작가 요청 목록:", res.data);
         setRequests(res.data);
@@ -20,7 +21,7 @@ export default function ApprovePromotionPage() {
 
   const handleApprove = async (requestId) => {
     try {
-      await axios.put(`http://localhost:8080/api/promotion-requests/${requestId}/approve`);
+      await api.put(`/api/promotion-requests/${requestId}/approve`);
       alert("✅ 승인 완료되었습니다.");
       // 승인된 요청은 목록에서 제거
       setRequests((prev) => prev.filter((r) => r.requestId !== requestId));
@@ -47,7 +48,7 @@ export default function ApprovePromotionPage() {
 
               <div className="image-preview-container">
                 {req.artworkImageUrls.map((url, index) => {
-                  const fullUrl = `http://localhost:8080${url}`;
+                  const fullUrl = `${import.meta.env.VITE_API_BASE_URL}${url}`;
                   console.log(`🖼️ 이미지 ${index + 1} →`, fullUrl);
                   return (
                     <img

@@ -196,6 +196,7 @@ export default function Gallery3D() {
               roomId={roomId}
               senderId={user.id}
               senderRole="viewer"
+              user={user}
             />
           </div>
         )}

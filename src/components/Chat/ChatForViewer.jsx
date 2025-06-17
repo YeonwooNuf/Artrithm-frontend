@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import "./ChatForViewer.css";
 
-export default function ChatForViewer({ artist, roomId, senderId, senderRole }) {
+export default function ChatForViewer({ artist, roomId, senderId, senderRole, user }) {
   const [messages, setMessages] = useState([]);
   const [input, setInput] = useState("");
   const socketRef = useRef(null);
@@ -101,7 +101,7 @@ export default function ChatForViewer({ artist, roomId, senderId, senderRole }) 
       <div className="viewer-chat-header">
         {artist?.profileImage && (
           <img
-            src={`http://localhost:8080${artist.profileImage}`}
+            src={`${import.meta.env.VITE_API_BASE_URL}${artist.profileImage}`}
             alt="프로필"
             className="viewer-chat-profile"
           />

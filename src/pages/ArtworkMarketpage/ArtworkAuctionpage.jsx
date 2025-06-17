@@ -83,7 +83,7 @@ const ArtworkAuctionpage = ({ user }) => {
 
   // 5. 웹소켓 연결
   useEffect(() => {
-    socket.current = new WebSocket("ws://localhost:8080/ws/auction");
+    socket.current = new WebSocket("ws://192.168.0.56:8080/ws/auction");
 
     socket.current.onopen = () => {
       console.log("✅ 웹소켓 연결 성공");

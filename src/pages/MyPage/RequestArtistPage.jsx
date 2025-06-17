@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import "./RequestArtistPage.css";
+import api from '../../api/axios';
 
 export default function RequestArtistPage() {
   const [reason, setReason] = useState("");
@@ -23,7 +24,7 @@ export default function RequestArtistPage() {
     artworks.forEach((file) => formData.append("artworkImages", file));
 
     try {
-      await axios.post("http://localhost:8080/api/promotion-requests", formData, {
+      await api.post("/api/promotion-requests", formData, {
         headers: { "Content-Type": "multipart/form-data" },
       });
 

@@ -5,6 +5,7 @@ import axios from "axios";
 import AdminDrawer from "../../components/Sidebar/AdminDrawer";
 import MyExhibitions from "./MyExhibitions";
 import LikedExhibitionsModal from "../../components/Modal/LikedExhibitionsModal";
+import api from "../../api/axios";
 
 export default function MyPage({ user, setUser }) {
     const [nickname, setNickname] = useState(user.nickname || "");
@@ -32,13 +33,13 @@ export default function MyPage({ user, setUser }) {
 
         try {
             const userId = localStorage.getItem("userId");
-            await axios.put(`http://localhost:8080/api/users/${userId}`, formData, {
+            await api.put(`/api/users/${userId}`, formData, {
                 headers: {
                     "Content-Type": "multipart/form-data",
                 },
             });
 
-            const res = await axios.get(`http://localhost:8080/api/users/${userId}`);
+            const res = await api.get(`/api/users/${userId}`);
             setUser(res.data);
             localStorage.setItem("user", JSON.stringify(res.data));
             alert("회원 정보가 저장되었습니다.");
@@ -60,7 +61,7 @@ export default function MyPage({ user, setUser }) {
                             profileImage
                                 ? URL.createObjectURL(profileImage)
                                 : user.profileImage
-                                    ? `http://localhost:8080${user.profileImage}`
+                                    ? `${import.meta.env.VITE_API_BASE_URL}${user.profileImage}`
                                     : "/default-profile.png"
                         }
                         alt="프로필"

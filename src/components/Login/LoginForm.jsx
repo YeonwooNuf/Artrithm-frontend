@@ -13,7 +13,7 @@ const LoginForm = ({ setUser }) => {
     e.preventDefault();
 
     try {
-      const response = await axios.post("http://localhost:8080/api/users/login", {
+      const response = await axios.post("http://192.168.0.56:8080/api/users/login", {
         loginId,
         password,
       });

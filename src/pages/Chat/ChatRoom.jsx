@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useState } from "react";
 import axios from "axios";
 import { useParams } from "react-router-dom";
 import "./ChatRoom.css";
+import api from "../../api/axios";
 
 export default function ChatRoom({ user }) {
     const { roomId } = useParams();
@@ -14,7 +15,7 @@ export default function ChatRoom({ user }) {
     useEffect(() => {
         const fetchMessages = async () => {
             try {
-                const res = await axios.get(`http://localhost:8080/api/messages/${roomId}`);
+                const res = await api.get(`/api/messages/${roomId}`);
                 setMessages(res.data);
             } catch (err) {
                 console.error("❌ 메시지 불러오기 실패:", err);
@@ -23,7 +24,7 @@ export default function ChatRoom({ user }) {
 
         const fetchRoomInfo = async () => {
             try {
-                const res = await axios.get(`http://localhost:8080/api/chatroom/${roomId}/info?userId=${user.id}`);
+                const res = await api.get(`/api/chatroom/${roomId}/info?userId=${user.id}`);
                 setRoomInfo(res.data);
             } catch (err) {
                 console.error("❌ 채팅방 정보 조회 실패:", err);
@@ -69,7 +70,7 @@ export default function ChatRoom({ user }) {
 
     const exitChat = async () => {
         try {
-            await axios.delete(`http://localhost:8080/api/chatroom/${roomId}?userId=${user.id}`);
+            await api.delete(`/api/chatroom/${roomId}?userId=${user.id}`);
             window.location.href = "/chat/list"; // 목록으로 이동
         } catch (err) {
             console.error("❌ 채팅방 종료 실패:", err);
@@ -80,7 +81,7 @@ export default function ChatRoom({ user }) {
         <div className="chatroom-container-page">
             <div className="chatroom-header">
                 <img
-                    src={roomInfo?.otherProfileImage ? `http://localhost:8080${roomInfo.otherProfileImage}` : "/default-profile.png"}
+                    src={roomInfo?.otherProfileImage ? `${import.meta.env.VITE_API_BASE_URL}${roomInfo.otherProfileImage}` : "/default-profile.png"}
                     alt="상대 프로필"
                 />
                 <div className="info">

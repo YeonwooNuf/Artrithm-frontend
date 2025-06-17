@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import "./ChatList.css";
+import api from "../../api/axios";
 
 export default function ChatList({ user }) {
     const [chatRooms, setChatRooms] = useState([]);
@@ -11,7 +12,7 @@ export default function ChatList({ user }) {
         const fetchChatRooms = async () => {
             try {
                 const userId = user?.id || localStorage.getItem("userId");
-                const res = await axios.get(`http://localhost:8080/api/chatroom/user/${userId}`);
+                const res = await api.get(`/api/chatroom/user/${userId}`);
                 setChatRooms(res.data);
             } catch (err) {
                 console.error("❌ 채팅 목록 조회 실패:", err);
@@ -42,7 +43,7 @@ export default function ChatList({ user }) {
                             <img
                                 src={
                                     room.otherProfileImage
-                                        ? `http://localhost:8080${room.otherProfileImage}`
+                                        ? `${import.meta.env.VITE_API_BASE_URL}${room.otherProfileImage}`
                                         : "/default-profile.png"
                                 }
                                 alt="상대방 프로필"
