@@ -12,6 +12,7 @@
   "dependencies": {
     "@dimforge/rapier3d": "^0.16.2",
     "@dimforge/rapier3d-compat": "^0.16.2",
+    "@portone/browser-sdk": "^0.0.23",
     "@react-three/cannon": "^6.6.0",
     "@react-three/drei": "^10.0.5",
     "@react-three/fiber": "^9.1.1",
