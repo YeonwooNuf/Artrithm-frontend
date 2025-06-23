@@ -2,7 +2,8 @@ import React, { useEffect, useState, useRef } from "react";
 import { Canvas } from "@react-three/fiber";
 import { Environment, PointerLockControls } from "@react-three/drei";
 import * as THREE from "three";
-import { useLocation } from "react-router-dom";
+import { useLocation, useParams } from "react-router-dom";
+import api from "../../api/axios";
 
 import Player from "./Player";
 import GalleryModel from "./GalleryModel";
@@ -14,7 +15,10 @@ import "./Gallery3D.css";
 
 export default function Gallery3D() {
   const location = useLocation();
-  const { works = [], theme = "modern" } = location.state || {};
+  const { exhibitionId } = useParams();
+
+  const [works, setWorks] = useState(location.state?.works || []);
+  const [theme, setTheme] = useState(location.state?.theme || "modern");
   const layout = getLayoutConfig(theme);
 
   const [focusedId, setFocusedId] = useState(null);
@@ -37,6 +41,19 @@ export default function Gallery3D() {
   const captureCamera = (state) => {
     if (!cameraRef) setCameraRef(state.camera);
   };
+
+  useEffect(() => {
+    if (!location.state) {
+      api.get(`/api/exhibitions/${exhibitionId}`)
+        .then((res) => {
+          setWorks(res.data.artworks || []);
+          setTheme(res.data.theme || "modern");
+        })
+        .catch((err) => {
+          console.error("❌ 전시 데이터 불러오기 실패:", err);
+        });
+    }
+  }, [location.state, exhibitionId]);
 
   useEffect(() => {
     leftRef.current = leftFocusedId;
@@ -144,20 +161,20 @@ export default function Gallery3D() {
               setFocusedId(closest);
             }
           }
-        }
 
-        if (e.key.toLowerCase() === "f") {
-          setInfoId((prev) => (prev === closest ? null : closest));
-          setChatId(null);
-        }
+          if (e.key.toLowerCase() === "f") {
+            setInfoId((prev) => (prev === closest ? null : closest));
+            setChatId(null);
+          }
 
-        if (e.key.toLowerCase() === "t") {
-          setChatId((prev) => (prev === closest ? null : closest));
-          setInfoId(null);
-          setChatbotMode(theme === "masterpiece" ? "LLM" : "artist");
-          setTimeout(() => {
-            pointerLockRef.current?.unlock();
-          }, 50);
+          if (e.key.toLowerCase() === "t") {
+            setChatId((prev) => (prev === closest ? null : closest));
+            setInfoId(null);
+            setChatbotMode(theme === "masterpiece" ? "LLM" : "artist");
+            setTimeout(() => {
+              pointerLockRef.current?.unlock();
+            }, 50);
+          }
         }
       }
 
