@@ -4,6 +4,7 @@ import "./CartPage.css"; // CSS는 아래에 따로 제공할게
 const CartPage = ({ user }) => {
   const [cartItems, setCartItems] = useState([]);
   const [activeTab, setActiveTab] = useState("FIXED_PRICE");
+  // const [remainingTimeMap, setRemainingTimeMap] = useState({});
 
   useEffect(() => {
     if (!user?.id) return;
@@ -31,6 +32,38 @@ const CartPage = ({ user }) => {
     }
   };
 
+  // // remainingSeconds 계산 함수
+  // const calculateRemainingTime = (deadlineStr) => {
+  //   const deadline = new Date(deadlindStr);
+  //   const now = new Date();
+  //   const diffInSec = Math.floor((deadline - now) / 1000);
+  //   return Math.max(0, diffInSec);
+  // };
+
+  // 시간 포맷 함수
+  // const formatSeconds = (sec) => {
+  //   const h = Math.floor(sec / 3600);
+  //   const m = Math.floor((sec % 3600) / 60);
+  //   const s = sec % 60;
+  //   return `${h}시간 ${m}분 ${s}초`;
+  // };
+
+  // //1초마다 갱신
+  // useEffect(() => {
+  //   const timer = setInterval(() => {
+  //     const updatedMap = {};
+  //     cartItems.forEach((item) => {
+  //       if (item.type === "AUCTION" && item.paymentDeadline) {
+  //         updatedMap[item.cartItemId] = calculateRemainingTime(
+  //           item.paymentDeadline
+  //         );
+  //       }
+  //     });
+  //     setRemainingTimeMap(updatedMap);
+  //   }, 1000);
+  //   return () => clearInterval(timer);
+  // }, [cartItems]);
+
   return (
     <div className="cart-page">
       <h2>🛒 나의 장바구니</h2>
@@ -57,7 +90,9 @@ const CartPage = ({ user }) => {
           filteredItems.map((item) => (
             <div className="cart-item" key={item.cartItemId}>
               <img
-                src={`${import.meta.env.VITE_API_BASE_URL}${item.artworkImageUrl}`}
+                src={`${import.meta.env.VITE_API_BASE_URL}${
+                  item.artworkImageUrl
+                }`}
                 alt={item.artworkTitle}
                 className="cart-thumbnail"
               />
@@ -68,6 +103,12 @@ const CartPage = ({ user }) => {
                     ? `정가: ${item.price.toLocaleString()}원`
                     : `낙찰가: ${item.price?.toLocaleString() || "?"}원`}
                 </p>
+                {/* {item.type === "AUCTION" && item.paymentDeadline && (
+                  <p>
+                    ⏱️ 남은 결제 시간:{" "}
+                    {formatSeconds(remainingTimeMap[item.cartItemId] || 0)}
+                  </p>
+                )} */}
               </div>
               <button
                 className="remove-button"
