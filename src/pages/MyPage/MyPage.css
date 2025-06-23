@@ -213,6 +213,29 @@
   background-color: #f5f5f5;
 }
 
+.subscription-banner {
+  background-color: #DED0B6;
+  padding: 12px 20px;
+  border-radius: 10px;
+  margin: 20px auto;
+  width: fit-content;
+  text-align: center;
+  color: #607274;
+  font-size: 0.95rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+  transition: background-color 0.3s;
+}
+
+.subscription-link {
+  color: #B2A59B;
+  font-weight: bold;
+  text-decoration: underline;
+  cursor: pointer;
+}
+.subscription-link:hover {
+  color: #607274;
+}
+
 /* 반응형 대응 */
 @media (max-width: 768px) {
   .mypage-profile-section {

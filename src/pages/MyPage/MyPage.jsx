@@ -87,6 +87,16 @@ export default function MyPage({ user, setUser }) {
                         </button>
                     )}
                 </div>
+                            {user.role === "ARTIST" && (
+                <div className="subscription-banner">
+                    <p>
+                        {" "}
+                        <span className="subscription-link" onClick={() => navigate("/subscription")}>
+                            작가 전용 구독 서비스
+                        </span>
+                    </p>
+                </div>
+            )}
             </div>
 
             <div className="mypage-menu">
