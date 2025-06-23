@@ -5,7 +5,7 @@ import axios from "axios";
 import Layout from "./components/Layout/Layout";
 
 import Home from "./pages/Home/Home";
-import LoginForm from "./components/login/LoginForm";
+import LoginForm from "./components/Login/LoginForm";
 import SignupPage from "./pages/Signup/SignupPage";
 import MyPage from "./pages/MyPage/MyPage";
 import AddressPage from "./pages/MyPage/AddressPage";
@@ -33,6 +33,11 @@ import Cartpage from "./pages/ArtworkMarketpage/Cartpage";
 
 import ChatList from "./pages/Chat/ChatList";
 import ChatPage from "./pages/Chat/ChatPage";
+
+import SubscriptionPlan from "./pages/Subcription/SubscriptionPlan";
+import Payment from "./pages/Payment/Payment";
+import OrderCompletePage from "./pages/Payment/OrderCompletePage";
+
 import api from './api/axios';
 
 function App() {
@@ -116,7 +121,7 @@ function App() {
             element={<AuctionRequestpage user={user} />}
           />
           <Route path="/auction-regist" element={<AuctionRegisterpage />} />
-            
+
           <Route path="/chat/list" element={<ChatList user={user} />} />
           <Route path="/chat/:roomId" element={<ChatPage user={user} />} />
 
@@ -126,6 +131,10 @@ function App() {
             element={<ArtworkMarketpage user={user} />}
           />
           <Route path="/cart" element={<Cartpage user={user} />} />
+          <Route path="/subscription" element={<SubscriptionPlan user={user} />} />
+
+          <Route path="/order/complete" element={<OrderCompletePage user={user} />} />
+          <Route path="/payment" element={<Payment user={user} />} />
         </Route>
       </Routes>
     </BrowserRouter>
