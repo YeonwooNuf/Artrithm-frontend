@@ -1,0 +1,155 @@
+.subscription-wrapper {
+  background-color: #FAEED1;
+  color: #607274;
+  padding: 3rem 2rem;
+  text-align: center;
+  font-family: "Pretendard", sans-serif;
+  min-height: 100vh;
+}
+
+.subscription-title {
+  font-size: 2.5rem;
+  margin-bottom: 2rem;
+  font-weight: 700;
+  color: #607274;
+}
+
+.toggle-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 1.2rem;
+  margin-bottom: 2.5rem;
+  font-weight: 500;
+  font-size: 1rem;
+}
+
+.toggle-container span.active {
+  color: #B2A59B;
+  font-weight: bold;
+}
+
+.switch {
+  position: relative;
+  display: inline-block;
+  width: 52px;
+  height: 28px;
+}
+
+.switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0; left: 0;
+  right: 0; bottom: 0;
+  background-color: #B2A59B;
+  transition: 0.4s;
+  border-radius: 34px;
+}
+
+.slider:before {
+  position: absolute;
+  content: "";
+  height: 20px;
+  width: 20px;
+  left: 4px;
+  bottom: 4px;
+  background-color: white;
+  transition: 0.4s;
+  border-radius: 50%;
+}
+
+input:checked + .slider {
+  background-color: #607274;
+}
+
+input:checked + .slider:before {
+  transform: translateX(24px);
+}
+
+.plan-container {
+  display: flex;
+  justify-content: center;
+  gap: 2rem;
+  flex-wrap: wrap;
+}
+
+.plan-card {
+  background-color: #DED0B6;
+  border-radius: 16px;
+  padding: 2rem;
+  width: 300px;
+  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  position: relative;
+}
+
+.plan-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 16px 32px rgba(0, 0, 0, 0.15);
+}
+
+.plan-card.highlight {
+  border: 3px solid #607274;
+}
+
+.plan-card h3 {
+  font-size: 1.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.price {
+  font-size: 1.8rem;
+  margin: 1rem 0;
+  font-weight: bold;
+  color: #607274;
+}
+
+.plan-card ul {
+  list-style: none;
+  padding: 0;
+  margin-bottom: 1.8rem;
+  text-align: left;
+}
+
+.plan-card li {
+  margin-bottom: 0.6rem;
+  font-size: 0.95rem;
+  display: flex;
+  align-items: center;
+}
+
+.plan-card li::before {
+  content: "✔";
+  color: #607274;
+  font-weight: bold;
+  margin-right: 0.5rem;
+}
+
+.btn {
+  background-color: #B2A59B;
+  color: white;
+  border: none;
+  padding: 0.75rem 1.5rem;
+  border-radius: 10px;
+  font-weight: 600;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.btn:hover {
+  background-color: #DED0B6;
+  color: #607274;
+}
+
+.btn:disabled {
+  background-color: #ccc;
+  color: #888;
+  cursor: not-allowed;
+}
