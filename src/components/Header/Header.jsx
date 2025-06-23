@@ -67,9 +67,6 @@ const Header = ({ user, setUser }) => {
       <nav className="header__nav">
         <ul>
           <li><Link to="/">홈</Link></li>
-          <li>
-            <Link to="/">홈</Link>
-          </li>
           <li
             className="nav-dropdown"
             onMouseEnter={handleExhibitionEnter}
