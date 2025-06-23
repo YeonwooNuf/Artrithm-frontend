@@ -16,7 +16,9 @@ const ArtworkAuctionpage = ({ user }) => {
   useEffect(() => {
     fetch("/api/auctions/ongoing")
       .then((res) => {
-        if (res.status === 404) throw new Error("진행 중인 경매 없음");
+        if (res.status === 404) {
+          throw new Error("진행 중인 경매 없음");
+        }
         return res.json();
       })
       .then((id) => {
@@ -83,7 +85,7 @@ const ArtworkAuctionpage = ({ user }) => {
 
   // 5. 웹소켓 연결
   useEffect(() => {
-    socket.current = new WebSocket("ws://192.168.0.56:8080/ws/auction");
+    socket.current = new WebSocket("ws://localhost:8080/ws/auction");
 
     socket.current.onopen = () => {
       console.log("✅ 웹소켓 연결 성공");

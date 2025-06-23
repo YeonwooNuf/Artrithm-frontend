@@ -1,59 +1,170 @@
-.login-container {
-  max-width: 400px;
-  margin: 160px auto;
-  padding: 60px 40px;
-  background-color: #ffffff;
-  border: 1px solid #ded0b2;
-  border-radius: 12px;
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.05);
-  text-align: center;
-  font-family: "Noto Sans KR", sans-serif;
+/* * {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+  font-family: "Alata", sans-serif;
+} */
+
+/* 전체 페이지 배경 */
+.page-container {
+  width: 100vw;
+  height: 100vh;
+  background: #5e6e71;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
-.login-container h2 {
+/* 로그인 폼 전체 */
+.login-form-container {
+  background: #f5f5f5;
+  margin-top: 80px;
+  width: 860px;
+  height: 540px;
+  display: flex;
+  flex-direction: row;
+  border-radius: 10px;
+  box-shadow: 0 15px 40px rgba(36, 36, 36, 0.808);
+}
+
+/* 오른쪽 – 설명 영역 */
+.login-form-right-side {
+  width: 50%;
+  padding: 75px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  background: radial-gradient(
+    ellipse farthest-corner at 0 140%,
+    #f1f1f0 0%,
+    #cdc7ba 70%,
+    #faf1dc 70% /* #5d9dff 0%,
+    #2178ff 70%,
+    #3585ff 70% */
+  );
+  color: white;
+  border-radius: 10px 0 0 10px;
+}
+
+.login-form-right-side h1 {
   font-size: 24px;
-  color: #5e6e71;
-  margin-bottom: 40px;
-  font-weight: 500;
-  letter-spacing: 0.5px;
+  font-weight: 600;
+  margin-bottom: 24px;
+  text-align: right;
+  opacity: 0.9;
 }
 
-.login-container input {
+.login-form-right-side p {
+  font-size: 13px;
+  line-height: 1.6;
+  text-align: right;
+  opacity: 0.8;
+  padding-top: 20px;
+}
+
+/* 왼쪽 – 로그인 입력 영역 */
+.login-form-left-side {
+  width: 50%;
+  border-radius: 0 10px 10px 0;
+  background: linear-gradient(287deg, #ffffff 0%, #f3f4f4 0%, #ffffff 100%);
+  padding: 40px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.login-top-wrap {
   width: 100%;
-  padding: 14px 16px;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
   margin-bottom: 20px;
+}
+
+.login-top-wrap span {
+  font-size: 12px;
+  color: gray;
+  margin-right: 12px;
+}
+
+.create-account-btn {
+  background: white;
+  color: #cdc7ba;
   border: none;
-  border-bottom: 1px solid #b3a79f;
-  background-color: transparent;
-  font-size: 15px;
-  color: #5e6e71;
-  outline: none;
-  transition: border-color 0.3s ease;
-}
-
-.login-container input:focus {
-  border-color: #5e6e71;
-}
-
-.login-container button {
-  width: 100%;
-  padding: 12px;
-  background-color: transparent;
-  border: 1px solid #5e6e71;
-  border-radius: 6px;
-  color: #5e6e71;
-  font-size: 15px;
+  padding: 8px 12px;
+  border-radius: 4px;
+  font-size: 12px;
   cursor: pointer;
-  transition: all 0.3s ease;
 }
 
-.login-container button:hover {
-  background-color: #5e6e71;
-  color: #fff;
+/* 입력 필드 */
+.login-input-container {
+  width: 300px;
+  padding-top: 60px;
 }
 
-.login-container p {
-  margin-top: 25px;
+.login-input-wrap {
+  display: flex;
+  align-items: center;
+  border-bottom: 2px solid #faf1dc;
+  margin-top: 20px;
+  height: 45px;
+}
+
+.login-input-wrap i {
+  color: #faf1dc;
+  font-size: 16px;
+  padding: 0 8px;
+}
+
+.login-input-wrap input {
+  border: none;
+  background: none;
+  padding: 0 10px;
+  line-height: 45px;
+  flex: 1;
   font-size: 14px;
-  color: #666;
+}
+
+.login-input-wrap input:focus {
+  outline: none;
+}
+
+/* 버튼 & 링크 */
+.login-btn-wrap {
+  margin-top: 40px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.login-btn {
+  width: 100px;
+  height: 36px;
+  border: none;
+  border-radius: 4px;
+  color: white;
+  font-weight: bold;
+  font-size: 14px;
+  cursor: pointer;
+  background: linear-gradient(162deg, #809296 0%, #faf1dc 100%);
+  transition: background 0.3s ease;
+}
+
+.login-btn:hover {
+  background: linear-gradient(162deg, #5e6e71 0%, #bab4a6 100%);
+}
+
+.login-btn-wrap a {
+  margin-top: 10px;
+  font-size: 12px;
+  color: gray;
+  text-decoration: none;
+}
+
+/* 메시지 */
+.login-btn-wrap p {
+  margin-top: 16px;
+  font-size: 13px;
+  color: #888;
 }

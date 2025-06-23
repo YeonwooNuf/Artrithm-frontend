@@ -115,8 +115,10 @@ const ArtworkMarketpage = ({ user }) => {
         userId,
         artworkId,
         type: "FIXED_PRICE", // 고정가 구매
+        fixedPriceSaleId: artworkId.fixedPriceSaleId,
       }),
     });
+    console.log("🎨 artworkId", artworkId);
 
     if (res.ok) {
       setShowCartModal(true); // 모달 표시

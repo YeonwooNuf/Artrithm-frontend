@@ -27,7 +27,7 @@ const HeroSection = () => {
             <h2 className="hero__title">Think Art, Speak Artrithm</h2>
             <p className="hero__subtitle">AI와 함께하는 온라인 전시 플랫폼</p>
             {/* 임시로 */}
-            <Link to="/exhibitions/3">
+            <Link to="/view">
               <button className="hero__button">전시 보러가기</button>
             </Link>
           </div>

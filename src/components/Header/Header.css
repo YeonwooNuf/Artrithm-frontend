@@ -1,5 +1,5 @@
 .header {
-  position: relative;
+  position: fixed;
   top: 0;
   width: 100%;
   height: 56px;
@@ -10,6 +10,18 @@
   backdrop-filter: blur(6px);
   z-index: 1000;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  transition: top 0.3 ease-in-out;
+}
+
+.header.hidden {
+  opacity: 0;
+  transform: translateY(-100%);
+  pointer-events: none;
+}
+
+.header.visible {
+  opacity: 1;
+  transform: translateY(0);
 }
 
 .header_logo {

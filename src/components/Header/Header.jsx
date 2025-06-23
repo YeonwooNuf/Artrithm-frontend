@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import "./Header.css";
 import AdminDrawer from "../Sidebar/AdminDrawer";
@@ -10,6 +10,26 @@ const Header = ({ user, setUser }) => {
 
   const exhibitionTimer = useRef(null);
   const artworkTimer = useRef(null);
+
+  const [isVisible, setIsVisible] = useState(true);
+  const lastScrollY = useRef(0);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      const currentY = window.scrollY;
+
+      if (currentY > lastScrollY.current) {
+        setIsVisible(false); // 아래로 스크롤 → 숨김
+      } else {
+        setIsVisible(true); // 위로 스크롤 → 보임
+      }
+
+      lastScrollY.current = currentY;
+    };
+
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
 
   const handleLogout = () => {
     localStorage.removeItem("user");
@@ -37,7 +57,7 @@ const Header = ({ user, setUser }) => {
   };
 
   return (
-    <header className="header">
+    <header className={`header ${isVisible ? "visible" : "hidden"}`}>
       <div className="header_logo">
         <h1>
           Artrithm <img src="/logo.png" alt="logo" className="logo-icon" />
@@ -47,7 +67,9 @@ const Header = ({ user, setUser }) => {
       <nav className="header__nav">
         <ul>
           <li><Link to="/">홈</Link></li>
-
+          <li>
+            <Link to="/">홈</Link>
+          </li>
           <li
             className="nav-dropdown"
             onMouseEnter={handleExhibitionEnter}
