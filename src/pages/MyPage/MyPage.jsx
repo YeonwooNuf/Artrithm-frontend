@@ -87,23 +87,28 @@ export default function MyPage({ user, setUser }) {
                         </button>
                     )}
                 </div>
-                            {user.role === "ARTIST" && (
-                <div className="subscription-banner">
-                    <p>
-                        {" "}
-                        <span className="subscription-link" onClick={() => navigate("/subscription")}>
-                            작가 전용 구독 서비스
-                        </span>
-                    </p>
-                </div>
-            )}
+                {user.role === "ARTIST" && (
+                    <div className="subscription-banner">
+                        <p>
+                            {" "}
+                            <span className="subscription-link" onClick={() => navigate("/subscription")}>
+                                작가 전용 구독 서비스
+                            </span>
+                        </p>
+                    </div>
+                )}
             </div>
 
             <div className="mypage-menu">
                 <button className="mypage-button" onClick={() => setIsEditing(true)}>
                     회원정보 수정
                 </button>
-                <button className="mypage-button">구매 / 판매 내역</button>
+                <button
+                    className="mypage-button"
+                    onClick={() => navigate("/mypage/history")}
+                >
+                    구매 / 판매 내역
+                </button>
                 <button className="mypage-button" onClick={() => navigate("/mypage/address")}>
                     주소 등록
                 </button>
