@@ -37,6 +37,7 @@ import ChatPage from "./pages/Chat/ChatPage";
 import SubscriptionPlan from "./pages/Subcription/SubscriptionPlan";
 import Payment from "./pages/Payment/Payment";
 import OrderCompletePage from "./pages/Payment/OrderCompletePage";
+import SaleHistoryPage from "./pages/Payment/SaleHistoryPage";
 
 import api from './api/axios';
 
@@ -135,6 +136,7 @@ function App() {
 
           <Route path="/order/complete" element={<OrderCompletePage user={user} />} />
           <Route path="/payment" element={<Payment user={user} />} />
+          <Route path="/mypage/history" element={<SaleHistoryPage />} />
         </Route>
       </Routes>
     </BrowserRouter>
