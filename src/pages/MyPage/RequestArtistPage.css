@@ -1,61 +1,98 @@
+body {
+  background: url("/exhibition2.png") no-repeat center center fixed;
+  background-size: cover;
+  position: relative;
+  min-height: 100vh;
+  margin: 0;
+}
+
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  background: rgba(255, 255, 255, 0.4); /* 💡 반투명 흰색 필름 */
+
+  -webkit-backdrop-filter: blur(10px); /* 사파리 대응 */
+}
+
 .request-artist-container {
-  max-width: 600px;
-  margin: 40px auto;
-  padding: 2rem;
-  background-color: #fff;
-  border-radius: 12px;
-  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.08);
-  font-family: 'Pretendard', sans-serif;
+  max-width: 640px;
+  margin: 80px auto;
+  padding: 48px;
+  border-radius: 0px;
+  box-shadow: 0 12px 36px rgba(0, 0, 0, 0.08);
+  font-family: "Pretendard", sans-serif;
+  color: #222;
 }
 
 .request-artist-container h2 {
-  font-size: 1.6rem;
-  font-weight: bold;
-  margin-bottom: 1.5rem;
-  border-bottom: 2px solid #333;
-  padding-bottom: 0.5rem;
+  font-size: 28px;
+  font-weight: 700;
+  margin-bottom: 32px;
+  text-align: left;
+  color: #1a1a1a;
 }
 
 .request-artist-container form {
   display: flex;
   flex-direction: column;
+  gap: 24px;
 }
 
-.request-artist-container label {
-  font-size: 1rem;
-  font-weight: 600;
-  margin-bottom: 0.5rem;
-  margin-top: 1.2rem;
+.request-artist-container form label {
+  font-size: 15px;
+  font-weight: 500;
+  margin-bottom: 6px;
+  color: #444;
 }
 
 .request-artist-container textarea {
+  padding: 14px 18px;
+  font-size: 15px;
+  border-radius: 0px;
+  border: 1px solid #ddd;
+  background-color: #f9f9f9;
   resize: vertical;
-  min-height: 100px;
-  padding: 0.75rem;
-  border-radius: 8px;
-  border: 1px solid #ccc;
-  font-size: 1rem;
-  line-height: 1.5;
+  transition: border 0.2s ease;
+}
+
+.request-artist-container textarea:focus {
+  outline: none;
+  border-color: #7a78f0;
+  background-color: #fff;
 }
 
 .request-artist-container input[type="file"] {
-  margin-top: 0.5rem;
-  font-size: 0.95rem;
+  padding: 12px;
+  border: 1px dashed #ccc;
+  background-color: #fafafa;
+  border-radius: 0px;
+  font-size: 14px;
+  transition: all 0.2s ease;
+  cursor: pointer;
 }
 
-.request-artist-container button {
-  margin-top: 2rem;
-  padding: 0.75rem 1.2rem;
-  background-color: #888;
+.request-artist-container input[type="file"]:hover {
+  border-color: #7a78f0;
+  background-color: #fff;
+}
+
+.request-artist-container button[type="submit"] {
+  margin-top: 10px;
+  position: center;
+  background: linear-gradient(135deg, #7a78f0, #aca6ff);
   color: white;
   border: none;
-  border-radius: 8px;
-  font-size: 1rem;
+  padding: 16px;
+  font-size: 16px;
   font-weight: 600;
+  border-radius: 12px;
   cursor: pointer;
-  transition: background-color 0.2s ease;
+  transition: all 0.3s ease;
+  width: 200px;
 }
 
-.request-artist-container button:hover {
-  background-color: #3e3e3e;
+.request-artist-container button[type="submit"]:hover {
+  background: linear-gradient(135deg, #6a64e0, #9c94ff);
 }
