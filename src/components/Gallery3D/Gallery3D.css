@@ -121,8 +121,8 @@
 
 .viewer-chat-wrapper {
   position: absolute;
-  top: 80px;
-  right: 20px;
+  top: 20px;
+  right: -400px;
   z-index: 1000;
 }
 
