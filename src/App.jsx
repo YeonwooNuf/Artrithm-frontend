@@ -37,6 +37,7 @@ import ChatPage from "./pages/Chat/ChatPage";
 import SubscriptionPlan from "./pages/Subcription/SubscriptionPlan";
 import Payment from "./pages/Payment/Payment";
 import OrderCompletePage from "./pages/Payment/OrderCompletePage";
+import SaleHistoryPage from "./pages/Payment/SaleHistoryPage";
 
 import api from "./api/axios";
 import ArtistShowcasepage from "./pages/Artists/ArtistShowcasepage";
@@ -143,7 +144,11 @@ function App() {
           />
           <Route path="/payment" element={<Payment user={user} />} />
 
+
           <Route path="/artist" element={<ArtistShowcasepage />} />
+
+          <Route path="/mypage/history" element={<SaleHistoryPage />} />
+
         </Route>
       </Routes>
     </BrowserRouter>

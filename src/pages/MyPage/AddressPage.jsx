@@ -22,7 +22,8 @@ export default function AddressPage() {
     try {
       const res = await axios.get(`/api/users/${userId}/addresses`);
       setAddresses(res.data);
-      const defaultAddr = res.data.find((addr) => addr.isDefault);
+
+      const defaultAddr = res.data.find((addr) => addr.default); // ✅ "isDefault" → "default"로
       setDefaultAddressId(defaultAddr?.id || null);
     } catch (err) {
       console.error("❌ 주소 목록 로딩 실패:", err);
@@ -59,7 +60,6 @@ export default function AddressPage() {
     }
     try {
       await axios.post(`/api/users/${userId}/addresses`, newAddress);
-      fetchAddresses();
       setNewAddress({
         zonecode: "",
         roadAddress: "",
@@ -67,6 +67,7 @@ export default function AddressPage() {
         detailAddress: "",
         reference: "",
       });
+      fetchAddresses(); // 주소 추가 후 바로 목록 재조회
     } catch (err) {
       console.error("❌ 주소 추가 실패:", err);
     }
@@ -74,8 +75,9 @@ export default function AddressPage() {
 
   const handleSetDefault = async (id) => {
     try {
-      await axios.put(`/api/users/addresses/${id}/set-default`);
-      fetchAddresses();
+      await axios.put(`/api/users/${userId}/addresses/${id}/set-default`);
+      setDefaultAddressId(id); // ✅ 바로 UI 반영
+      fetchAddresses(); // 나중에 서버 반영된 상태로 다시 정리
     } catch (err) {
       console.error("❌ 기본 배송지 설정 실패:", err);
     }
@@ -84,7 +86,7 @@ export default function AddressPage() {
   const handleDelete = async (id) => {
     if (!window.confirm("정말 삭제하시겠습니까?")) return;
     try {
-      await axios.delete(`/api/users/addresses/${id}`);
+      await axios.delete(`/api/users/${userId}/addresses/${id}`);
       fetchAddresses();
     } catch (err) {
       console.error("❌ 주소 삭제 실패:", err);
@@ -142,24 +144,33 @@ export default function AddressPage() {
           </tr>
         </thead>
         <tbody>
-          {addresses.map((addr) => (
-            <tr key={addr.id}>
-              <td>
-                <input
-                  type="checkbox"
-                  checked={addr.id === defaultAddressId}
-                  onChange={() => handleSetDefault(addr.id)}
-                />
-              </td>
-              <td>{addr.zonecode}</td>
-              <td>{addr.roadAddress || addr.jibunAddress}</td>
-              <td>{addr.detailAddress}</td>
-              <td>{addr.reference}</td>
-              <td>
-                <button onClick={() => handleDelete(addr.id)}>삭제</button>
+          {addresses.length === 0 ? (
+            <tr>
+              <td colSpan={6} style={{ textAlign: "center" }}>
+                등록된 주소가 없습니다.
               </td>
             </tr>
-          ))}
+          ) : (
+            addresses.map((addr) => (
+              <tr key={addr.id}>
+                <td>
+                  <input
+                    type="radio"
+                    name="defaultAddress"
+                    checked={addr.id === defaultAddressId}
+                    onChange={() => handleSetDefault(addr.id)}
+                  />
+                </td>
+                <td>{addr.zonecode}</td>
+                <td>{addr.roadAddress || addr.jibunAddress}</td>
+                <td>{addr.detailAddress}</td>
+                <td>{addr.reference}</td>
+                <td>
+                  <button onClick={() => handleDelete(addr.id)}>삭제</button>
+                </td>
+              </tr>
+            ))
+          )}
         </tbody>
       </table>
     </div>

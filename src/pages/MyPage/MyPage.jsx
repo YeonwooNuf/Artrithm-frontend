@@ -56,6 +56,7 @@ export default function MyPage({ user, setUser }) {
     }
   };
 
+
   return (
     <div className={`mypage-container ${drawerOpen ? "drawer-open" : ""}`}>
       {/* <h2 className="mypage-title">마이페이지</h2> */}
@@ -114,7 +115,12 @@ export default function MyPage({ user, setUser }) {
           >
             회원정보 수정
           </button>
-          <button className="mypage-button">구매 / 판매 내역</button>
+          <button
+                    className="mypage-button"
+                    onClick={() => navigate("/mypage/history")}
+                >
+                    구매 / 판매 내역
+                </button>
           <button
             className="mypage-button"
             onClick={() => setActiveTab("Address")}
