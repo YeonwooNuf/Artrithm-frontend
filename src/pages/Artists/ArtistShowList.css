@@ -1,0 +1,45 @@
+.artist-showlist-section {
+  background-color: #5e6e71;
+  padding: 40px 20px;
+  color: #faf1dc;
+}
+
+.artist-list-title {
+  font-size: 1.8rem;
+  margin-bottom: 20px;
+  font-family: "Georgia", serif;
+}
+
+.artist-scroll-wrapper {
+  display: flex;
+  overflow-x: auto;
+  gap: 30px;
+  padding-bottom: 10px;
+  scrollbar-width: none; /* Firefox */
+}
+.artist-scroll-wrapper::-webkit-scrollbar {
+  display: none; /* Chrome/Safari */
+}
+
+.artist-item {
+  text-align: center;
+  min-width: 120px;
+}
+
+.artist-profile {
+  width: 100px;
+  height: 100px;
+  object-fit: cover;
+  border-radius: 50%;
+  border: 3px solid #faf1dc;
+  box-shadow: 0 0 8px rgba(0, 0, 0, 0.3);
+  transition: transform 0.3s ease;
+}
+.artist-profile:hover {
+  transform: scale(1.05);
+}
+
+.artist-name {
+  margin-top: 8px;
+  font-size: 0.95rem;
+}
