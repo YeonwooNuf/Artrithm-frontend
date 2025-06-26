@@ -10,7 +10,7 @@ export const getLayoutConfig = (theme) => {
           const gap = 7;
           const baseX = Math.floor(index / 2) * gap;
           return {
-            position: [baseX - 10, 2, isRightWall ? 12 : -12],
+            position: [baseX - 5, 2, isRightWall ? 12 : -12],
             rotation: [0, isRightWall ? Math.PI : 0, 0],
           };
         },
