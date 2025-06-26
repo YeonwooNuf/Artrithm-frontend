@@ -39,7 +39,8 @@ import Payment from "./pages/Payment/Payment";
 import OrderCompletePage from "./pages/Payment/OrderCompletePage";
 import SaleHistoryPage from "./pages/Payment/SaleHistoryPage";
 
-import api from './api/axios';
+import api from "./api/axios";
+import ArtistShowcasepage from "./pages/Artists/ArtistShowcasepage";
 
 function App() {
   const [user, setUser] = useState(() => {
@@ -132,11 +133,22 @@ function App() {
             element={<ArtworkMarketpage user={user} />}
           />
           <Route path="/cart" element={<Cartpage user={user} />} />
-          <Route path="/subscription" element={<SubscriptionPlan user={user} />} />
+          <Route
+            path="/subscription"
+            element={<SubscriptionPlan user={user} />}
+          />
 
-          <Route path="/order/complete" element={<OrderCompletePage user={user} />} />
+          <Route
+            path="/order/complete"
+            element={<OrderCompletePage user={user} />}
+          />
           <Route path="/payment" element={<Payment user={user} />} />
+
+
+          <Route path="/artist" element={<ArtistShowcasepage />} />
+
           <Route path="/mypage/history" element={<SaleHistoryPage />} />
+
         </Route>
       </Routes>
     </BrowserRouter>

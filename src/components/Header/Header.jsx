@@ -66,7 +66,9 @@ const Header = ({ user, setUser }) => {
 
       <nav className="header__nav">
         <ul>
-          <li><Link to="/">홈</Link></li>
+          <li>
+            <Link to="/">홈</Link>
+          </li>
           <li
             className="nav-dropdown"
             onMouseEnter={handleExhibitionEnter}
@@ -79,8 +81,12 @@ const Header = ({ user, setUser }) => {
                 onMouseEnter={handleExhibitionEnter}
                 onMouseLeave={handleExhibitionLeave}
               >
-                <li><Link to="/upload">개설하기</Link></li>
-                <li><Link to="/view">감상하기</Link></li>
+                <li>
+                  <Link to="/upload">개설하기</Link>
+                </li>
+                <li>
+                  <Link to="/view">감상하기</Link>
+                </li>
               </ul>
             )}
           </li>
@@ -97,14 +103,22 @@ const Header = ({ user, setUser }) => {
                 onMouseEnter={handleArtworkEnter}
                 onMouseLeave={handleArtworkLeave}
               >
-                <li><Link to="/fixed-price">지정가 구매</Link></li>
-                <li><Link to="/auction">진행중인 경매</Link></li>
+                <li>
+                  <Link to="/fixed-price">지정가 구매</Link>
+                </li>
+                <li>
+                  <Link to="/auction">진행중인 경매</Link>
+                </li>
               </ul>
             )}
           </li>
 
-          <li><Link to="/artist">작가</Link></li>
-          <li><Link to="/intro">소개</Link></li>
+          <li>
+            <Link to="/artist">작가</Link>
+          </li>
+          <li>
+            <Link to="/intro">소개</Link>
+          </li>
 
           {user ? (
             <li>
@@ -114,12 +128,21 @@ const Header = ({ user, setUser }) => {
             </li>
           ) : (
             <>
-              <li><Link to="/login">로그인</Link></li>
-              <li><Link to="/signup">회원가입</Link></li>
+              <li>
+                <Link to="/login">로그인</Link>
+              </li>
+              <li>
+                <Link to="/signup">회원가입</Link>
+              </li>
             </>
           )}
 
-          <li><Link to="/mypage">마이페이지</Link></li>
+          <li>
+            <Link to="/mypage">마이페이지</Link>
+          </li>
+          <li>
+            <Link to="/cart">🛒</Link>
+          </li>
         </ul>
       </nav>
     </header>

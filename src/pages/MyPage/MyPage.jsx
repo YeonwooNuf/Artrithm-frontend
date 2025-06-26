@@ -1,230 +1,255 @@
 import React, { useState } from "react";
 import "./MyPage.css";
 import { useNavigate } from "react-router-dom";
-import axios from "axios";
+// import axios from "axios";
 import AdminDrawer from "../../components/Sidebar/AdminDrawer";
 import MyExhibitions from "./MyExhibitions";
 import LikedExhibitionsModal from "../../components/Modal/LikedExhibitionsModal";
 import api from "../../api/axios";
+import AuctionRequestpage from "../ArtworkMarketpage/AuctionRequestpage";
+import AddressPage from "./AddressPage";
 
 export default function MyPage({ user, setUser }) {
-    const [nickname, setNickname] = useState(user.nickname || "");
-    const [email, setEmail] = useState(user.email || "");
-    const [birth, setBirth] = useState(user.birth || "");
-    const [phoneNumber, setPhoneNumber] = useState(user.phoneNumber || "");
-    const [profileImage, setProfileImage] = useState(null);
-    const [artistBio, setArtistBio] = useState(user.artistBio || "");
-    const [isEditing, setIsEditing] = useState(false);
-    const [drawerOpen, setDrawerOpen] = useState(false);
-    const [showExhibitions, setShowExhibitions] = useState(false);
-    const [showLikesModal, setShowLikesModal] = useState(false);
-    const [showChatMenu, setShowChatMenu] = useState(false); // ✅ 추가
-    const navigate = useNavigate();
+  const [nickname, setNickname] = useState(user.nickname || "");
+  const [email, setEmail] = useState(user.email || "");
+  const [birth, setBirth] = useState(user.birth || "");
+  const [phoneNumber, setPhoneNumber] = useState(user.phoneNumber || "");
+  const [profileImage, setProfileImage] = useState(null);
+  const [artistBio, setArtistBio] = useState(user.artistBio || "");
+  const [isEditing, setIsEditing] = useState(false);
+  const [drawerOpen, setDrawerOpen] = useState(false);
+  const [showExhibitions, setShowExhibitions] = useState(false);
+  const [showLikesModal, setShowLikesModal] = useState(false);
+  const [showChatMenu, setShowChatMenu] = useState(false); // ✅ 추가
+  const navigate = useNavigate();
+  const userId = user;
 
-    const handleSubmit = async (e) => {
-        e.preventDefault();
-        const formData = new FormData();
-        formData.append("nickname", nickname);
-        formData.append("email", email);
-        formData.append("birth", birth);
-        formData.append("phoneNumber", phoneNumber);
-        if (profileImage) formData.append("profileImageFile", profileImage);
-        if (user.role === "ARTIST" || user.role === "ADMIN") formData.append("artistBio", artistBio);
+  const [activeTab, setActiveTab] = useState("Edit");
 
-        try {
-            const userId = localStorage.getItem("userId");
-            await api.put(`/api/users/${userId}`, formData, {
-                headers: {
-                    "Content-Type": "multipart/form-data",
-                },
-            });
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    const formData = new FormData();
+    formData.append("nickname", nickname);
+    formData.append("email", email);
+    formData.append("birth", birth);
+    formData.append("phoneNumber", phoneNumber);
+    if (profileImage) formData.append("profileImageFile", profileImage);
+    if (user.role === "ARTIST" || user.role === "ADMIN")
+      formData.append("artistBio", artistBio);
 
-            const res = await api.get(`/api/users/${userId}`);
-            setUser(res.data);
-            localStorage.setItem("user", JSON.stringify(res.data));
-            alert("회원 정보가 저장되었습니다.");
-            setIsEditing(false);
-        } catch (err) {
-            console.error("❌ 수정 실패:", err);
-            alert("저장 중 오류가 발생했습니다.");
-        }
-    };
+    try {
+      const userId = localStorage.getItem("userId");
+      await api.put(`/api/users/${userId}`, formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      });
 
-    return (
-        <div className={`mypage-container ${drawerOpen ? "drawer-open" : ""}`}>
-            <h2 className="mypage-title">마이페이지</h2>
+      const res = await api.get(`/api/users/${userId}`);
+      setUser(res.data);
+      localStorage.setItem("user", JSON.stringify(res.data));
+      alert("회원 정보가 저장되었습니다.");
+      setIsEditing(false);
+    } catch (err) {
+      console.error("❌ 수정 실패:", err);
+      alert("저장 중 오류가 발생했습니다.");
+    }
+  };
 
-            <div className="mypage-profile-section">
-                <div className="profile-image-preview">
-                    <img
-                        src={
-                            profileImage
-                                ? URL.createObjectURL(profileImage)
-                                : user.profileImage
-                                    ? `${import.meta.env.VITE_API_BASE_URL}${user.profileImage}`
-                                    : "/default-profile.png"
-                        }
-                        alt="프로필"
-                    />
-                </div>
-                <div className="profile-info">
-                    <h3>{user.nickname} 님</h3>
-                    <p>
-                        회원 유형: {
-                            user.role === "ADMIN"
-                                ? "관리자"
-                                : user.role === "ARTIST"
-                                    ? "작가 회원"
-                                    : "일반 회원"
-                        }
-                    </p>
-                    {user.role === "USER" && (
-                        <button
-                            className="request-artist-button"
-                            onClick={() => navigate("/request-artist")}
-                        >
-                            작가 승인 요청하기
-                        </button>
-                    )}
-                </div>
-                {user.role === "ARTIST" && (
-                    <div className="subscription-banner">
-                        <p>
-                            {" "}
-                            <span className="subscription-link" onClick={() => navigate("/subscription")}>
-                                작가 전용 구독 서비스
-                            </span>
-                        </p>
-                    </div>
-                )}
-            </div>
 
-            <div className="mypage-menu">
-                <button className="mypage-button" onClick={() => setIsEditing(true)}>
-                    회원정보 수정
-                </button>
-                <button
+  return (
+    <div className={`mypage-container ${drawerOpen ? "drawer-open" : ""}`}>
+      {/* <h2 className="mypage-title">마이페이지</h2> */}
+
+      <div className="mypage-left-section">
+        <div className="mypage-profile-section">
+          <div className="profile-image-preview">
+            <img
+              src={
+                profileImage
+                  ? URL.createObjectURL(profileImage)
+                  : user.profileImage
+                  ? `${import.meta.env.VITE_API_BASE_URL}${user.profileImage}`
+                  : "/default-profile.png"
+              }
+              alt="프로필"
+            />
+          </div>
+          <div className="profile-info">
+            <h3>{user.nickname} 님</h3>
+            <p>
+              회원 유형:{" "}
+              {user.role === "ADMIN"
+                ? "관리자"
+                : user.role === "ARTIST"
+                ? "작가 회원"
+                : "일반 회원"}
+            </p>
+            {user.role === "USER" && (
+              <button
+                className="request-artist-button"
+                onClick={() => navigate("/request-artist")}
+              >
+                작가 승인 요청하기
+              </button>
+            )}
+            {user.role === "ARTIST" && (
+              <div className="subscription-banner">
+                <p>
+                  {" "}
+                  <span
+                    className="subscription-link"
+                    onClick={() => navigate("/subscription")}
+                  >
+                    ★ 작가 전용 구독 서비스
+                  </span>
+                </p>
+              </div>
+            )}
+          </div>
+        </div>
+        <div className="mypage-menu">
+          <button
+            className="mypage-button"
+            onClick={() => setActiveTab("Edit")}
+          >
+            회원정보 수정
+          </button>
+          <button
                     className="mypage-button"
                     onClick={() => navigate("/mypage/history")}
                 >
                     구매 / 판매 내역
                 </button>
-                <button className="mypage-button" onClick={() => navigate("/mypage/address")}>
-                    주소 등록
-                </button>
-                <button
-                    className="mypage-button"
-                    onClick={() => setShowLikesModal(true)} // ✅ 모달 열기
-                >
-                    관심 전시
-                </button>
+          <button
+            className="mypage-button"
+            onClick={() => setActiveTab("Address")}
+          >
+            주소 등록
+          </button>
+          <button
+            className="mypage-button"
+            onClick={() => setShowLikesModal(true)} // ✅ 모달 열기
+          >
+            관심 전시
+          </button>
 
-                {(user.role === "ARTIST" || user.role === "ADMIN") && (
-                    <button
-                        className="mypage-button"
-                        onClick={() => setShowExhibitions(!showExhibitions)}
-                    >
-                        {showExhibitions ? "내 전시 접기" : "내 전시 보기"}
-                    </button>
-                )}
-                {user.role === "ADMIN" ? (
-                    ""
-                ) : (
-                    <button
-                        className="mypage-button"
-                        onClick={() => navigate("/auction-request")}
-                    >
-                        경매신청
-                    </button>
-                )}
-            </div>
-
-            {isEditing && (
-                <form className="mypage-form" onSubmit={handleSubmit}>
-                    <label>닉네임</label>
-                    <input
-                        className="input"
-                        value={nickname}
-                        onChange={(e) => setNickname(e.target.value)}
-                    />
-                    <label>이메일</label>
-                    <input
-                        className="input"
-                        type="email"
-                        value={email}
-                        onChange={(e) => setEmail(e.target.value)}
-                    />
-                    <label>생년월일</label>
-                    <input
-                        className="input"
-                        type="date"
-                        value={birth}
-                        onChange={(e) => setBirth(e.target.value)}
-                    />
-                    <label>전화번호</label>
-                    <input
-                        className="input"
-                        value={phoneNumber}
-                        onChange={(e) => setPhoneNumber(e.target.value)}
-                    />
-                    <label>프로필 이미지</label>
-                    <input
-                        className="input"
-                        type="file"
-                        accept="image/*"
-                        onChange={(e) => setProfileImage(e.target.files[0])}
-                    />
-                    {(user.role === "ARTIST" || user.role === "ADMIN") && (
-                        <>
-                            <label>작가 소개글</label>
-                            <textarea
-                                className="textarea"
-                                value={artistBio}
-                                onChange={(e) => setArtistBio(e.target.value)}
-                            />
-                        </>
-                    )}
-                    <button type="submit" className="profile-save-button">
-                        저장
-                    </button>
-                </form>
-            )}
-
-            {user?.role === "ADMIN" && (
-                <>
-                    <button
-                        className="admin-circle-button"
-                        onClick={() => setDrawerOpen((prev) => !prev)}
-                    >
-                        ＋
-                    </button>
-                    <AdminDrawer onClose={() => setDrawerOpen(false)} isOpen={drawerOpen} />
-                </>
-            )}
-
-            {showExhibitions && (
-                <MyExhibitions user={user} />
-            )}
-
-            {showLikesModal && (
-                <LikedExhibitionsModal
-                    userId={user.id}
-                    onClose={() => setShowLikesModal(false)}
-                />
-            )}
-
-            {/* ✅ 채팅 플로팅 버튼 */}
-            <div className="chat-fab-wrapper">
-                <div className="chat-fab-button" onClick={() => setShowChatMenu(!showChatMenu)}>
-                    💬
-                </div>
-                {showChatMenu && (
-                    <div className="chat-popup-menu">
-                        <button onClick={() => navigate("/chat/list")}>채팅보기</button>
-                        <button onClick={() => navigate("/mypage/inquiries")}>문의하기</button>
-                    </div>
-                )}
-            </div>
+          {(user.role === "ARTIST" || user.role === "ADMIN") && (
+            <button
+              className="mypage-button"
+              onClick={() => setActiveTab("Myworks")}
+            >
+              {activeTab === "Myworks" ? "내 전시 접기" : "내 전시 보기"}
+            </button>
+          )}
+          {user.role === "ADMIN" ? (
+            ""
+          ) : (
+            <button
+              className="mypage-button"
+              onClick={() => setActiveTab("Auction")}
+            >
+              경매신청
+            </button>
+          )}
         </div>
-    );
+      </div>
+      <div className="mypage-right-panel">
+        {activeTab === "Auction" && <AuctionRequestpage user={userId} />}
+        {activeTab === "Address" && <AddressPage />}
+        {activeTab === "Myworks" && <MyExhibitions user={user} />}
+        {/* 나머지 탭들 */}
+        {activeTab === "Edit" && (
+          <form className="mypage-form" onSubmit={handleSubmit}>
+            <label>닉네임</label>
+            <input
+              className="input"
+              value={nickname}
+              onChange={(e) => setNickname(e.target.value)}
+            />
+            <label>이메일</label>
+            <input
+              className="input"
+              type="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+            />
+            <label>생년월일</label>
+            <input
+              className="input"
+              type="date"
+              value={birth}
+              onChange={(e) => setBirth(e.target.value)}
+            />
+            <label>전화번호</label>
+            <input
+              className="input"
+              value={phoneNumber}
+              onChange={(e) => setPhoneNumber(e.target.value)}
+            />
+            <label>프로필 이미지</label>
+            <input
+              className="input"
+              type="file"
+              accept="image/*"
+              onChange={(e) => setProfileImage(e.target.files[0])}
+            />
+            {(user.role === "ARTIST" || user.role === "ADMIN") && (
+              <>
+                <label>작가 소개글</label>
+                <textarea
+                  className="textarea"
+                  value={artistBio}
+                  onChange={(e) => setArtistBio(e.target.value)}
+                />
+              </>
+            )}
+            <button type="submit" className="profile-save-button">
+              저장
+            </button>
+          </form>
+        )}
+      </div>
+
+      {user?.role === "ADMIN" && (
+        <>
+          <button
+            className="admin-circle-button"
+            onClick={() => setDrawerOpen((prev) => !prev)}
+          >
+            ＋
+          </button>
+          <AdminDrawer
+            onClose={() => setDrawerOpen(false)}
+            isOpen={drawerOpen}
+          />
+        </>
+      )}
+
+      {showLikesModal && (
+        <LikedExhibitionsModal
+          userId={user.id}
+          onClose={() => setShowLikesModal(false)}
+        />
+      )}
+
+      {/* ✅ 채팅 플로팅 버튼 */}
+      <div className="chat-fab-wrapper">
+        <div
+          className="chat-fab-button"
+          onClick={() => setShowChatMenu(!showChatMenu)}
+        >
+          💬
+        </div>
+        {showChatMenu && (
+          <div className="chat-popup-menu">
+            <button onClick={() => navigate("/chat/list")}>채팅보기</button>
+            <button onClick={() => navigate("/mypage/inquiries")}>
+              문의하기
+            </button>
+          </div>
+        )}
+      </div>
+    </div>
+  );
 }

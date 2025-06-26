@@ -2,21 +2,19 @@
   display: flex;
   gap: 40px;
   padding: 60px;
-  background-color: #fcfbf8;
+  /* background: rgba(255, 255, 255, 0.1); */
   font-family: "Noto Serif KR", serif;
-  min-height: 80vh;
 }
 
 .form-section {
   flex: 1;
-  background: rgba(255, 255, 255, 0.9);
+  background: rgba(255, 255, 255, 0.1);
   padding: 40px 50px;
   border-radius: 18px;
   box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
   border: 1px solid #eee;
   min-width: 300px;
   max-width: 400px;
-  margin-top: 80px;
 }
 
 .form-title {
@@ -29,7 +27,7 @@
 }
 
 .auction-form label {
-  margin-top: 20px;
+  /* margin-top: 20px; */
   display: block;
   font-size: 15px;
   font-weight: bold;
@@ -43,7 +41,7 @@
   margin-top: 10px;
   border: 1px solid #ccc;
   border-radius: 8px;
-  background: #fefcf7;
+  background: rgba(255, 255, 255, 0.1);
 }
 
 .auction-form button {
@@ -69,12 +67,12 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  background: #f7f6f2;
+  background: rgba(255, 255, 255, 0.1);
   max-width: 400px;
   border-radius: 16px;
   box-shadow: inset 0 0 20px rgba(0, 0, 0, 0.05);
   padding: 20px;
-  min-height: 500px;
+  min-height: 300px;
   margin-top: 80px;
 }
 

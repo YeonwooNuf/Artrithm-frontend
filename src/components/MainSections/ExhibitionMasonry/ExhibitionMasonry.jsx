@@ -1,52 +1,60 @@
-import React, { useEffect, useState } from "react";
-import Masonry from "react-masonry-css";
+import React, { useEffect, useState, useRef } from "react";
 import { Link } from "react-router-dom";
 import axios from "axios";
 import "./ExhibitionMasonry.css";
 
-const breakpointColumnsObj = {
-  default: 3,
-  1100: 2,
-  700: 1,
-};
-
 const ExhibitionMasonry = () => {
   const [exhibitions, setExhibitions] = useState([]);
+  const trackRef = useRef(null);
+
+  const scrollBy = (direction) => {
+    const scrollAmount = 224; // 카드 너비 + gap
+    if (trackRef.current) {
+      trackRef.current.scrollBy({
+        left: scrollAmount * direction,
+        behavior: "smooth",
+      });
+    }
+  };
 
   useEffect(() => {
     axios
-      .get("/api/exhibitions") // ✅ 모든 전시 불러오기
+      .get("/api/exhibitions")
       .then((res) => setExhibitions(res.data))
       .catch((err) => console.error("전시 목록 불러오기 실패", err));
   }, []);
 
   return (
-    <section className="exhibition-masonry">
-      <h2 className="masonry-title">현재 진행 중인 전시</h2>
-      <Masonry
-        breakpointCols={breakpointColumnsObj}
-        className="masonry-grid"
-        columnClassName="masonry-column"
-      >
-        {exhibitions.map((exhibition) => (
-          <Link
-            to={`/exhibitions/${exhibition.id}`}
-            className="masonry-item"
-            key={exhibition.id}
-          >
-            <div className="image-box">
-              <img
-                src={exhibition.thumbnailUrl}
-                alt={exhibition.title}
-                loading="lazy"
-              />
-              <div className="image-overlay">
-                <p>{exhibition.title}</p>
+    <section className="exhibition-slider">
+      <h2 className="slider-title">Current Exhibitions</h2>
+      <div className="slider-wrapper">
+        <button className="arrow-prev" onClick={() => scrollBy(-1)}>
+          &lt;
+        </button>
+        <div className="slider-track" ref={trackRef}>
+          {exhibitions.map((exh, idx) => (
+            <Link
+              to={`/exhibitions/${exh.id}`}
+              className="slider-card"
+              key={exh.id}
+            >
+              <div
+                className={`card-inner ${idx % 2 === 0 ? "normal" : "reverse"}`}
+              >
+                <div className="thumb">
+                  <img src={exh.thumbnailUrl} alt={exh.title} loading="lazy" />
+                </div>
+                <div className="text">
+                  <h3>{exh.title}</h3>
+                </div>
               </div>
-            </div>
-          </Link>
-        ))}
-      </Masonry>
+            </Link>
+          ))}
+        </div>
+        <button className="arrow-next" onClick={() => scrollBy(1)}>
+          &gt;
+        </button>
+      </div>
     </section>
   );
 };

@@ -1,7 +1,13 @@
 import React, { useEffect, useRef, useState } from "react";
 import "./ChatForViewer.css";
 
-export default function ChatForViewer({ artist, roomId, senderId, senderRole, user }) {
+export default function ChatForViewer({
+  artist,
+  roomId,
+  senderId,
+  senderRole,
+  user,
+}) {
   const [messages, setMessages] = useState([]);
   const [input, setInput] = useState("");
   const socketRef = useRef(null);
@@ -17,7 +23,7 @@ export default function ChatForViewer({ artist, roomId, senderId, senderRole, us
       return;
     }
 
-    const ws = new WebSocket(`ws://192.168.0.56:8080/ws/chat?roomId=${roomId}`);
+    const ws = new WebSocket(`ws://localhost:8080/ws/chat?roomId=${roomId}`);
     socketRef.current = ws;
 
     ws.onopen = () => {
@@ -62,7 +68,12 @@ export default function ChatForViewer({ artist, roomId, senderId, senderRole, us
   }, [roomId]); // ✅ roomId 변경 시만 effect 재실행
 
   const sendMessage = () => {
-    if (!input.trim() || !socketRef.current || socketRef.current.readyState !== WebSocket.OPEN) return;
+    if (
+      !input.trim() ||
+      !socketRef.current ||
+      socketRef.current.readyState !== WebSocket.OPEN
+    )
+      return;
 
     const messageObj = {
       roomId,
@@ -106,18 +117,29 @@ export default function ChatForViewer({ artist, roomId, senderId, senderRole, us
             className="viewer-chat-profile"
           />
         )}
-        <span className="viewer-chat-artist-name">{artist?.name || "작가"}</span>
-        <button onClick={handleCloseChat} className="viewer-chat-close-btn">채팅 종료</button>
+        <span className="viewer-chat-artist-name">
+          {artist?.name || "작가"}
+        </span>
+        <button onClick={handleCloseChat} className="viewer-chat-close-btn">
+          채팅 종료
+        </button>
       </div>
 
       <div className="viewer-chat-messages">
         {messages.map((msg, i) => (
-          <div key={i} className={`viewer-chat-message-wrapper ${msg.from === senderRole ? "me" : "other"}`}>
+          <div
+            key={i}
+            className={`viewer-chat-message-wrapper ${
+              msg.from === senderRole ? "me" : "other"
+            }`}
+          >
             <div className="viewer-chat-bubble">
               <div className="viewer-chat-text">{msg.text}</div>
               <div className="viewer-chat-meta">
                 <span className="viewer-chat-time">{msg.timestamp}</span>
-                {msg.from === senderRole && msg.read && <span className="viewer-chat-read">읽음</span>}
+                {msg.from === senderRole && msg.read && (
+                  <span className="viewer-chat-read">읽음</span>
+                )}
               </div>
             </div>
           </div>
@@ -132,7 +154,9 @@ export default function ChatForViewer({ artist, roomId, senderId, senderRole, us
           placeholder="메시지를 입력하세요"
           className="viewer-chat-input-field"
         />
-        <button onClick={sendMessage} className="viewer-chat-send-btn">전송</button>
+        <button onClick={sendMessage} className="viewer-chat-send-btn">
+          전송
+        </button>
       </div>
     </div>
   );
