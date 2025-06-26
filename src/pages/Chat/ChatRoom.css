@@ -17,6 +17,7 @@
   background-color: #222;
   color: #fff;
   border-bottom: 1px solid #444;
+  position: relative;
 }
 
 .chatroom-header img {
@@ -42,6 +43,7 @@
 }
 
 .chatroom-header button {
+  margin-left: auto;
   background: none;
   border: none;
   color: #fff;
