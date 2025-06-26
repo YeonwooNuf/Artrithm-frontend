@@ -1,68 +1,181 @@
-.exhibition-masonry {
+.exhibition-slider {
   padding: 60px 40px;
-  background-color: #b3a79f;
+  background: #b3a79f;
 }
 
-.masonry-title {
+.slider-title {
+  font-family: "Playfair Display", serif;
   font-size: 28px;
-  color: #5e6e71;
+  font-weight: 600;
+  color: #2a2a2a;
   text-align: center;
+  letter-spacing: 0.5px;
   margin-bottom: 40px;
 }
 
-.masonry-grid {
-  display: flex;
-  margin-left: -30px; /* gutter size offset */
-  width: auto;
-}
-
-.masonry-column {
-  padding-left: 30px; /* gutter size */
-  background-clip: padding-box;
-}
-
-.masonry-item {
-  display: block;
-  margin-bottom: 30px;
-  text-decoration: none;
-  color: inherit;
-}
-
-.image-box {
+.slider-wrapper {
   position: relative;
+  width: 1190px; /* 200px * 5 */
+  height: 450px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
   overflow: hidden;
-  border-radius: 0px;
-  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.1);
-  transition: transform 0.4s ease;
 }
 
-.image-box img {
+/* 수평 슬라이드 영역 */
+.slider-track {
+  display: flex;
+  scroll-behavior: smooth;
+  overflow-x: auto;
+  gap: 24px;
+  padding: 0 10px;
+}
+
+.slider-track::-webkit-scrollbar {
+  display: none;
+}
+
+/* 카드 스타일 */
+.slider-card {
+  position: relative;
+  flex: 0 0 auto;
+  width: 200px;
+  height: 400px;
+  border-radius: 0px;
+  background: rgba(255, 255, 255, 0.12); /* 반투명 유리 배경 */
+  border: 1px solid rgba(255, 255, 255, 0.25); /* 유리 테두리 */
+  backdrop-filter: blur(14px); /* 유리 흐림 효과 */
+  -webkit-backdrop-filter: blur(14px);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15); /* 유리 그림자 */
+  overflow: hidden;
+  transition: transform 0.2s ease;
+  scroll-snap-align: start;
+}
+
+/* 테두리용 그라데이션 레이어 */
+.slider-card::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: 0px;
+  padding: 2px; /* 테두리 두께 */
+  background: linear-gradient(135deg, #ffffff9a, #53453c53);
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: destination-out;
+  mask-composite: exclude;
+  pointer-events: none;
+  z-index: 2;
+}
+
+.slider-card::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
   width: 100%;
-  display: block;
+  height: 100%;
+  border-radius: px;
+  background: linear-gradient(
+    145deg,
+    rgba(171, 163, 163, 0.174),
+    rgba(49, 49, 49, 0.03)
+  );
+  pointer-events: none;
+}
+
+.slider-card:hover {
+  transform: translateY(-4px);
+}
+
+/* 내용 배치 */
+.card-inner {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.card-inner.reverse {
+  flex-direction: column-reverse;
+}
+
+/* 이미지 */
+.thumb {
+  height: 70%;
+  overflow: hidden;
+  padding: 10px;
+}
+
+.thumb img {
+  width: 100%;
+  height: 100%;
   object-fit: cover;
 }
 
-.image-box:hover {
-  transform: scale(1.02);
-}
-
-.image-overlay {
+/* 텍스트 */
+.text {
   position: absolute;
-  bottom: 0;
-  width: 100%;
-  padding: 20px;
-  background: linear-gradient(to top, rgba(0, 0, 0, 0.6), transparent);
-  color: #fff;
-  opacity: 0;
-  transition: opacity 0.4s ease;
+  left: 12px;
+  font-size: 10px;
+  height: 30%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 6px 10px;
+  color: #222;
+  text-shadow: 0 1px 4px rgba(0, 0, 0, 0.2); /* 뿌연 배경 위에 대비 */
 }
 
-.image-box:hover .image-overlay {
-  opacity: 1;
-}
-
-.image-overlay p {
-  margin: 0;
-  font-weight: 600;
+.text h3 {
   font-size: 16px;
+  font-weight: 600;
+  color: #222;
+  margin: 0;
+  text-align: center;
+}
+
+/* 홀수번째 (normal): 왼쪽 아래 */
+.card-inner.normal .text {
+  bottom: -30px;
+}
+
+/* 짝수번째 (reverse): 왼쪽 위 */
+.card-inner.reverse .text {
+  top: -30px;
+}
+
+.arrow-next {
+  background: rgba(0, 0, 0, 0.2);
+  color: white;
+  font-size: 24px;
+  border: none;
+  width: 40px;
+  height: 50px;
+  cursor: pointer;
+  z-index: 10;
+  transition: background 0.2s;
+  border-radius: 2px;
+}
+
+.arrow-next:hover {
+  background: rgba(0, 0, 0, 0.4);
+}
+
+.arrow-prev {
+  background: rgba(0, 0, 0, 0.2);
+  /* margin-left: -10px; */
+  color: white;
+  font-size: 24px;
+  border: none;
+  width: 40px;
+  height: 50px;
+  cursor: pointer;
+  z-index: 10;
+  transition: background 0.2s;
+  border-radius: 2px;
+}
+
+.arrow-prev:hover {
+  background: rgba(0, 0, 0, 0.4);
 }
