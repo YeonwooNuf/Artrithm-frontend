@@ -25,6 +25,9 @@ export default function AdminDrawer({ onClose, isOpen }) {
         <li>
           <Link to="/auction-regist">경매등록</Link>
         </li>
+        <li>
+          <Link to="/admin/revenue">매출 통계</Link>
+        </li>
       </ul>
     </div>
   );
