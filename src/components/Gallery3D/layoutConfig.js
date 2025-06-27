@@ -29,10 +29,10 @@ export const getLayoutConfig = (theme) => {
         getPosition: (index, total) => {
           const totalSlots = 12;
           const outerRadius = 16.2;
-          const angle = (index / totalSlots) * 2 * Math.PI + 0.09;
+          const angle = (index / totalSlots) * 2 * Math.PI + 0.098;
           const x = Math.sin(angle) * outerRadius;
           const z = Math.cos(angle) * outerRadius;
-          const y = 3.5;
+          const y = 3.505;
           return {
             position: [x, y, z],
             rotation: [0, angle + Math.PI, 0],

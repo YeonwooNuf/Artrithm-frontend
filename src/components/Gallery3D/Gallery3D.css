@@ -15,14 +15,14 @@
 
 .gallery3d-container {
   position: relative;
-  width: 100%;
-  max-width: 960px;
-  height: 600px;
+  width: 85vw;
+  height: 100vh;
+  max-width: none;
+  border-radius: 0;
   background-color: #b3a79f;
-  border-radius: 12px;
-  overflow: visible;
-  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
-  margin-bottom: 1.5rem;
+  overflow: hidden;
+  box-shadow: none;
+  margin-bottom: 0;
 }
 
 .walk-guide {
@@ -122,7 +122,7 @@
 .viewer-chat-wrapper {
   position: absolute;
   top: 20px;
-  right: -400px;
+  right: -300px;
   z-index: 1000;
 }
 
