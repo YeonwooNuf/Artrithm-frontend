@@ -41,6 +41,8 @@ import SaleHistoryPage from "./pages/Payment/SaleHistoryPage";
 
 import api from "./api/axios";
 import ArtistShowcasepage from "./pages/Artists/ArtistShowcasepage";
+import UserArtistDetailPage from "./pages/Artists/UserArtistDetailPage";
+import ClassicArtistDetailPage from "./pages/Artists/ClassicArtistDetailPage";
 
 function App() {
   const [user, setUser] = useState(() => {
@@ -144,11 +146,15 @@ function App() {
           />
           <Route path="/payment" element={<Payment user={user} />} />
 
-
           <Route path="/artist" element={<ArtistShowcasepage />} />
 
           <Route path="/mypage/history" element={<SaleHistoryPage />} />
 
+          <Route path="/artists/user/:id" element={<UserArtistDetailPage />} />
+          <Route
+            path="/artists/classic/:id"
+            element={<ClassicArtistDetailPage />}
+          />
         </Route>
       </Routes>
     </BrowserRouter>

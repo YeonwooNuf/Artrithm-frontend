@@ -50,7 +50,7 @@ export default function ArtistInfo({ exhibition }) {
   return (
     <div className="artist-container">
       <div className="artist-photo-wrapper">
-        <img src={profileImage} alt="작가 사진" className="artist-photo" />
+        <img src={profileImage} alt="작가 사진" className="artist-photo-show" />
       </div>
 
       <div className="artist-info-box">

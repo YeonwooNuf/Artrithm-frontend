@@ -1,0 +1,117 @@
+/* 전체 페이지 레이아웃 */
+.user-artist-detail-page {
+  padding: 2rem;
+  /* overflow-y: hidden; */
+  height: auto;
+  box-sizing: border-box;
+}
+
+/* 작가 프로필 정보 섹션 */
+.user-artist-info {
+  display: flex;
+  align-items: center;
+  margin-top: 150px;
+  gap: 6rem;
+  margin-left: 150px;
+}
+
+/* 작가 프로필 이미지 */
+.user-artist-profile {
+  width: 300px;
+  height: 300px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+/* 프로필 오른쪽 텍스트 정보 */
+.user-artist-profile-info {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  max-width: 500px;
+}
+
+.user-artist-profile-info h2 {
+  margin-bottom: 1rem;
+}
+
+.user-artist-profile-info p {
+  font-size: 1rem;
+  color: #d6d2d2;
+  line-height: 1.5;
+  backdrop-filter: blur(4px); /* 유리 느낌 */
+  background: rgba(255, 255, 255, 0.05); /* 살짝 유리 배경 느낌 */
+}
+
+.user-artwork-grid {
+  column-count: 4;
+  column-gap: 20px;
+  padding: 1rem 0;
+}
+
+.user-artwork-card {
+  display: inline-block;
+  width: 100%;
+  margin-bottom: 20px;
+  break-inside: avoid; /* ✅ Masonry 흐름 깨지지 않게 */
+  position: relative;
+  overflow: hidden;
+}
+
+.user-artwork-card img {
+  width: 100%;
+  height: auto;
+  display: block;
+  transition: transform 0.3s ease;
+}
+
+.user-artwork-card:hover img {
+  transform: scale(1.05);
+}
+
+.user-artwork-title {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  padding: 10px;
+  background: rgba(0, 0, 0, 0.6);
+  color: white;
+  text-align: center;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.user-artwork-card:hover .user-artwork-title {
+  opacity: 1;
+}
+
+.user-artwork-card:hover .user-artwork-title {
+  opacity: 1;
+}
+
+.user-artist-profile-info h2 {
+  font-family: "Noto Sans KR", sans-serif;
+  font-size: 2.2rem;
+  color: rgba(0, 0, 0, 0.8); /* 검정 계열 반투명 */
+  text-shadow: 0 2px 6px rgba(0, 0, 0, 0.3); /* 유리 그림자 느낌 */
+
+  padding: 0.5rem 1rem;
+  border-radius: 12px;
+  display: inline-block;
+}
+
+/* 작품 목록 제목 */
+.user-artist-detail-page h3 {
+  font-family: "Noto Sans KR", sans-serif;
+  font-size: 1.6rem; /* 더 크게 */
+  color: #faf1dc; /* 흰색 */
+
+  margin-top: 170px;
+  margin-bottom: 1rem;
+
+  text-shadow: 0 2px 6px rgba(0, 0, 0, 0.4); /* 부드러운 그림자 */
+
+  padding: 0.5rem 1rem;
+  border-radius: 12px;
+  display: inline-block;
+}

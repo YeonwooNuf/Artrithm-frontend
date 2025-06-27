@@ -2,44 +2,55 @@
   background-color: #5e6e71;
   padding: 40px 20px;
   color: #faf1dc;
+  /* margin-bottom: 900px; */
 }
 
 .artist-list-title {
-  font-size: 1.8rem;
+  font-size: 2.5rem;
   margin-bottom: 20px;
   font-family: "Georgia", serif;
 }
 
-.artist-scroll-wrapper {
+.artistpage-scroll-wrapper {
   display: flex;
   overflow-x: auto;
   gap: 30px;
   padding-bottom: 10px;
   scrollbar-width: none; /* Firefox */
 }
-.artist-scroll-wrapper::-webkit-scrollbar {
+.artistpage-scroll-wrapper::-webkit-scrollbar {
   display: none; /* Chrome/Safari */
 }
 
-.artist-item {
+.artistpage-item {
   text-align: center;
   min-width: 120px;
+  margin-bottom: 100px;
 }
 
-.artist-profile {
-  width: 100px;
-  height: 100px;
+.artistpage-profile {
+  width: 170px;
+  height: 170px;
   object-fit: cover;
   border-radius: 50%;
   border: 3px solid #faf1dc;
   box-shadow: 0 0 8px rgba(0, 0, 0, 0.3);
   transition: transform 0.3s ease;
 }
-.artist-profile:hover {
+.artistpage-profile:hover {
   transform: scale(1.05);
 }
 
-.artist-name {
+.artistpage-name {
   margin-top: 8px;
   font-size: 0.95rem;
+}
+
+.custom-line {
+  border: none;
+  height: 1px;
+  background-color: #faf1dc; /* 원하는 색 */
+  margin: 20px 0;
+  margin-left: -50px;
+  width: 33%;
 }

@@ -51,10 +51,7 @@ const ArtworkMarketpage = ({ user }) => {
         const filteredData = data
           .map((artist) => ({
             ...artist,
-            works: artist.works.filter(
-              (work) =>
-                work.buyerUserId === null
-            ),
+            works: artist.works.filter((work) => work.buyerUserId === null),
           }))
           .filter((artist) => artist.works.length > 0);
         setGroupedArtists(filteredData);
@@ -144,8 +141,12 @@ const ArtworkMarketpage = ({ user }) => {
           <div className="cart-modal-content">
             <h3>🎉 장바구니에 담겼습니다!</h3>
             <div className="cart-modal-buttons">
-              <button onClick={() => navigate("/cart")}>🛒 장바구니로 이동</button>
-              <button onClick={() => setShowCartModal(false)}>🎨 계속 감상하기</button>
+              <button onClick={() => navigate("/cart")}>
+                🛒 장바구니로 이동
+              </button>
+              <button onClick={() => setShowCartModal(false)}>
+                🎨 계속 감상하기
+              </button>
             </div>
           </div>
         </div>
@@ -161,7 +162,9 @@ const ArtworkMarketpage = ({ user }) => {
         <span className="marketpage-mode-divider">|</span>
         <button
           onClick={() => setMode("sell")}
-          className={`marketpage-mode-button ${mode === "sell" ? "active" : ""}`}
+          className={`marketpage-mode-button ${
+            mode === "sell" ? "active" : ""
+          }`}
         >
           작품 판매하기
         </button>
@@ -196,7 +199,9 @@ const ArtworkMarketpage = ({ user }) => {
                     <h3>
                       {selectedArtwork.artworkTitle}
                       <span className="artist-name-tooltip-container">
-                        <span className="artist-name">(By {artist.artistName})</span>
+                        <span className="artist-name">
+                          (By {artist.artistName})
+                        </span>
                         <div className="artist-tooltip">
                           <img
                             src={artist.artistProfileImage}
@@ -207,7 +212,7 @@ const ArtworkMarketpage = ({ user }) => {
                       </span>
                     </h3>
                     <p>{selectedArtwork.description}</p>
-                    <p style={{ fontSize: "0.9em", color: "#888" }}>
+                    <p style={{ fontSize: "0.9em", color: "#FAF1DC" }}>
                       가격: {selectedArtwork.price?.toLocaleString() || "문의"}
                     </p>
                     <div className="marketpage-buttons">
@@ -242,7 +247,9 @@ const ArtworkMarketpage = ({ user }) => {
                     <div
                       key={work.artworkId}
                       className={`artwork-card ${
-                        selectedArtwork.artworkId === work.artworkId ? "selected" : ""
+                        selectedArtwork.artworkId === work.artworkId
+                          ? "selected"
+                          : ""
                       }`}
                       onClick={() =>
                         setSelectedArtworkMap((prev) => ({

@@ -8,6 +8,7 @@ import LikedExhibitionsModal from "../../components/Modal/LikedExhibitionsModal"
 import api from "../../api/axios";
 import AuctionRequestpage from "../ArtworkMarketpage/AuctionRequestpage";
 import AddressPage from "./AddressPage";
+import SaleHistoryPage from "../Payment/SaleHistoryPage";
 
 export default function MyPage({ user, setUser }) {
   const [nickname, setNickname] = useState(user.nickname || "");
@@ -55,7 +56,6 @@ export default function MyPage({ user, setUser }) {
       alert("저장 중 오류가 발생했습니다.");
     }
   };
-
 
   return (
     <div className={`mypage-container ${drawerOpen ? "drawer-open" : ""}`}>
@@ -116,11 +116,11 @@ export default function MyPage({ user, setUser }) {
             회원정보 수정
           </button>
           <button
-                    className="mypage-button"
-                    onClick={() => navigate("/mypage/history")}
-                >
-                    구매 / 판매 내역
-                </button>
+            className="mypage-button"
+            onClick={() => setActiveTab("History")}
+          >
+            구매 / 판매 내역
+          </button>
           <button
             className="mypage-button"
             onClick={() => setActiveTab("Address")}
@@ -158,6 +158,7 @@ export default function MyPage({ user, setUser }) {
         {activeTab === "Auction" && <AuctionRequestpage user={userId} />}
         {activeTab === "Address" && <AddressPage />}
         {activeTab === "Myworks" && <MyExhibitions user={user} />}
+        {activeTab === "History" && <SaleHistoryPage />}
         {/* 나머지 탭들 */}
         {activeTab === "Edit" && (
           <form className="mypage-form" onSubmit={handleSubmit}>

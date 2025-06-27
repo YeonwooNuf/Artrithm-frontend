@@ -15,9 +15,10 @@
 }
 
 /* 고정 요소 기준이 되는 컨테이너 */
-.artist-container {
+.artistpage-container {
+  margin-top: 100px;
   position: relative;
-  height: 170vh; /* 인트로 높이 (스크롤용) */
+  height: 140vh; /* 인트로 높이 (스크롤용) */
   width: 100vw;
   background-color: #5e6e71;
   overflow: hidden;
@@ -78,8 +79,8 @@
 /* 설명 텍스트 (한글) */
 .artist-showcase-description1 {
   position: absolute;
-  top: 8%;
-  left: 8%;
+  top: 10%;
+  left: 15%;
   font-size: 20px;
   color: #faf1dc;
   font-weight: 300;
@@ -94,8 +95,8 @@
 /* 설명 텍스트 (영문) */
 .artist-showcase-description2 {
   position: absolute;
-  top: 52%;
-  left: 8%;
+  top: 60%;
+  left: 15%;
   font-size: 20px;
   color: #e8dcc0;
   font-weight: 300;
@@ -116,7 +117,7 @@
 /* 버튼 두 개 감싸는 영역 */
 .artist-button-wrapper {
   position: relative;
-  margin-top: 700px;
+  margin-top: 650px;
   margin-left: 200px;
   width: 100%;
   height: 300px;

@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import "./ArtistShowcasepage.css";
 import ArtistShowList from "./ArtistShowList";
@@ -8,6 +8,8 @@ export default function ArtistShowcasepage() {
   const [showCenterImage, setShowCenterImage] = useState(false);
   const [showDiscription, setShowDiscription] = useState(true);
   const navigate = useNavigate();
+
+  const artistListRef = useRef(); // ✅ ArtistShowList 위치 참조
 
   useEffect(() => {
     const handleScroll = () => {
@@ -20,10 +22,14 @@ export default function ArtistShowcasepage() {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
+  const scrollToArtistList = () => {
+    artistListRef.current?.scrollIntoView({ behavior: "smooth" });
+  };
+
   return (
     <div className="artist-showcase-page">
       <div className="artist-showcase">
-        <div className="artist-container">
+        <div className="artistpage-container">
           <p className="artist-showcase-description1">
             예술은 특별한 사람만의 것이 아닙니다.
             <br />
@@ -35,7 +41,7 @@ export default function ArtistShowcasepage() {
             src="/artist1.png"
             className="artist-photo left"
             alt="Left Artist"
-            style={{ left: "5%", top: "70%", width: "200px", height: "300px" }}
+            style={{ left: "20%", top: "88%", width: "200px", height: "300px" }}
           />
           <img
             src="/artist3.png"
@@ -68,11 +74,15 @@ export default function ArtistShowcasepage() {
             >
               작가 신청하기
             </button>
-            <button className="artist-view-button">등록 아티스트 보기</button>
+            <button className="artist-view-button" onClick={scrollToArtistList}>
+              등록 아티스트 보기
+            </button>
           </div>
         </div>
       </div>
-      <ArtistShowList />
+      <div ref={artistListRef}>
+        <ArtistShowList />
+      </div>
     </div>
   );
 }
