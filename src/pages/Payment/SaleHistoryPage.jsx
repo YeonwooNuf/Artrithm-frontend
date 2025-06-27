@@ -33,7 +33,10 @@ export default function SaleHistoryPage() {
         <div
             key={`purchase-${item.artworkId}-${item.purchasedAt}`}
             className="history-card"
-            onClick={() => navigate(`/artwork/${item.artworkId}`)}
+            onClick={() => {
+                console.log("🧾 구매 카드 클릭됨:", item);
+                navigate(`/payment/${item.paymentId}`);
+            }}
         >
             <div className="thumbnail">
                 <img src={item.artworkImageUrl} alt={item.artworkTitle} />
@@ -52,7 +55,7 @@ export default function SaleHistoryPage() {
         <div
             key={`sale-${item.artworkId}-${item.soldAt}`}
             className="history-card"
-            onClick={() => navigate(`/artwork/${item.artworkId}`)}
+            onClick={() => navigate(`/payment/${item.paymentId}`)}
         >
             <div className="thumbnail">
                 <img src={item.artworkImageUrl} alt={item.artworkTitle} />
