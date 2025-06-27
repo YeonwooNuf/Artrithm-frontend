@@ -1,18 +1,26 @@
-import React, { useState } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import "./LLMChatbot.css";
 
-export default function LLMChatbot({ artwork }) {
+export default function LLMChatbot({ artwork, setIsInputFocused }) {
   const [messages, setMessages] = useState([
     { from: "bot", text: `${artwork?.title}에 대해 궁금한 점을 물어보세요.` }
   ]);
   const [input, setInput] = useState("");
+  const [loading, setLoading] = useState(false);
+  const messagesEndRef = useRef(null);
+
+  // ✅ 자동 스크롤
+  useEffect(() => {
+    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+  }, [messages, loading]);
 
   const handleSend = async () => {
-    if (!input.trim()) return;
+    if (!input.trim() || loading) return;
 
     const userMessage = { from: "user", text: input };
     setMessages((prev) => [...prev, userMessage]);
     setInput("");
+    setLoading(true);
 
     try {
       const response = await fetch("/api/artchat/query", {
@@ -25,15 +33,14 @@ export default function LLMChatbot({ artwork }) {
       });
 
       const data = await response.json();
-      console.log("📦 LLM 응답 데이터:", data); // ✅ 응답 구조 확인
+      console.log("📦 LLM 응답 데이터:", data);
 
-      // ✅ 객체 방지: 문자열만 text로 넘기기
       let text = "";
 
       if (typeof data.answer === "string") {
         text = data.answer;
       } else {
-        text = JSON.stringify(data, null, 2); // fallback (디버깅용)
+        text = JSON.stringify(data, null, 2);
       }
 
       const botMessage = { from: "bot", text };
@@ -44,6 +51,8 @@ export default function LLMChatbot({ artwork }) {
         ...prev,
         { from: "bot", text: "⚠️ 서버 응답에 문제가 발생했습니다." }
       ]);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -63,6 +72,12 @@ export default function LLMChatbot({ artwork }) {
             <div className="llm-message-text">{msg.text}</div>
           </div>
         ))}
+        {loading && (
+          <div className="llm-message-bubble bot">
+            <div className="llm-message-text"> 답변 생성 중입니다...</div>
+          </div>
+        )}
+        <div ref={messagesEndRef} />
       </div>
 
       <div className="llm-chatbot-input">
@@ -71,9 +86,13 @@ export default function LLMChatbot({ artwork }) {
           value={input}
           onChange={(e) => setInput(e.target.value)}
           onKeyUp={handleKeyPress}
+          onFocus={() => setIsInputFocused?.(true)}
+          onBlur={() => setIsInputFocused?.(false)}
           placeholder="질문을 입력하세요..."
         />
-        <button onClick={handleSend}>전송</button>
+        <button onClick={handleSend} disabled={loading}>
+          {loading ? "전송 중..." : "전송"}
+        </button>
       </div>
     </div>
   );

@@ -10,8 +10,9 @@ export default function ChatRoom({ user }) {
   const [input, setInput] = useState("");
   const [roomInfo, setRoomInfo] = useState(null);
   const messagesEndRef = useRef(null);
-  const ws = useRef(null);
+  const socketRef = useRef(null);
 
+  // ✅ 채팅방 정보 + 이전 메시지 불러오기
   useEffect(() => {
     const fetchMessages = async () => {
       try {
@@ -36,46 +37,80 @@ export default function ChatRoom({ user }) {
     fetchMessages();
     fetchRoomInfo();
 
-    ws.current = new WebSocket(
-      `ws://192.168.0.56:8080/ws/chat?roomId=${roomId}`
+    // ✅ WebSocket 연결
+    const ws = new WebSocket(
+      `ws://${window.location.hostname}:8080/ws/chat?roomId=${roomId}`
     );
+    socketRef.current = ws;
 
-    ws.current.onmessage = (event) => {
-      const received = JSON.parse(event.data);
-      setMessages((prev) => [...prev, received]);
+    ws.onopen = () => {
+      console.log("✅ WebSocket 연결됨");
+    };
+
+    ws.onmessage = (event) => {
+      try {
+        const data = JSON.parse(event.data);
+        if (!data.message) return;
+
+        setMessages((prev) => [...prev, data]);
+      } catch (err) {
+        console.error("❌ WebSocket 메시지 파싱 실패:", err);
+      }
+    };
+
+    ws.onerror = (error) => {
+      console.error("❌ WebSocket 오류:", error);
+    };
+
+    ws.onclose = () => {
+      console.log("🔌 WebSocket 종료");
+      socketRef.current = null;
     };
 
     return () => {
-      ws.current?.close();
+      ws.close();
+      socketRef.current = null;
     };
   }, [roomId, user.id]);
 
+  // ✅ 메시지 맨 아래로 스크롤
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages]);
 
+  // ✅ 메시지 전송
   const sendMessage = () => {
     if (!input.trim()) return;
 
-    const message = {
+    const messageObj = {
       roomId,
       senderId: user.id,
       senderRole: user.role.toLowerCase(),
+      senderNickname: user.nickname,
+      senderProfileImage: user.profileImage,
       message: input,
     };
 
-    ws.current.send(JSON.stringify(message));
-    setInput("");
+    if (
+      socketRef.current &&
+      socketRef.current.readyState === WebSocket.OPEN
+    ) {
+      socketRef.current.send(JSON.stringify(messageObj));
+      setInput("");
+    } else {
+      alert("⚠️ 채팅 연결 중입니다. 잠시 후 다시 시도해주세요.");
+    }
   };
 
   const handleKeyPress = (e) => {
     if (e.key === "Enter") sendMessage();
   };
 
+  // ✅ 채팅방 종료
   const exitChat = async () => {
     try {
       await api.delete(`/api/chatroom/${roomId}?userId=${user.id}`);
-      window.location.href = "/chat/list"; // 목록으로 이동
+      window.location.href = "/chat/list";
     } catch (err) {
       console.error("❌ 채팅방 종료 실패:", err);
     }
@@ -87,9 +122,7 @@ export default function ChatRoom({ user }) {
         <img
           src={
             roomInfo?.otherProfileImage
-              ? `${import.meta.env.VITE_API_BASE_URL}${
-                  roomInfo.otherProfileImage
-                }`
+              ? `${import.meta.env.VITE_API_BASE_URL}${roomInfo.otherProfileImage}`
               : "/default-profile.png"
           }
           alt="상대 프로필"
@@ -98,7 +131,7 @@ export default function ChatRoom({ user }) {
           <div className="nickname">{roomInfo?.otherNickname}</div>
           <div className="status">온라인</div>
         </div>
-        {user.role === "ARTIST" && <button onClick={exitChat}>✕</button>}
+          <button onClick={exitChat}>x</button>
       </div>
 
       <div className="chatroom-messages">
@@ -109,7 +142,15 @@ export default function ChatRoom({ user }) {
               msg.senderId === user.id ? "self" : "other"
             }`}
           >
-            <div className="chatroom-message-bubble">{msg.message}</div>
+            <div className="chatroom-message-bubble">
+              {msg.message}
+              <div className="chatroom-message-time">
+                {new Date(msg.sentAt || new Date()).toLocaleTimeString("ko-KR", {
+                  hour: "2-digit",
+                  minute: "2-digit",
+                })}
+              </div>
+            </div>
           </div>
         ))}
         <div ref={messagesEndRef} />

@@ -31,6 +31,8 @@ export default function Gallery3D() {
   const [cameraRef, setCameraRef] = useState(null);
   const [roomId, setRoomId] = useState(null);
 
+  const [isInputFocused, setIsInputFocused] = useState(false); // 채팅 입력 여부
+
   const pointerLockRef = useRef();
   const leftRef = useRef(null);
   const rightRef = useRef(null);
@@ -121,6 +123,8 @@ export default function Gallery3D() {
     const handleKeyDown = (e) => {
       const activeTag = document.activeElement?.tagName;
       if (activeTag === "INPUT" || activeTag === "TEXTAREA") return;
+      if (isInputFocused) return;
+
       if (!cameraRef) return;
 
       const camPos = new THREE.Vector3();
@@ -214,13 +218,18 @@ export default function Gallery3D() {
               senderId={user.id}
               senderRole="viewer"
               user={user}
+              setIsInputFocused={setIsInputFocused}
+              closeChat={() => setChatId(null)}
             />
           </div>
         )}
 
         {chatbotMode === "LLM" && chatId && (
           <div className="hud-chat">
-            <LLMChatbot artwork={works.find((art) => art.id === chatId)} />
+            <LLMChatbot
+              artwork={works.find((art) => art.id === chatId)}
+              setIsInputFocused={setIsInputFocused}
+            />
           </div>
         )}
 
@@ -244,6 +253,7 @@ export default function Gallery3D() {
             leftFocusedId={theme === "masterpiece" ? leftFocusedId : null}
             rightFocusedId={theme === "masterpiece" ? rightFocusedId : null}
             infoId={infoId}
+            isInputFocused={isInputFocused}
           />
         </Canvas>
 

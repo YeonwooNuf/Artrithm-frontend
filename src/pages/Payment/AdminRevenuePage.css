@@ -1,0 +1,28 @@
+.admin-revenue-page {
+  padding: 2rem;
+  max-width: 720px;
+  margin: 0 auto;
+}
+
+.date-filter {
+  margin-bottom: 1.5rem;
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+}
+
+.date-filter input {
+  margin-left: 0.5rem;
+  padding: 0.25rem;
+}
+
+.revenue-stats {
+  background: #f4f4f4;
+  padding: 1rem;
+  border-radius: 8px;
+}
+
+.revenue-stats p {
+  margin: 0.5rem 0;
+  font-size: 1.05rem;
+}

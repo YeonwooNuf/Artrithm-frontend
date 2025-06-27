@@ -4,7 +4,7 @@ import { RigidBody, CapsuleCollider } from "@react-three/rapier";
 import { Vector3 } from "three";
 import useKeyboardControls from "./useKeyboardControls";
 
-export default function Player({ position = [-13, 0.8, 15], theme = "modern" }) {
+export default function Player({ position = [-13, 0.8, 15], theme = "modern", isInputFocused = false,}) {
   const ref = useRef();
   const keys = useKeyboardControls();
   const { camera } = useThree();
@@ -14,6 +14,7 @@ export default function Player({ position = [-13, 0.8, 15], theme = "modern" }) 
   const cameraYOffset = theme === "masterpiece" ? 3.5 : 1.5;
 
   useFrame(() => {
+    if (isInputFocused) return;
     const body = ref.current;
     if (!body || typeof body.setLinvel !== "function") return;
 

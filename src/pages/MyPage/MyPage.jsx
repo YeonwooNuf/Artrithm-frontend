@@ -69,8 +69,8 @@ export default function MyPage({ user, setUser }) {
                 profileImage
                   ? URL.createObjectURL(profileImage)
                   : user.profileImage
-                  ? `${import.meta.env.VITE_API_BASE_URL}${user.profileImage}`
-                  : "/default-profile.png"
+                    ? `${import.meta.env.VITE_API_BASE_URL}${user.profileImage}`
+                    : "/default-profile.png"
               }
               alt="프로필"
             />
@@ -82,8 +82,8 @@ export default function MyPage({ user, setUser }) {
               {user.role === "ADMIN"
                 ? "관리자"
                 : user.role === "ARTIST"
-                ? "작가 회원"
-                : "일반 회원"}
+                  ? "작가 회원"
+                  : "일반 회원"}
             </p>
             {user.role === "USER" && (
               <button
@@ -215,7 +215,7 @@ export default function MyPage({ user, setUser }) {
       {user?.role === "ADMIN" && (
         <>
           <button
-            className="admin-circle-button"
+            className="fab-button admin-button"
             onClick={() => setDrawerOpen((prev) => !prev)}
           >
             ＋
@@ -235,9 +235,9 @@ export default function MyPage({ user, setUser }) {
       )}
 
       {/* ✅ 채팅 플로팅 버튼 */}
-      <div className="chat-fab-wrapper">
+      <div className="fab-button-wrapper">
         <div
-          className="chat-fab-button"
+          className="fab-button chat-button"
           onClick={() => setShowChatMenu(!showChatMenu)}
         >
           💬

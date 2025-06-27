@@ -1,6 +1,7 @@
 .chatpage-container {
   display: flex;
   height: 100vh;
+  margin-top: 100px;
 }
 
 .chatpage-sidebar {

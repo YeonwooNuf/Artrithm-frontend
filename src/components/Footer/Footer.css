@@ -30,3 +30,13 @@
   opacity: 0.8;
   padding-right: 80px;
 }
+
+.footer__chat-btn {
+  background: none;
+  border: none;
+  color: inherit;
+  font: inherit;
+  cursor: pointer;
+  padding: 0;
+  text-decoration: underline;
+}
