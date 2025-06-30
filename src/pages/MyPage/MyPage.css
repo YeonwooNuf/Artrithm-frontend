@@ -16,7 +16,7 @@
   overflow-y: auto;
   scroll-behavior: smooth;
   scrollbar-width: thin;
-  scrollbar-color: #81756d transparent;
+  scrollbar-color: #b3a79f transparent;
 }
 
 .mypage-title {
@@ -126,17 +126,17 @@
   display: block;
   margin: 2rem auto 0;
   padding: 0.8rem 2rem;
-  background-color: #3e3e3e;
+  background: linear-gradient(135deg, #748082, #b9c6c8);
   color: #fff;
   font-size: 1rem;
   border: none;
-  border-radius: 10px;
+  border-radius: 4px;
   cursor: pointer;
   transition: background 0.3s;
 }
 
 .save-button:hover {
-  background-color: #222222;
+  background: linear-gradient(135deg, #5e6e71, #8c9394);
 }
 
 .artist-request {
@@ -235,7 +235,7 @@
 }
 
 .subscription-link:hover {
-  color: #607274;
+  color: #ece3dc;
 }
 
 .request-artist-button {
