@@ -117,7 +117,7 @@ export default function MyPage({ user, setUser }) {
           </button>
           <button
             className="mypage-button"
-            onClick={() => navigate("/mypage/history")}
+            onClick={() => setActiveTab("History")}
           >
             구매 / 판매 내역
           </button>
@@ -129,7 +129,7 @@ export default function MyPage({ user, setUser }) {
           </button>
           <button
             className="mypage-button"
-            onClick={() => setShowLikesModal(true)} // ✅ 모달 열기
+            onClick={() => setActiveTab("Liked")} // ✅ 모달 열기
           >
             관심 전시
           </button>
@@ -159,6 +159,8 @@ export default function MyPage({ user, setUser }) {
         {activeTab === "Address" && <AddressPage />}
         {activeTab === "Myworks" && <MyExhibitions user={user} />}
         {activeTab === "History" && <SaleHistoryPage />}
+        {activeTab === "Liked" && <LikedExhibitionsModal userId={user.id} />}
+
         {/* 나머지 탭들 */}
         {activeTab === "Edit" && (
           <form className="mypage-form" onSubmit={handleSubmit}>
@@ -227,12 +229,12 @@ export default function MyPage({ user, setUser }) {
         </>
       )}
 
-      {showLikesModal && (
+      {/* {showLikesModal && (
         <LikedExhibitionsModal
           userId={user.id}
           onClose={() => setShowLikesModal(false)}
         />
-      )}
+      )} */}
 
       {/* ✅ 채팅 플로팅 버튼 */}
       <div className="fab-button-wrapper">
