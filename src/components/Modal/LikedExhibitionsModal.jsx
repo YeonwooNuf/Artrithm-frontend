@@ -3,7 +3,7 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import "./LikedExhibitionsModal.css";
 
-export default function LikedExhibitionsModal({ userId, onClose }) {
+export default function LikedExhibitionsModal({ userId }) {
   const [likedList, setLikedList] = useState([]);
   const navigate = useNavigate();
 
@@ -15,38 +15,36 @@ export default function LikedExhibitionsModal({ userId, onClose }) {
   }, [userId]);
 
   return (
-    <div className="likes-modal-overlay" onClick={onClose}>
-      <div className="likes-modal" onClick={(e) => e.stopPropagation()}>
-        <div className="likes-modal-header">
-          <h2>관심 전시 목록</h2>
-          <button className="likes-modal-close" onClick={onClose}>×</button>
-        </div>
-        <div className="likes-modal-body">
-          {likedList.length === 0 ? (
-            <p className="likes-empty">아직 관심 등록한 전시가 없습니다.</p>
-          ) : (
-            <ul className="likes-list">
-              {likedList.map((ex) => (
-                <li
-                  key={ex.id}
-                  className="likes-item"
-                  onClick={() =>
-                    navigate(`/exhibitions/${ex.id}`, {
-                      state: { works: ex.artworks, theme: ex.theme },
-                    })
-                  }
-                >
-                  <img src={ex.thumbnailUrl} alt={ex.title} />
-                  <div className="likes-info">
-                    <h4>{ex.title}</h4>
-                    <p>{ex.authorNickname}</p>
-                  </div>
-                </li>
-              ))}
-            </ul>
-          )}
-        </div>
-      </div>
+    <div className="liked-page-container">
+      <h2 className="liked-page-title">💖 관심 전시 목록</h2>
+
+      {likedList.length === 0 ? (
+        <p className="liked-empty">아직 관심 등록한 전시가 없습니다.</p>
+      ) : (
+        <ul className="liked-list">
+          {likedList.map((ex) => (
+            <li
+              key={ex.id}
+              className="liked-item"
+              onClick={() =>
+                navigate(`/exhibitions/${ex.id}`, {
+                  state: { works: ex.artworks, theme: ex.theme },
+                })
+              }
+            >
+              <img
+                src={ex.thumbnailUrl}
+                alt={ex.title}
+                className="liked-thumbnail"
+              />
+              <div className="liked-info">
+                <h4>{ex.title}</h4>
+                <p>{ex.authorNickname}</p>
+              </div>
+            </li>
+          ))}
+        </ul>
+      )}
     </div>
   );
 }

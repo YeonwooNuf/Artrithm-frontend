@@ -1,118 +1,81 @@
-/* 오버레이 */
-.likes-modal-overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
+.liked-page-container {
+  max-width: 900px;
+  margin: auto;
+  font-family: "Pretendard", sans-serif;
+  color: #faf1dc;
+}
+
+.liked-page-title {
+  font-size: 28px;
+  font-weight: bold;
+  text-align: center;
+  margin-bottom: 40px;
+  color: #faf1dc;
+}
+
+.liked-list {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  align-items: center;
+}
+
+.liked-item {
+  display: flex;
+  align-items: center;
+  width: 700px;
+  height: 180px;
+  padding: 20px;
+  background: rgba(255, 255, 255, 0.08);
+  border-radius: 4px;
+  border: 1.5px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.25);
+  cursor: pointer;
+  transition: transform 0.2s ease;
+}
+
+.liked-item:hover {
+  transform: translateY(-6px);
+}
+
+.liked-thumbnail {
+  flex: 0 0 160px;
+  height: 140px;
+  overflow: hidden;
+  border-radius: 8px;
+  margin-right: 20px;
+  background-color: #fff;
+}
+
+.liked-thumbnail img {
   width: 100%;
   height: 100%;
-  background: rgba(30, 30, 30, 0.45);
-  backdrop-filter: blur(4px);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  z-index: 1000;
-}
-
-/* 모달 */
-.likes-modal {
-  width: 540px;
-  max-height: 80vh;
-  background: #fff;
-  border-radius: 16px;
-  padding: 20px;
-  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.2);
-  overflow-y: auto;
-  animation: fadeInUp 0.3s ease;
-}
-
-/* 모달 헤더 */
-.likes-modal-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  border-bottom: 1px solid #eee;
-  padding-bottom: 12px;
-}
-
-.likes-modal-header h2 {
-  font-size: 20px;
-  font-weight: 600;
-  color: #333;
-  margin: 0;
-}
-
-.likes-modal-close {
-  font-size: 26px;
-  background: none;
-  border: none;
-  cursor: pointer;
-  color: #888;
-  transition: color 0.2s ease;
-}
-.likes-modal-close:hover {
-  color: #333;
-}
-
-/* 모달 본문 */
-.likes-modal-body {
-  margin-top: 20px;
-}
-
-.likes-empty {
-  text-align: center;
-  color: #999;
-  font-style: italic;
-}
-
-/* 리스트 */
-.likes-list {
-  list-style: none;
-  padding: 0;
-  margin: 0;
-}
-
-.likes-item {
-  display: flex;
-  align-items: center;
-  padding: 12px;
-  border-radius: 10px;
-  transition: background 0.2s ease, transform 0.2s ease;
-  cursor: pointer;
-}
-
-.likes-item:hover {
-  background: #f7f3ed;
-  transform: scale(1.01);
-}
-
-.likes-item img {
-  width: 80px;
-  height: 60px;
-  border-radius: 8px;
   object-fit: cover;
-  margin-right: 16px;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+  display: block;
 }
 
-.likes-info h4 {
+.liked-info {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  color: #f2f2f2;
+}
+
+.liked-info h4 {
+  font-size: 20px;
+  margin-bottom: 6px;
+  color: #faf1dc;
+}
+
+.liked-info p {
+  font-size: 14px;
+  color: #ddd1b6;
+}
+
+.liked-empty {
+  text-align: center;
+  margin-top: 60px;
   font-size: 16px;
-  margin: 0;
-  color: #333;
-}
-.likes-info p {
-  margin: 4px 0 0;
-  font-size: 13px;
-  color: #777;
-}
-
-/* 애니메이션 */
-@keyframes fadeInUp {
-  from {
-    opacity: 0;
-    transform: translateY(30px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+  color: #dcd0b9;
 }
