@@ -11,7 +11,7 @@
   flex-direction: column;
   align-items: center;
   gap: 40px;
-  margin-bottom: 100px;
+  margin-bottom: 200px;
 }
 
 .marketplace-artist-info {
@@ -148,6 +148,7 @@
   margin-top: -60px;
   margin-bottom: 40px;
   align-items: flex-start;
+  color: #ffffff;
 }
 
 .highlighted-artwork {
@@ -186,7 +187,7 @@
 }
 
 .artist-name {
-  color: #000000;
+  color: #ccc;
 }
 
 .artist-name-tooltip-container {
@@ -271,11 +272,8 @@
 /* 카트 모달 */
 .cart-modal {
   position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(0, 0, 0, 0.5);
+  inset: 0;
+  background-color: rgba(0, 0, 0, 0.5); /* 반투명 배경 */
   z-index: 9999;
   display: flex;
   align-items: center;
@@ -283,33 +281,135 @@
 }
 
 .cart-modal-content {
-  background-color: white;
-  padding: 2rem 3rem;
-  border-radius: 16px;
+  background: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  padding: 40px 48px;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  border-radius: 8px;
+  color: #faf1dc;
   text-align: center;
-  box-shadow: 0 0 12px rgba(0, 0, 0, 0.25);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+  max-width: 400px;
+  font-family: "Pretendard", sans-serif;
+}
+
+.cart-modal-content h3 {
+  font-size: 22px;
+  margin-bottom: 24px;
+  color: #faf1dc;
 }
 
 .cart-modal-buttons {
-  margin-top: 1.5rem;
   display: flex;
+  gap: 16px;
   justify-content: center;
-  gap: 1rem;
+  margin-top: 20px;
 }
 
 .cart-modal-buttons button {
-  padding: 0.6rem 1.2rem;
-  font-size: 1rem;
+  padding: 12px 20px;
+  font-size: 0.95rem;
   border: none;
-  border-radius: 8px;
+  border-radius: 0px;
   cursor: pointer;
+  transition: all 0.3s ease;
+  font-weight: 600;
+  font-family: "Pretendard", sans-serif;
 }
 
+/* 장바구니로 이동 버튼 */
 .cart-modal-buttons button:first-child {
-  background-color: #007bff;
-  color: white;
+  background: #faf1dc;
+  color: #5e6e71;
 }
 
+.cart-modal-buttons button:first-child:hover {
+  background: #e6dbc1;
+}
+
+/* 계속 감상하기 버튼 */
 .cart-modal-buttons button:last-child {
-  background-color: #ddd;
+  background: transparent;
+  color: #faf1dc;
+  border: 1px solid #faf1dc;
+}
+
+.cart-modal-buttons button:last-child:hover {
+  background: rgba(255, 255, 255, 0.2);
+  color: #2a2a2a;
+}
+
+.fixed-sale-container {
+  max-width: 640px;
+  max-height: 500px;
+  margin: 10px auto;
+  padding: 48px;
+  flex-direction: column;
+  border: 2px solid white;
+  border-radius: 4px;
+  box-shadow: 0 12px 36px rgba(0, 0, 0, 0.493);
+  font-family: "Pretendard", sans-serif;
+  color: #f7f3f3;
+
+  /* ✅ 유리 필름 배경 */
+  background-color: rgba(255, 255, 255, 0.05);
+
+  /* ✅ 텍스트 대비 위해 label 등 색도 조정해야 함 */
+}
+
+.fixed-sale-container h2 {
+  font-size: 28px;
+  font-weight: 700;
+  margin-bottom: 32px;
+  text-align: left;
+  color: #f7f3f3;
+}
+
+.fixed-sale-container label {
+  font-size: 15px;
+  font-weight: 500;
+  color: #f9f8f8;
+}
+
+.fixed-sale-container select,
+.fixed-sale-container input[type="number"] {
+  padding: 14px 18px;
+  font-size: 15px;
+  border-radius: 0px;
+  border: 1px solid #ddd;
+  background-color: #f9f9f9;
+  transition: border 0.2s ease;
+}
+
+.fixed-sale-container select:focus,
+.fixed-sale-container input[type="number"]:focus {
+  outline: none;
+  border-color: #5e6e71;
+  background-color: #fff;
+}
+
+.fixed-sale-container button[type="submit"] {
+  margin-top: 10px;
+  background: linear-gradient(135deg, #748082, #b9c6c8);
+  color: white;
+  border: none;
+  padding: 16px;
+  font-size: 16px;
+  font-weight: 600;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  width: 200px;
+  margin-left: auto;
+}
+
+.fixed-sale-container button[type="submit"]:hover {
+  background: linear-gradient(135deg, #5e6e71, #8c9394);
+}
+
+.fixed-sale-container form {
+  display: flex;
+  flex-direction: column; /* ✅ 이게 꼭 있어야 함 */
+  gap: 24px; /* ✅ 요소 간 간격 */
 }

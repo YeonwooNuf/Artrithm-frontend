@@ -81,7 +81,7 @@ body::before {
 
 .request-artist-container button[type="submit"] {
   margin-top: 10px;
-  background: linear-gradient(135deg, #5e6e71, #8c9394);
+  background: linear-gradient(135deg, #748082, #b9c6c8);
   color: white;
   border: none;
   padding: 16px;
@@ -95,5 +95,5 @@ body::before {
 }
 
 .request-artist-container button[type="submit"]:hover {
-  background: linear-gradient(135deg, #748082, #b9c6c8);
+  background: linear-gradient(135deg, #5e6e71, #8c9394);
 }

@@ -1,100 +1,115 @@
 .auction-request-page {
   display: flex;
-  gap: 40px;
-  padding: 60px;
-  /* background: rgba(255, 255, 255, 0.1); */
-  font-family: "Noto Serif KR", serif;
+  justify-content: center;
+  align-items: flex-start;
+  gap: 48px;
+  max-width: 1120px;
+  /* margin: 120px auto; */
+  padding: 48px;
+  border: 1.5px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 12px 36px rgba(0, 0, 0, 0.493);
+  background-color: rgba(255, 255, 255, 0.05);
+  font-family: "Pretendard", sans-serif;
+  color: #f9f8f8;
 }
 
+/* 왼쪽 폼 영역 */
 .form-section {
   flex: 1;
-  background: rgba(255, 255, 255, 0.1);
-  padding: 40px 50px;
-  border-radius: 18px;
-  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
-  border: 1px solid #eee;
-  min-width: 300px;
-  max-width: 400px;
+  max-width: 480px;
 }
 
 .form-title {
-  font-size: 30px;
+  font-size: 28px;
   font-weight: 700;
-  margin-bottom: 30px;
-  color: #3e342f;
-  text-align: center;
-  font-family: "Playfair Display", serif;
+  margin-bottom: 32px;
+  color: #f7f3f3;
+}
+
+.auction-form {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
 }
 
 .auction-form label {
-  /* margin-top: 20px; */
-  display: block;
   font-size: 15px;
-  font-weight: bold;
-  color: #444;
+  font-weight: 500;
+  margin-bottom: 6px;
+  color: #f9f8f8;
 }
 
-.auction-form input,
-.auction-form select {
-  width: 100%;
-  padding: 12px;
-  margin-top: 10px;
-  border: 1px solid #ccc;
-  border-radius: 8px;
-  background: rgba(255, 255, 255, 0.1);
+.auction-form select,
+.auction-form input {
+  padding: 14px 18px;
+  font-size: 15px;
+  border-radius: 4px;
+  border: 1px solid #ddd;
+  background-color: #f9f9f9;
+  transition: border 0.2s ease;
+}
+
+.auction-form select:focus,
+.auction-form input:focus {
+  outline: none;
+  border-color: #5e6e71;
+  background-color: #fff;
 }
 
 .auction-form button {
-  margin-top: 30px;
-  width: 100%;
-  padding: 14px;
-  background-color: #3d3028;
+  margin-top: 10px;
+  background: linear-gradient(135deg, #748082, #b9c6c8);
   color: white;
   border: none;
-  border-radius: 8px;
-  font-weight: bold;
+  padding: 16px;
   font-size: 16px;
+  font-weight: 600;
+  border-radius: 4px;
   cursor: pointer;
-  transition: background-color 0.2s ease;
+  transition: all 0.3s ease;
+  width: 200px;
+  margin-left: auto;
 }
 
 .auction-form button:hover {
-  background-color: #2f231c;
+  background: linear-gradient(135deg, #5e6e71, #8c9394);
 }
 
+/* 오른쪽 미리보기 영역 */
 .preview-section {
   flex: 1;
+  max-width: 500px;
   display: flex;
+  flex-direction: column;
   align-items: center;
-  justify-content: center;
-  background: rgba(255, 255, 255, 0.1);
-  max-width: 400px;
-  border-radius: 16px;
-  box-shadow: inset 0 0 20px rgba(0, 0, 0, 0.05);
-  padding: 20px;
-  min-height: 300px;
-  margin-top: 80px;
 }
 
 .art-preview-img {
-  max-width: 100%;
-  max-height: 500px;
-  border-radius: 12px;
-  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
+  width: 100%;
+  max-height: 440px;
+  object-fit: contain;
+  border-radius: 8px;
+  border: 1px solid #ddd;
+  background-color: #fff;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
 }
 
 .placeholder-box {
+  width: 100%;
+  padding: 40px;
   text-align: center;
-  color: #777;
+  border: 1px dashed #ccc;
+  background-color: rgba(255, 255, 255, 0.1);
+  border-radius: 8px;
 }
 
 .placeholder-img {
-  width: 200px;
-  opacity: 0.7;
-  margin-bottom: 16px;
+  width: 120px;
+  opacity: 0.6;
+  margin-bottom: 12px;
 }
 
 .placeholder-text {
-  font-size: 14px;
-  color: #555;
+  font-size: 15px;
+  color: #eee;
 }

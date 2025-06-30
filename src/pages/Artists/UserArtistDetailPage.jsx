@@ -34,7 +34,14 @@ export default function UserArtistDetailPage() {
           className="user-artist-profile"
         />
         <div className="user-artist-profile-info">
-          <h2>{artist.nickname}</h2>{" "}
+          <div className="user-artist-container">
+            <h2>{artist.nickname}</h2>{" "}
+            <img
+              src="/chat_bubble_no_bg.png"
+              alt="채팅 버튼"
+              className="chat-button"
+            />{" "}
+          </div>
           <p>{artist.artistBio || "작가 소개가 없습니다."}</p>
         </div>{" "}
       </div>
