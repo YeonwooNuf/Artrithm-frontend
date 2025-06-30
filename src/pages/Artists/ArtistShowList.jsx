@@ -1,28 +1,40 @@
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import "./ArtistShowList.css";
 
 export default function ArtistShowList() {
   const [artists, setArtists] = useState([]);
+  const navigate = useNavigate();
 
   useEffect(() => {
-    fetch("/api/artists") // ✅ 실제 백엔드 URL로 바꿔줘
+    fetch("/api/artists/all")
       .then((res) => res.json())
       .then((data) => setArtists(data))
       .catch((err) => console.error("작가 목록 불러오기 실패", err));
   }, []);
 
+  const handleArtistClick = (artist) => {
+    if (artist.type === "USER") {
+      navigate(`/artists/user/${artist.id}`);
+    } else if (artist.type === "ARTIST") {
+      navigate(`/artists/classic/${artist.id}`);
+    }
+  };
+
   return (
     <div className="artist-showlist-section">
+      <hr className="custom-line" />
       <h2 className="artist-list-title">Artists</h2>
-      <div className="artist-scroll-wrapper">
+      <div className="artistpage-scroll-wrapper">
         {artists.map((artist) => (
-          <div key={artist.id} className="artist-item">
+          <div key={artist.id} className="artistpage-item">
             <img
               src={artist.profileImage}
               alt={artist.name}
-              className="artist-profile"
+              className="artistpage-profile"
+              onClick={() => handleArtistClick(artist)}
             />
-            <div className="artist-name">{artist.name}</div>
+            <div className="artistpage-name">{artist.name}</div>
           </div>
         ))}
       </div>

@@ -11,17 +11,18 @@ body::before {
   position: fixed;
   inset: 0;
   z-index: -1;
-  background: rgba(255, 255, 255, 0.4); /* 💡 반투명 흰색 필름 */
+  background: rgba(20, 20, 20, 0.4); /* 💡 반투명 흰색 필름 */
 
   -webkit-backdrop-filter: blur(10px); /* 사파리 대응 */
 }
 
 .request-artist-container {
   max-width: 640px;
-  margin: 80px auto;
+  margin: 120px auto;
   padding: 48px;
+  border: 2px solid white;
   border-radius: 0px;
-  box-shadow: 0 12px 36px rgba(0, 0, 0, 0.08);
+  box-shadow: 0 12px 36px rgba(0, 0, 0, 0.493);
   font-family: "Pretendard", sans-serif;
   color: #222;
 }
@@ -31,7 +32,7 @@ body::before {
   font-weight: 700;
   margin-bottom: 32px;
   text-align: left;
-  color: #1a1a1a;
+  color: #f7f3f3;
 }
 
 .request-artist-container form {
@@ -44,7 +45,7 @@ body::before {
   font-size: 15px;
   font-weight: 500;
   margin-bottom: 6px;
-  color: #444;
+  color: #f9f8f8;
 }
 
 .request-artist-container textarea {
@@ -59,7 +60,7 @@ body::before {
 
 .request-artist-container textarea:focus {
   outline: none;
-  border-color: #7a78f0;
+  border-color: #5e6e71;
   background-color: #fff;
 }
 
@@ -74,25 +75,25 @@ body::before {
 }
 
 .request-artist-container input[type="file"]:hover {
-  border-color: #7a78f0;
+  border-color: #5e6e71;
   background-color: #fff;
 }
 
 .request-artist-container button[type="submit"] {
   margin-top: 10px;
-  position: center;
-  background: linear-gradient(135deg, #7a78f0, #aca6ff);
+  background: linear-gradient(135deg, #5e6e71, #8c9394);
   color: white;
   border: none;
   padding: 16px;
   font-size: 16px;
   font-weight: 600;
-  border-radius: 12px;
+  border-radius: 4px;
   cursor: pointer;
   transition: all 0.3s ease;
   width: 200px;
+  margin-left: auto;
 }
 
 .request-artist-container button[type="submit"]:hover {
-  background: linear-gradient(135deg, #6a64e0, #9c94ff);
+  background: linear-gradient(135deg, #748082, #b9c6c8);
 }

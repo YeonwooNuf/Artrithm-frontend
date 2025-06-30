@@ -60,8 +60,9 @@
   inset: 0;
   border-radius: 0px;
   padding: 2px; /* 테두리 두께 */
-  background: linear-gradient(135deg, #ffffff9a, #53453c53);
-  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  background: linear-gradient(135deg, #ffffff3e, #53453c27);
+  -webkit-mask: linear-gradient(#ffffff4a 0 0) content-box,
+    linear-gradient(#ffffff6b 0 0);
   -webkit-mask-composite: destination-out;
   mask-composite: exclude;
   pointer-events: none;

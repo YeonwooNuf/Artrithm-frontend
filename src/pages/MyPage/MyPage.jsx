@@ -8,6 +8,7 @@ import LikedExhibitionsModal from "../../components/Modal/LikedExhibitionsModal"
 import api from "../../api/axios";
 import AuctionRequestpage from "../ArtworkMarketpage/AuctionRequestpage";
 import AddressPage from "./AddressPage";
+import SaleHistoryPage from "../Payment/SaleHistoryPage";
 
 export default function MyPage({ user, setUser }) {
   const [nickname, setNickname] = useState(user.nickname || "");
@@ -56,7 +57,6 @@ export default function MyPage({ user, setUser }) {
     }
   };
 
-
   return (
     <div className={`mypage-container ${drawerOpen ? "drawer-open" : ""}`}>
       {/* <h2 className="mypage-title">마이페이지</h2> */}
@@ -69,8 +69,8 @@ export default function MyPage({ user, setUser }) {
                 profileImage
                   ? URL.createObjectURL(profileImage)
                   : user.profileImage
-                    ? `${import.meta.env.VITE_API_BASE_URL}${user.profileImage}`
-                    : "/default-profile.png"
+                  ? `${import.meta.env.VITE_API_BASE_URL}${user.profileImage}`
+                  : "/default-profile.png"
               }
               alt="프로필"
             />
@@ -82,8 +82,8 @@ export default function MyPage({ user, setUser }) {
               {user.role === "ADMIN"
                 ? "관리자"
                 : user.role === "ARTIST"
-                  ? "작가 회원"
-                  : "일반 회원"}
+                ? "작가 회원"
+                : "일반 회원"}
             </p>
             {user.role === "USER" && (
               <button
@@ -117,7 +117,7 @@ export default function MyPage({ user, setUser }) {
           </button>
           <button
             className="mypage-button"
-            onClick={() => navigate("/mypage/history")}
+            onClick={() => setActiveTab("History")}
           >
             구매 / 판매 내역
           </button>
@@ -129,7 +129,7 @@ export default function MyPage({ user, setUser }) {
           </button>
           <button
             className="mypage-button"
-            onClick={() => setShowLikesModal(true)} // ✅ 모달 열기
+            onClick={() => setActiveTab("Liked")} // ✅ 모달 열기
           >
             관심 전시
           </button>
@@ -158,6 +158,9 @@ export default function MyPage({ user, setUser }) {
         {activeTab === "Auction" && <AuctionRequestpage user={userId} />}
         {activeTab === "Address" && <AddressPage />}
         {activeTab === "Myworks" && <MyExhibitions user={user} />}
+        {activeTab === "History" && <SaleHistoryPage />}
+        {activeTab === "Liked" && <LikedExhibitionsModal userId={user.id} />}
+
         {/* 나머지 탭들 */}
         {activeTab === "Edit" && (
           <form className="mypage-form" onSubmit={handleSubmit}>
@@ -226,12 +229,12 @@ export default function MyPage({ user, setUser }) {
         </>
       )}
 
-      {showLikesModal && (
+      {/* {showLikesModal && (
         <LikedExhibitionsModal
           userId={user.id}
           onClose={() => setShowLikesModal(false)}
         />
-      )}
+      )} */}
 
       {/* ✅ 채팅 플로팅 버튼 */}
       <div className="fab-button-wrapper">
