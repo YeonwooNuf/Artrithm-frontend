@@ -39,7 +39,7 @@ export default function UserArtistDetailPage() {
             <img
               src="/chat_bubble_no_bg.png"
               alt="채팅 버튼"
-              className="chat-button"
+              className="artist-chat-button"
             />{" "}
           </div>
           <p>{artist.artistBio || "작가 소개가 없습니다."}</p>

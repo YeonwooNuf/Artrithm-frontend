@@ -101,7 +101,7 @@ export default function ExhibitionList() {
       {/* 🎨 전시 리스트 */}
       <div className="exhibition-list-grid">
         {exhibitions.map((exhibition) => (
-          <div key={exhibition.id} className="exhibition-card">
+          <div key={exhibition.id} className="exhibition-list-card">
             <img
               src={exhibition.thumbnailUrl}
               alt={exhibition.title}

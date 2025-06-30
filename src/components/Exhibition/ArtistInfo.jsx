@@ -62,9 +62,9 @@ export default function ArtistInfo({ exhibition }) {
         className="artist-works-horizontal-scroll"
         style={{ overflowX: expanded ? "auto" : "hidden" }}
       >
-        <div className="exhibition-list">
+        <div className="artist-exhibition-list">
           {(expanded ? artworks : artworks.slice(0, 3)).map((work, i) => (
-            <div key={i} className="exhibition-list-card">
+            <div key={i} className="artist-exhibition-list-card">
               <img src={work.imageUrl} alt={work.title} />
               <p>{work.title}</p>
             </div>

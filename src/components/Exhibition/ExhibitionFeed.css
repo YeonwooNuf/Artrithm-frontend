@@ -1,7 +1,8 @@
 .exhibition-card {
   display: flex;
   width: 100%;
-  max-width: 960px;
+  max-width: 940px;
+  height: 500px;
   aspect-ratio: 7 / 4;
   background: rgba(255, 255, 255, 0.08);
   border: 1.5px solid rgba(255, 255, 255, 0.1);
@@ -9,7 +10,7 @@
   overflow: hidden;
   box-shadow: 0 12px 36px rgba(0, 0, 0, 0.25);
   transition: transform 0.3s ease, box-shadow 0.3s ease;
-  margin: 110px auto 20px;
+  margin: 110px auto 50px;
   position: relative;
   backdrop-filter: blur(6px);
 }
