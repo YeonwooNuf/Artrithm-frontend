@@ -78,7 +78,7 @@ const AuctionRequestpage = ({ user }) => {
         </form>
       </div>
 
-      <div className="preview-section">
+      {/* <div className="preview-section">
         {selectedArtwork ? (
           <img
             src={selectedArtwork.imageUrl}
@@ -97,7 +97,7 @@ const AuctionRequestpage = ({ user }) => {
             </p>
           </div>
         )}
-      </div>
+      </div> */}
     </div>
   );
 };
