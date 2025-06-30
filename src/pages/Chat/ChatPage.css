@@ -1,19 +1,74 @@
 .chatpage-container {
   display: flex;
   height: 100vh;
-  margin-top: 100px;
+  margin-top: 80px;
+  background: rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(8px);
+  font-family: "Pretendard", sans-serif;
+  color: #faf1dc;
 }
 
+/* 왼쪽 사이드바 - 채팅 목록 */
 .chatpage-sidebar {
   width: 30%;
-  border-right: 1px solid #ccc;
+  background: rgba(255, 255, 255, 0.06);
+  border-right: 1px solid rgba(255, 255, 255, 0.1);
   overflow-y: auto;
-  background-color: #f8f8f8;
+  padding: 20px;
+  box-shadow: inset -4px 0 8px rgba(0, 0, 0, 0.15);
 }
 
+/* 오른쪽 채팅방 */
 .chatpage-chatroom {
   flex: 1;
   display: flex;
   flex-direction: column;
-  background-color: #fff;
+  background: rgba(255, 255, 255, 0.03);
+  padding: 20px;
+  overflow: hidden;
+}
+
+/* 채팅 메시지 영역 */
+.chat-messages {
+  flex: 1;
+  overflow-y: auto;
+  padding-right: 10px;
+}
+
+/* 입력창 영역 (ChatRoom 내에 존재한다고 가정) */
+.chat-input-box {
+  display: flex;
+  margin-top: 16px;
+  background-color: rgba(255, 255, 255, 0.1);
+  border-radius: 6px;
+  padding: 12px;
+}
+
+.chat-input-box input {
+  flex: 1;
+  border: none;
+  background: transparent;
+  font-size: 16px;
+  color: #faf1dc;
+  padding: 8px;
+}
+
+.chat-input-box input:focus {
+  outline: none;
+}
+
+.chat-input-box button {
+  background: linear-gradient(135deg, #748082, #b9c6c8);
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  font-weight: 600;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  margin-left: 12px;
+}
+
+.chat-input-box button:hover {
+  background: linear-gradient(135deg, #5e6e71, #8c9394);
 }
