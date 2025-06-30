@@ -1,116 +1,95 @@
 .approval-container {
-  max-width: 800px;
-  margin: 50px auto;
-  padding: 20px;
+  max-width: 960px;
+  margin: 100px auto;
+  padding: 48px;
   font-family: "Pretendard", sans-serif;
+  color: #faf1dc;
+  background-color: rgba(255, 255, 255, 0.05);
+  border: 2px solid rgba(255, 255, 255, 0.15);
+  box-shadow: 0 12px 36px rgba(0, 0, 0, 0.3);
+  border-radius: 8px;
 }
 
 .approval-title {
-  font-size: 24px;
+  font-size: 28px;
   font-weight: bold;
-  margin-bottom: 24px;
   text-align: center;
+  margin-bottom: 40px;
+  color: #faf1dc;
 }
 
 .request-card {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  border: 1px solid #ddd;
-  border-radius: 10px;
-  padding: 16px;
-  margin-bottom: 16px;
-  background-color: #fff;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  background: rgba(255, 255, 255, 0.08);
+  border: 1.5px solid rgba(255, 255, 255, 0.1);
+  border-radius: 6px;
+  padding: 24px;
+  margin-bottom: 28px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.25);
+  transition: transform 0.2s ease;
+}
+
+.request-card:hover {
+  transform: translateY(-6px);
 }
 
 .request-info {
   display: flex;
   align-items: center;
-  gap: 16px;
+  gap: 24px;
+  flex: 1;
 }
 
 .request-thumbnail {
-  width: 80px;
-  height: 80px;
+  width: 140px;
+  height: 100px;
   object-fit: cover;
-  border-radius: 8px;
-  border: 1px solid #ccc;
+  border-radius: 6px;
+  border: 1px solid #ddd;
+  background-color: #fff;
 }
 
 .request-text h3 {
-  margin: 0 0 8px 0;
-  font-size: 18px;
-  font-weight: 600;
+  font-size: 20px;
+  margin-bottom: 8px;
+  color: #faf1dc;
 }
 
 .request-text p {
-  margin: 0;
-  color: #555;
-  font-size: 14px;
+  font-size: 15px;
+  color: #ddd1b6;
 }
 
 .request-actions {
   display: flex;
   flex-direction: column;
   align-items: flex-end;
-  gap: 8px;
+  gap: 12px;
 }
 
 .request-actions input[type="datetime-local"] {
-  padding: 6px 10px;
-  border-radius: 6px;
+  padding: 10px 14px;
   border: 1px solid #ccc;
+  background-color: #f8f8f8;
   font-size: 14px;
+  border-radius: 4px;
+  color: #333;
 }
 
 .request-actions button {
-  padding: 6px 12px;
-  background-color: #2563eb;
+  background: linear-gradient(135deg, #748082, #b9c6c8);
   color: white;
   border: none;
-  border-radius: 6px;
+  padding: 10px 20px;
+  font-size: 15px;
   font-weight: 600;
+  border-radius: 4px;
   cursor: pointer;
+  transition: background 0.3s ease;
 }
 
 .request-actions button:hover {
-  background-color: #1d4ed8;
-}
-
-/* 지정가 판매 페이지 */
-.fixed-sale-container {
-  max-width: 400px;
-  margin: 30px auto;
-  padding: 20px;
-  border: 1px solid #ccc;
-  border-radius: 12px;
-  background: #fafafa;
-}
-
-.fixed-sale-container h2 {
-  margin-bottom: 20px;
-  text-align: center;
-}
-
-.fixed-sale-container label {
-  display: block;
-  margin: 12px 0 5px;
-}
-
-.fixed-sale-container select,
-.fixed-sale-container input {
-  width: 100%;
-  padding: 8px;
-  margin-bottom: 15px;
-}
-
-.fixed-sale-container button {
-  width: 100%;
-  padding: 10px;
-  background-color: #222;
-  color: white;
-  border: none;
-  border-radius: 6px;
-  cursor: pointer;
+  background: linear-gradient(135deg, #5e6e71, #8c9394);
 }
