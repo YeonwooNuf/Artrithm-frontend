@@ -198,6 +198,7 @@ const ArtworkMarketpage = ({ user }) => {
                   <div className="artwork-info-box">
                     <h3>
                       {selectedArtwork.artworkTitle}
+                      {"    "}
                       <span className="artist-name-tooltip-container">
                         <span className="artist-name">
                           (By {artist.artistName})
