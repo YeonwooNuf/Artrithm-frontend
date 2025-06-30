@@ -1,5 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import "./ChatForViewer.css";
+import axios from "axios";
 
 export default function ChatForViewer({
   artist,
@@ -7,23 +8,47 @@ export default function ChatForViewer({
   senderId,
   senderRole,
   user,
+  setIsInputFocused,
+  closeChat,
 }) {
   const [messages, setMessages] = useState([]);
   const [input, setInput] = useState("");
   const socketRef = useRef(null);
+  const messagesEndRef = useRef(null);
 
+  // ✅ 이전 메시지 불러오기
   useEffect(() => {
-    if (!roomId) {
-      console.warn("⚠️ roomId가 없습니다. 채팅방을 생성하지 못했습니다.");
-      return;
-    }
+    const fetchPreviousMessages = async () => {
+      try {
+        const res = await axios.get(`/api/messages/${roomId}`);
+        const formatted = res.data.map((msg) => ({
+          from: msg.senderRole,
+          text: msg.message,
+          timestamp: new Date(msg.sentAt).toLocaleTimeString(),
+          read: false,
+          senderNickname: msg.senderNickname || "익명",
+          senderProfileImage: msg.senderProfileImage || null,
+        }));
+        setMessages(formatted);
+      } catch (err) {
+        console.error("❌ 이전 메시지 불러오기 실패:", err);
+      }
+    };
 
-    if (socketRef.current) {
-      console.warn("⚠️ 기존 WebSocket이 이미 존재합니다. 중복 연결 방지");
-      return;
+    if (roomId) {
+      fetchPreviousMessages();
     }
+  }, [roomId]);
 
-    const ws = new WebSocket(`ws://localhost:8080/ws/chat?roomId=${roomId}`);
+  // ✅ WebSocket 연결
+  useEffect(() => {
+    if (!roomId) return;
+
+    if (socketRef.current) return;
+
+    const ws = new WebSocket(
+      `ws://${window.location.hostname}:8080/ws/chat?roomId=${roomId}`
+    );
     socketRef.current = ws;
 
     ws.onopen = () => {
@@ -34,8 +59,6 @@ export default function ChatForViewer({
       try {
         const data = JSON.parse(event.data);
         if (!data.message) return;
-
-        console.log("📨 수신된 메시지:", data);
 
         setMessages((prev) => [
           ...prev,
@@ -53,19 +76,22 @@ export default function ChatForViewer({
       }
     };
 
-    ws.onclose = (event) => {
-      console.log("❎ WebSocket 연결 종료:", event.code, event.reason);
-      socketRef.current = null; // 연결 종료 시 초기화
+    ws.onclose = () => {
+      socketRef.current = null;
     };
 
     return () => {
       if (socketRef.current) {
-        console.log("🧹 WebSocket 연결 해제");
         socketRef.current.close();
         socketRef.current = null;
       }
     };
-  }, [roomId]); // ✅ roomId 변경 시만 effect 재실행
+  }, [roomId]);
+
+  // ✅ 스크롤 아래로 이동
+  useEffect(() => {
+    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+  }, [messages]);
 
   const sendMessage = () => {
     if (
@@ -85,13 +111,12 @@ export default function ChatForViewer({
     };
 
     socketRef.current.send(JSON.stringify(messageObj));
-
     setInput("");
   };
 
   const handleKeyDown = (e) => {
     if (e.key === "Enter") {
-      e.preventDefault(); // 👈 필수!
+      e.preventDefault();
       sendMessage();
     }
   };
@@ -99,8 +124,8 @@ export default function ChatForViewer({
   const handleCloseChat = async () => {
     if (window.confirm("채팅을 종료하시겠습니까?")) {
       try {
-        await fetch(`/api/chatroom/${roomId}`, { method: "DELETE" });
-        window.history.back();
+        await axios.delete(`/api/chatroom/${roomId}`);
+        closeChat?.();
       } catch (err) {
         console.error("채팅 종료 실패:", err);
       }
@@ -144,6 +169,7 @@ export default function ChatForViewer({
             </div>
           </div>
         ))}
+        <div ref={messagesEndRef} />
       </div>
 
       <div className="viewer-chat-input">
@@ -151,6 +177,8 @@ export default function ChatForViewer({
           value={input}
           onChange={(e) => setInput(e.target.value)}
           onKeyUp={handleKeyDown}
+          onFocus={() => setIsInputFocused?.(true)}
+          onBlur={() => setIsInputFocused?.(false)}
           placeholder="메시지를 입력하세요"
           className="viewer-chat-input-field"
         />

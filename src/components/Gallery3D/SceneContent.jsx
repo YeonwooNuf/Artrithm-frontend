@@ -15,6 +15,7 @@ export default function SceneContent({
   leftFocusedId,
   rightFocusedId,
   infoId,
+  isInputFocused,
 }) {
   const texturePaths = works.map((art) => art.imageUrl);
   const textures = useLoader(TextureLoader, texturePaths);
@@ -33,7 +34,7 @@ export default function SceneContent({
         </RigidBody>
 
         <GalleryModel path={layout.galleryModelPath} />
-        <Player key={theme} position={layout.playerStart} theme={theme} />
+        <Player key={theme} position={layout.playerStart} theme={theme} isInputFocused={isInputFocused}/>
 
         {works.flatMap((art, idx) => {
           const texture = textures[idx];

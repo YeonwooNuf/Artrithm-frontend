@@ -127,11 +127,11 @@ export default function Painting({
             <Text3D
               ref={textRef}
               position={[
-                theme === "masterpiece" ? width / 2 - 1.3 : 1.7,
-                theme === "masterpiece" ? height / 2 + 1 : height / 2 - 0.5,
+                theme === "masterpiece" ? width / 2 + 3 : 2.3,
+                theme === "masterpiece" ? height / 2 - 4 : height / 2 - 0.8,
                 -0.07,
               ]}
-              size={theme === "masterpiece" ? 0.4 : 0.15}
+              size={theme === "masterpiece" ? 0.45 : 0.15}
               bevelEnabled
               bevelSize={0.005}
               height={0.001}
@@ -140,7 +140,7 @@ export default function Painting({
               font="/fonts/Nanum NaMuJeongWeon_Regular.json"
             >
               {title}
-              <meshStandardMaterial color="black" />
+              <meshStandardMaterial color={theme === "masterpiece" ? "white" : "black"} />
             </Text3D>
           )}
 

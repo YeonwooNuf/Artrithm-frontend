@@ -38,6 +38,8 @@ import SubscriptionPlan from "./pages/Subcription/SubscriptionPlan";
 import Payment from "./pages/Payment/Payment";
 import OrderCompletePage from "./pages/Payment/OrderCompletePage";
 import SaleHistoryPage from "./pages/Payment/SaleHistoryPage";
+import PaymentReceiptPage from "./pages/Payment/PaymentReceiptPage";
+import AdminRevenuePage from "./pages/Payment/AdminRevenuePage";
 
 import api from "./api/axios";
 import ArtistShowcasepage from "./pages/Artists/ArtistShowcasepage";
@@ -145,10 +147,12 @@ function App() {
             element={<OrderCompletePage user={user} />}
           />
           <Route path="/payment" element={<Payment user={user} />} />
+          <Route path="/payment/:paymentId" element={<PaymentReceiptPage />} />
 
           <Route path="/artist" element={<ArtistShowcasepage />} />
 
           <Route path="/mypage/history" element={<SaleHistoryPage />} />
+          <Route path="/admin/revenue" element={<AdminRevenuePage />} />
 
           <Route path="/artists/user/:id" element={<UserArtistDetailPage />} />
           <Route

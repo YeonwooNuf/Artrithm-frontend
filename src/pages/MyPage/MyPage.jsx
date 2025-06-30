@@ -117,7 +117,7 @@ export default function MyPage({ user, setUser }) {
           </button>
           <button
             className="mypage-button"
-            onClick={() => setActiveTab("History")}
+            onClick={() => navigate("/mypage/history")}
           >
             구매 / 판매 내역
           </button>
@@ -215,7 +215,7 @@ export default function MyPage({ user, setUser }) {
       {user?.role === "ADMIN" && (
         <>
           <button
-            className="admin-circle-button"
+            className="fab-button admin-button"
             onClick={() => setDrawerOpen((prev) => !prev)}
           >
             ＋
@@ -235,9 +235,9 @@ export default function MyPage({ user, setUser }) {
       )}
 
       {/* ✅ 채팅 플로팅 버튼 */}
-      <div className="chat-fab-wrapper">
+      <div className="fab-button-wrapper">
         <div
-          className="chat-fab-button"
+          className="fab-button chat-button"
           onClick={() => setShowChatMenu(!showChatMenu)}
         >
           💬
