@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom"
+import { useNavigate } from "react-router-dom";
 import "./CartPage.css";
 
 const CartPage = ({ user }) => {
@@ -57,11 +57,14 @@ const CartPage = ({ user }) => {
 
     try {
       // ✅ 1. 주문 먼저 생성
-      const orderRes = await fetch(`/api/cart/orders/create?userId=${user.id}`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ cartItemIds: selectedIds }),
-      });
+      const orderRes = await fetch(
+        `/api/cart/orders/create?userId=${user.id}`,
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ cartItemIds: selectedIds }),
+        }
+      );
 
       if (!orderRes.ok) throw new Error("주문 생성 실패");
 
@@ -94,7 +97,7 @@ const CartPage = ({ user }) => {
             setSelectedIds([]);
           }}
         >
-          🛍 지정가
+          지정가
         </button>
         <button
           className={activeTab === "AUCTION" ? "active" : ""}
@@ -103,15 +106,20 @@ const CartPage = ({ user }) => {
             setSelectedIds([]);
           }}
         >
-          🏆 경매
+          경매
         </button>
       </div>
 
       <div className="cart-action-bar">
         <button onClick={handleToggleAll}>
-          {selectedIds.length === filteredItems.length ? "전체 해제" : "전체 선택"}
+          {selectedIds.length === filteredItems.length
+            ? "전체 해제"
+            : "전체 선택"}
         </button>
-        <button onClick={handleBulkPurchase} disabled={selectedIds.length === 0}>
+        <button
+          onClick={handleBulkPurchase}
+          disabled={selectedIds.length === 0}
+        >
           {selectedIds.length}개 작품 구매하기
         </button>
       </div>
@@ -128,7 +136,9 @@ const CartPage = ({ user }) => {
                 onChange={() => handleToggleSelect(item.cartItemId)}
               />
               <img
-                src={`${import.meta.env.VITE_API_BASE_URL}${item.artworkImageUrl}`}
+                src={`${import.meta.env.VITE_API_BASE_URL}${
+                  item.artworkImageUrl
+                }`}
                 alt={item.artworkTitle}
                 className="cart-thumbnail"
               />

@@ -16,7 +16,7 @@ export default function LikedExhibitionsModal({ userId }) {
 
   return (
     <div className="liked-page-container">
-      <h2 className="liked-page-title">💖 관심 전시 목록</h2>
+      <h2 className="liked-page-title"> 관심 전시 목록</h2>
 
       {likedList.length === 0 ? (
         <p className="liked-empty">아직 관심 등록한 전시가 없습니다.</p>
