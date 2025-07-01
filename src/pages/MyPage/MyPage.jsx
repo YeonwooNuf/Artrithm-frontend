@@ -197,7 +197,7 @@ export default function MyPage({ user, setUser }) {
               accept="image/*"
               onChange={(e) => setProfileImage(e.target.files[0])}
             />
-            {(user.role === "ARTIST" || user.role === "ADMIN") && (
+            {(user.role === "ARTIST") && (
               <>
                 <label>작가 소개글</label>
                 <textarea
