@@ -109,3 +109,18 @@
 .view-button:hover {
   background: linear-gradient(135deg, #5e6e71, #8c9394);
 }
+
+.recommend-button {
+  margin-left: 8px;
+  padding: 8px 12px;
+  background-color: #607274;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+.recommend-button:hover {
+  background-color: #4d5e5b;
+}

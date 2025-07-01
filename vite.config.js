@@ -6,12 +6,19 @@ export default defineConfig({
   server: {
     host: true, // 외부 접근 허용
     proxy: {
-      // 🔁 FastAPI (LLM)
+      // FastAPI LLM 챗봇 기능
 
       "/api/artchat": {
         target: "http://localhost:8000",
         changeOrigin: true,
         rewrite: (path) => path.replace(/^\/api\/artchat/, "/api/artchat"),
+      },
+
+      // FastAPI LLM 추천 기능
+      "/api/recommend": {
+        target: "http://localhost:8000",
+        changeOrigin: true,
+        rewrite: (path) => path.replace(/^\/api\/recommend/, "/api/recommend"),
       },
       // 🔁 Spring Boot 백엔드
 

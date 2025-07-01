@@ -35,6 +35,13 @@ export default function LLMChatbot({ artwork, setIsInputFocused }) {
       const data = await response.json();
       console.log("📦 LLM 응답 데이터:", data);
 
+      // ✅ 출처 문서 유무 로그
+      if (Array.isArray(data.source_documents) && data.source_documents.length > 0) {
+        console.log(`✅ 출처 문서 기반 응답입니다. (artworkId: ${artwork?.id})`);
+      } else {
+        console.warn(`⚠️ 출처 없음. LLM이 지어냈을 가능성 있음. (artworkId: ${artwork?.id}, 질문: "${input}")`);
+      }
+
       let text = "";
 
       if (typeof data.answer === "string") {
@@ -74,7 +81,7 @@ export default function LLMChatbot({ artwork, setIsInputFocused }) {
         ))}
         {loading && (
           <div className="llm-message-bubble bot">
-            <div className="llm-message-text"> 답변 생성 중입니다...</div>
+            <div className="llm-message-text">답변 생성 중입니다...</div>
           </div>
         )}
         <div ref={messagesEndRef} />
