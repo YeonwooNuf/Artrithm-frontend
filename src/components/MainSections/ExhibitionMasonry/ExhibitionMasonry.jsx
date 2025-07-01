@@ -19,7 +19,7 @@ const ExhibitionMasonry = () => {
 
   useEffect(() => {
     axios
-      .get("/api/exhibitions")
+      .get("/api/exhibitions/subscribed")
       .then((res) => setExhibitions(res.data))
       .catch((err) => console.error("전시 목록 불러오기 실패", err));
   }, []);
