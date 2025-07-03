@@ -44,7 +44,7 @@ const ArtworkMarketpage = ({ user }) => {
 
   // 전체 판매 중 작품 (내 것 제외, SOLD 제외)
   useEffect(() => {
-    fetch("/api/fixed-price-sale/all-grouped")
+    fetch("/api/fixed-price-sale/all")
       .then((res) => res.json())
       .then((data) => {
         console.log("📦 서버에서 받은 데이터:", data);
@@ -162,9 +162,8 @@ const ArtworkMarketpage = ({ user }) => {
         <span className="marketpage-mode-divider">|</span>
         <button
           onClick={() => setMode("sell")}
-          className={`marketpage-mode-button ${
-            mode === "sell" ? "active" : ""
-          }`}
+          className={`marketpage-mode-button ${mode === "sell" ? "active" : ""
+            }`}
         >
           작품 판매하기
         </button>
@@ -247,11 +246,10 @@ const ArtworkMarketpage = ({ user }) => {
                   {artist.works.map((work) => (
                     <div
                       key={work.artworkId}
-                      className={`artwork-card ${
-                        selectedArtwork.artworkId === work.artworkId
+                      className={`artwork-card ${selectedArtwork.artworkId === work.artworkId
                           ? "selected"
                           : ""
-                      }`}
+                        }`}
                       onClick={() =>
                         setSelectedArtworkMap((prev) => ({
                           ...prev,
