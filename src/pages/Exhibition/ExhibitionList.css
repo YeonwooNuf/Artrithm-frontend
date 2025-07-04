@@ -55,7 +55,7 @@
 .exhibition-list-card {
   display: flex;
   /* margin-top: 20px; */
-  margin: 20px 40px;
+  margin: 20px 150px;
   max-height: 300px;
   box-shadow: 0 0 20px rgba(0, 0, 0, 0.621);
   border-radius: 20px;

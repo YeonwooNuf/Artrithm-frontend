@@ -164,32 +164,45 @@ export default function MyPage({ user, setUser }) {
         {/* 나머지 탭들 */}
         {activeTab === "Edit" && (
           <form className="mypage-form" onSubmit={handleSubmit}>
-            <label>닉네임</label>
-            <input
-              className="input"
-              value={nickname}
-              onChange={(e) => setNickname(e.target.value)}
-            />
-            <label>이메일</label>
-            <input
-              className="input"
-              type="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-            />
-            <label>생년월일</label>
-            <input
-              className="input"
-              type="date"
-              value={birth}
-              onChange={(e) => setBirth(e.target.value)}
-            />
-            <label>전화번호</label>
-            <input
-              className="input"
-              value={phoneNumber}
-              onChange={(e) => setPhoneNumber(e.target.value)}
-            />
+            <div className="input-pair-row">
+              <div className="input-group">
+                <label>닉네임</label>
+                <input
+                  className="input"
+                  value={nickname}
+                  onChange={(e) => setNickname(e.target.value)}
+                />
+              </div>
+              <div className="input-group">
+                <label>이메일</label>
+                <input
+                  className="input"
+                  type="email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                />
+              </div>
+            </div>
+
+            <div className="input-pair-row">
+              <div className="input-group">
+                <label>생년월일</label>
+                <input
+                  className="input"
+                  type="date"
+                  value={birth}
+                  onChange={(e) => setBirth(e.target.value)}
+                />
+              </div>
+              <div className="input-group">
+                <label>전화번호</label>
+                <input
+                  className="input"
+                  value={phoneNumber}
+                  onChange={(e) => setPhoneNumber(e.target.value)}
+                />
+              </div>
+            </div>
             <label>프로필 이미지</label>
             <input
               className="input"
@@ -197,7 +210,7 @@ export default function MyPage({ user, setUser }) {
               accept="image/*"
               onChange={(e) => setProfileImage(e.target.files[0])}
             />
-            {(user.role === "ARTIST") && (
+            {user.role === "ARTIST" && (
               <>
                 <label>작가 소개글</label>
                 <textarea

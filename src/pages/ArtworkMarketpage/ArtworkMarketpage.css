@@ -14,83 +14,12 @@
   margin-bottom: 200px;
 }
 
-.marketplace-artist-info {
-  display: flex;
-  margin-right: 100px;
-  flex: 1;
-  font-size: 0.9rem;
-  border-radius: 0px;
-  padding: 20px;
-  text-align: center;
-  top: 100px;
-}
-
-.marketplace-artist-image {
-  width: 120px;
-  height: 120px;
-  border-radius: 50%;
-  object-fit: cover;
-  margin-bottom: 10px;
-  margin-top: 0px;
-}
-
-.marketplace-artwork-grid {
-  flex: 3;
-  position: absolute;
-  white-space: nowrap;
-  width: 800px;
-  right: 0px;
-  display: flex;
-  overflow-x: auto;
-  scroll-snap-type: x mandatory;
-  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
-  gap: 12px;
-  padding: 10px 0;
-  margin-top: 200px;
-  margin-left: 480px;
-  border: none;
-  background: none;
-}
-
-.artwork-card {
-  flex: none; /* ✅ flex 줄어들지 않게 */
-  width: 180px;
-}
-
-.artwork-card img {
-  width: 100%;
-  height: 130px; /* ✅ 세로 길이 고정 */
-  flex: 0 0 auto;
-  object-fit: cover; /* ✅ 이미지 비율 유지하면서 프레임 채움 */
-  border-radius: 8px;
-  display: block;
-}
-
-.marketplace-artwork-grid {
-  overflow-x: auto;
-  scrollbar-width: thin; /* Firefox */
-  scrollbar-color: #81756d transparent;
-}
-
-.marketplace-artwork-grid::-webkit-scrollbar {
-  height: 10px;
-}
-
-.marketplace-artwork-grid::-webkit-scrollbar-thumb {
-  background: #81756d;
-  border-radius: 5px;
-}
-
-.marketplace-artwork-grid::-webkit-scrollbar-track {
-  background: transparent;
-}
-
 .marketpage-mode-button {
   background: none;
   border: none;
   font-size: 1.2rem;
   font-weight: bold;
-  color: #81756d;
+  color: #b9b3af;
   cursor: pointer;
   transition: color 0.3s, text-shadow 0.3s;
 }
@@ -138,97 +67,6 @@
 .marketpage-search-bar button:hover {
   background: rgba(255, 255, 255, 0.4);
   color: #2a2a2a;
-}
-
-.highlighted-artwork-section {
-  position: relative;
-  display: flex;
-  justify-content: center;
-  gap: 30px;
-  margin-top: -60px;
-  margin-bottom: 40px;
-  align-items: flex-start;
-  color: #ffffff;
-}
-
-.highlighted-artwork {
-  max-width: 400px; /* 최대 가로 크기 */
-  max-height: 400px; /* 최대 세로 크기 */
-  min-height: 300px; /* ✅ 최소 높이 지정 */
-  min-width: 300px; /* ✅ 최소 너비 지정 */
-  width: auto; /* 비율 유지용 */
-  height: auto; /* 비율 유지용 */
-  object-fit: contain;
-  border-radius: 0px;
-  margin-left: -800px;
-  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
-  z-index: 11;
-  flex: none;
-}
-
-.artwork-info-box {
-  position: absolute;
-  padding: 20px;
-  border-radius: 0px;
-  flex: 1;
-  gap: px;
-  width: 400px;
-  height: 160px;
-  z-index: 10;
-  margin-bottom: 0;
-  margin-left: 110px;
-}
-
-/* 작가소개 호버시에만만 */
-.artwork-title-line {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
-
-.artist-name {
-  color: #ccc;
-}
-
-.artist-name-tooltip-container {
-  position: relative;
-  display: inline-block;
-  cursor: pointer;
-  font-weight: bold;
-  color: #4a4aef;
-}
-
-.artist-tooltip {
-  position: absolute;
-  top: 0px;
-  left: 130px;
-  z-index: 100;
-  background: rgba(255, 255, 255, 0.651);
-  padding: 12px;
-  border-radius: 8px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-  width: 200px;
-  display: none;
-}
-
-.artist-tooltip img {
-  width: 60px;
-  height: 60px;
-  border-radius: 50%;
-  object-fit: cover;
-  margin-bottom: 8px;
-}
-
-.artist-tooltip p {
-  display: flex;
-  font-size: 0.85rem;
-  color: #686767;
-  margin: 0;
-  text-align: center;
-}
-
-.artist-name-tooltip-container:hover .artist-tooltip {
-  display: block;
 }
 
 /* 구매/전시회 바로가기 버튼 */
@@ -351,11 +189,6 @@
   box-shadow: 0 12px 36px rgba(0, 0, 0, 0.493);
   font-family: "Pretendard", sans-serif;
   color: #f7f3f3;
-
-  /* ✅ 유리 필름 배경 */
-  background-color: rgba(255, 255, 255, 0.05);
-
-  /* ✅ 텍스트 대비 위해 label 등 색도 조정해야 함 */
 }
 
 .fixed-sale-container h2 {
@@ -412,4 +245,71 @@
   display: flex;
   flex-direction: column; /* ✅ 이게 꼭 있어야 함 */
   gap: 24px; /* ✅ 요소 간 간격 */
+}
+
+.artwork-grid-wrapper {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 32px;
+  margin-top: 40px;
+  padding: 0 24px;
+}
+
+.artwork-card {
+  background-color: #d1c6bf;
+  border: 1px solid var(--light-gray);
+  border-radius: 7px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  transition: transform 0.2s ease;
+  cursor: pointer;
+}
+
+.artwork-card:hover {
+  transform: translateY(-6px);
+}
+
+.artwork-image {
+  width: 100%;
+  height: 200px;
+  object-fit: cover;
+  /* border-bottom: 1px solid #5e6e71; */
+}
+
+.artwork-info {
+  padding: 16px;
+  font-family: "Pretendard", sans-serif;
+}
+
+.artwork-info-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  /* margin-bottom: 10px; */
+}
+
+.artwork-title {
+  font-size: 1rem;
+  font-weight: 600;
+}
+
+.artwork-artist {
+  font-size: 0.9rem;
+}
+
+.artwork-price {
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: #fffdf9;
+}
+
+.artwork-date {
+  font-size: 0.8rem;
+  color: var(--light-gray);
+  margin-top: 4px;
+}
+
+.artwork-info-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }

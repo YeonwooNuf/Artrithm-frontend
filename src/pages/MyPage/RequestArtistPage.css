@@ -11,7 +11,7 @@ body::before {
   position: fixed;
   inset: 0;
   z-index: -1;
-  background: rgba(20, 20, 20, 0.4); /* 💡 반투명 흰색 필름 */
+  background: rgba(20, 20, 20, 0.655); /* 💡 반투명 흰색 필름 */
 
   -webkit-backdrop-filter: blur(10px); /* 사파리 대응 */
 }

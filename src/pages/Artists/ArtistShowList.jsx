@@ -14,10 +14,12 @@ export default function ArtistShowList() {
   }, []);
 
   const handleArtistClick = (artist) => {
+    const rawId = artist.id.replace(/^.*?_/, ""); // "Artist_5" → "5", "User_12" → "12"
+
     if (artist.type === "USER") {
-      navigate(`/artists/user/${artist.id}`);
+      navigate(`/artists/user/${rawId}`);
     } else if (artist.type === "ARTIST") {
-      navigate(`/artists/classic/${artist.id}`);
+      navigate(`/artists/classic/${rawId}`);
     }
   };
 

@@ -116,14 +116,21 @@
   display: inline-block;
 }
 
+.user-artist-container {
+  display: flex;
+  align-items: baseline; /* 또는 flex-start */
+}
 .artist-chat-button {
-  top: 20px;
-  width: 80px;
-  height: 60px;
+  height: 40px;
   cursor: pointer;
   transition: transform 0.2s ease;
+  background-color: transparent;
+  border: 1px solid #faf1dc;
+  color: #faf1dc;
+  transform: translateY(-7px); /* ← 살짝 위로 */
 }
 
 .artist-chat-button:hover {
-  transform: scale(1.1); /* 호버 시 확대 */
+  background-color: #faf1dcab;
+  color: black;
 }
