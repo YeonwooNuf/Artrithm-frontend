@@ -9,17 +9,15 @@ const ArtworkMarketpage = ({ user }) => {
   const [mode, setMode] = useState("buy");
   const [searchInput, setSearchInput] = useState("");
   const [activeQuery, setActiveQuery] = useState("");
-  const [groupedArtists, setGroupedArtists] = useState([]);
-  const [selectedArtworkMap, setSelectedArtworkMap] = useState({});
+  const [allArtworks, setAllArtworks] = useState([]);
   const [artworks, setArtworks] = useState([]);
   const [selectedArtworkId, setSelectedArtworkId] = useState("");
   const [price, setPrice] = useState("");
-  const [showCartModal, setShowCartModal] = useState(false);
 
-  // 판매 신청 처리
+  const [sortOption, setSortOption] = useState("latest"); // 기본값: 최신순
+
   const handleSubmit = async (e) => {
     e.preventDefault();
-
     const res = await fetch("/api/fixed-price-sale", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -42,88 +40,51 @@ const ArtworkMarketpage = ({ user }) => {
     }
   };
 
-  // 전체 판매 중 작품 (내 것 제외, SOLD 제외)
   useEffect(() => {
-    fetch("/api/fixed-price-sale/all-grouped")
+    fetch("/api/fixed-price-sale/all")
       .then((res) => res.json())
       .then((data) => {
         console.log("📦 서버에서 받은 데이터:", data);
-        const filteredData = data
-          .map((artist) => ({
-            ...artist,
-            works: artist.works.filter((work) => work.buyerUserId === null),
-          }))
-          .filter((artist) => artist.works.length > 0);
-        setGroupedArtists(filteredData);
+        // 구매되지 않은 작품만 필터링
+        const artworks = data.filter((work) => work.buyerUserId === null);
+        setAllArtworks(artworks);
       })
       .catch((err) => {
         console.error("❌ 판매 작품 불러오기 실패", err);
       });
   }, [userId]);
 
-  // 검색 적용
   const handleSearch = () => {
     setActiveQuery(searchInput);
   };
 
-  // 검색어 기반 필터
-  const filteredArtists = groupedArtists
-    .map((artist) => {
-      const matchedWorks = artist.works.filter((work) =>
-        work.artworkTitle.toLowerCase().includes(activeQuery.toLowerCase())
-      );
-      const isArtistMatched = artist.artistName
+  const filteredArtworks = allArtworks
+    .filter((work) => {
+      const titleMatch = work.artworkTitle
         .toLowerCase()
         .includes(activeQuery.toLowerCase());
-
-      if (isArtistMatched || matchedWorks.length > 0) {
-        return { ...artist, works: artist.works };
-      }
-      return null;
+      const artistMatch = (work.sellerNickname || "")
+        .toLowerCase()
+        .includes(activeQuery.toLowerCase());
+      return titleMatch || artistMatch;
     })
-    .filter((artist) => artist !== null);
-
-  // 검색 시 대표 작품 지정
-  useEffect(() => {
-    if (activeQuery && filteredArtists.length > 0) {
-      const lowerQuery = activeQuery.toLowerCase();
-      const newMap = { ...selectedArtworkMap };
-
-      filteredArtists.forEach((artist) => {
-        if (!newMap[artist.artistName]) {
-          const match = artist.works.find((work) =>
-            work.artworkTitle.toLowerCase().includes(lowerQuery)
-          );
-          newMap[artist.artistName] = match || artist.works[0];
-        }
-      });
-
-      setSelectedArtworkMap(newMap);
-    }
-  }, [activeQuery, filteredArtists]);
-
-  // 장바구니 추가 처리
-  const handleAddToCart = async (artworkId, fixedPriceSaleId) => {
-    const res = await fetch("/api/cart", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        userId,
-        artworkId,
-        type: "FIXED_PRICE",
-        fixedPriceSaleId,
-      }),
+    .sort((a, b) => {
+      if (sortOption === "latest") {
+        return new Date(b.createdAt) - new Date(a.createdAt);
+      } else if (sortOption === "priceLow") {
+        return a.price - b.price;
+      } else if (sortOption === "priceHigh") {
+        return b.price - a.price;
+      } else if (sortOption === "titleAsc") {
+        return (a.artworkTitle || "").localeCompare(
+          b.artworkTitle || "",
+          "ko-KR",
+          { sensitivity: "base", ignorePunctuation: true }
+        );
+      }
+      return 0;
     });
 
-    if (res.ok) {
-      setShowCartModal(true);
-    } else {
-      const errMsg = await res.text();
-      alert("❌ 장바구니 추가 실패: " + errMsg);
-    }
-  };
-
-  // 내 작품 목록 불러오기
   useEffect(() => {
     if (!user?.id) return;
     fetch(`/api/artworks/my/${userId}`)
@@ -136,22 +97,6 @@ const ArtworkMarketpage = ({ user }) => {
 
   return (
     <div className="marketplace-wrapper">
-      {showCartModal && (
-        <div className="cart-modal">
-          <div className="cart-modal-content">
-            <h3>🎉 장바구니에 담겼습니다!</h3>
-            <div className="cart-modal-buttons">
-              <button onClick={() => navigate("/cart")}>
-                🛒 장바구니로 이동
-              </button>
-              <button onClick={() => setShowCartModal(false)}>
-                🎨 계속 감상하기
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
-
       <div className="marketpage-mode-buttons">
         <button
           onClick={() => setMode("buy")}
@@ -177,99 +122,47 @@ const ArtworkMarketpage = ({ user }) => {
               onChange={(e) => setSearchInput(e.target.value)}
             />
             <button onClick={handleSearch}>검색</button>
+            <select
+              value={sortOption}
+              onChange={(e) => setSortOption(e.target.value)}
+              style={{ marginLeft: "12px", padding: "8px" }}
+            >
+              <option value="latest">최신순</option>
+              <option value="priceLow">가격 낮은 순</option>
+              <option value="priceHigh">가격 높은 순</option>
+              <option value="titleAsc">가나다순</option>
+            </select>
           </div>
         )}
       </div>
 
       {mode === "buy" && (
-        <div className="marketplace-wrapper">
-          {filteredArtists.map((artist) => {
-            const selectedArtwork =
-              selectedArtworkMap[artist.artistName] || artist.works[0];
-
-            return (
-              <div key={artist.artistId} className="marketplace-container">
-                <div className="highlighted-artwork-section">
-                  <img
-                    src={selectedArtwork.artworkImageUrl}
-                    alt={selectedArtwork.artworkTitle}
-                    className="highlighted-artwork"
-                  />
-                  <div className="artwork-info-box">
-                    <h3>
-                      {selectedArtwork.artworkTitle}
-                      {"    "}
-                      <span className="artist-name-tooltip-container">
-                        <span className="artist-name">
-                          (By {artist.artistName})
-                        </span>
-                        <div className="artist-tooltip">
-                          <img
-                            src={artist.artistProfileImage}
-                            alt={artist.artistName}
-                          />
-                          <p>{artist.artistBio}</p>
-                        </div>
-                      </span>
-                    </h3>
-                    <p>{selectedArtwork.description}</p>
-                    <p style={{ fontSize: "0.9em", color: "#FAF1DC" }}>
-                      가격: {selectedArtwork.price?.toLocaleString() || "문의"}
-                    </p>
-                    <div className="marketpage-buttons">
-                      <button
-                        className="marketpage-exhibition-button"
-                        onClick={() =>
-                          navigate(
-                            `/exhibitions/Gallery3D/${selectedArtwork.exhibitionId}`
-                          )
-                        }
-                      >
-                        🖼 전시회에서 보기
-                      </button>
-                      {selectedArtwork.sellerUserId !== userId && (
-                        <button
-                          className="marketpage-buy-button"
-                          onClick={() =>
-                            handleAddToCart(
-                              selectedArtwork.artworkId,
-                              selectedArtwork.fixedPriceSaleId
-                            )
-                          }
-                        >
-                          🛒 구매하기
-                        </button>
-                      )}
-                    </div>
-                  </div>
+        <div className="artwork-grid-wrapper">
+          {filteredArtworks.map((artwork) => (
+            <div
+              key={artwork.artworkId}
+              className="artwork-card"
+              onClick={() => navigate(`/artworks/${artwork.artworkId}`)}
+            >
+              <img
+                src={artwork.artworkImageUrl}
+                alt={artwork.artworkTitle}
+                className="artwork-image"
+              />
+              <div className="artwork-info">
+                <div className="artwork-info-container">
+                  <h4 className="artwork-title">{artwork.artworkTitle}</h4>
+                  <p className="artwork-artist">{artwork.sellerNickname}</p>
                 </div>
-                <div className="marketplace-artwork-grid">
-                  {artist.works.map((work) => (
-                    <div
-                      key={work.artworkId}
-                      className={`artwork-card ${
-                        selectedArtwork.artworkId === work.artworkId
-                          ? "selected"
-                          : ""
-                      }`}
-                      onClick={() =>
-                        setSelectedArtworkMap((prev) => ({
-                          ...prev,
-                          [artist.artistName]: work,
-                        }))
-                      }
-                    >
-                      <img
-                        src={work.artworkImageUrl}
-                        alt={work.artworkTitle}
-                        style={{ width: "100%", borderRadius: "0px" }}
-                      />
-                    </div>
-                  ))}
-                </div>
+                <p className="artwork-price">{artwork.price}원</p>
+                <p className="artwork-date">
+                  {artwork.createdAt
+                    ? new Date(artwork.createdAt).toLocaleDateString()
+                    : "등록일 없음"}
+                </p>
               </div>
-            );
-          })}
+            </div>
+          ))}
         </div>
       )}
 
