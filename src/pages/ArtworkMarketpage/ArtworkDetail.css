@@ -1,0 +1,160 @@
+.artwork-detail-container {
+  display: flex;
+  margin-top: 100px;
+  flex-wrap: wrap;
+  gap: 60px;
+  padding: 60px;
+  color: #faf1dc;
+  font-family: "Pretendard", sans-serif;
+  background-color: rgba(255, 255, 255, 0.03);
+  border-radius: 12px;
+}
+
+.artwork-detail-left {
+  flex: 1;
+  min-width: 300px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.artwork-detail-image {
+  width: 100%;
+  max-width: 500px;
+  border-radius: 12px;
+  object-fit: contain;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+}
+
+.artwork-detail-right {
+  flex: 1;
+  min-width: 300px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  padding-top: 20px;
+}
+
+.artwork-detail-right h2 {
+  font-size: 2rem;
+  margin-bottom: 16px;
+  color: #f5efe7;
+}
+
+.artist-name {
+  font-size: 1.1rem;
+  color: #c2bcb5;
+  margin-bottom: 16px;
+}
+
+.artwork-price {
+  font-size: 1.3rem;
+  font-weight: bold;
+  color: #ffffff;
+  margin-bottom: 12px;
+}
+
+.artwork-date {
+  font-size: 0.95rem;
+  color: #676666;
+  margin-bottom: 24px;
+}
+
+.artwork-detail-buttons {
+  display: flex;
+  gap: 16px;
+}
+
+.add-to-cart-button,
+.buy-now-button {
+  padding: 14px 24px;
+  font-size: 1rem;
+  border: none;
+  border-radius: 4px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+}
+
+.add-to-cart-button {
+  background-color: #5e6e71;
+  color: white;
+}
+
+.add-to-cart-button:hover {
+  background-color: #424d4f;
+}
+
+.buy-now-button {
+  background-color: #f5efe7;
+  color: #5c534c;
+}
+
+.buy-now-button:hover {
+  background-color: #eae3db;
+}
+
+/* 기존 장바구니 모달 재활용 */
+.cart-modal {
+  position: fixed;
+  inset: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.cart-modal-content {
+  background: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(12px);
+  padding: 40px 48px;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  border-radius: 8px;
+  color: #faf1dc;
+  text-align: center;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+  max-width: 400px;
+}
+
+.cart-modal-content h3 {
+  font-size: 22px;
+  margin-bottom: 24px;
+  color: #faf1dc;
+}
+
+.cart-modal-buttons {
+  display: flex;
+  gap: 16px;
+  justify-content: center;
+  margin-top: 20px;
+}
+
+.cart-modal-buttons button {
+  padding: 12px 20px;
+  font-size: 0.95rem;
+  border: none;
+  border-radius: 0px;
+  cursor: pointer;
+  font-weight: 600;
+}
+
+.cart-modal-buttons button:first-child {
+  background: #faf1dc;
+  color: #5e6e71;
+}
+
+.cart-modal-buttons button:first-child:hover {
+  background: #e6dbc1;
+}
+
+.cart-modal-buttons button:last-child {
+  background: transparent;
+  color: #faf1dc;
+  border: 1px solid #faf1dc;
+}
+
+.cart-modal-buttons button:last-child:hover {
+  background: rgba(255, 255, 255, 0.2);
+  color: #2a2a2a;
+}
