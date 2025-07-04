@@ -45,6 +45,7 @@ import api from "./api/axios";
 import ArtistShowcasepage from "./pages/Artists/ArtistShowcasepage";
 import UserArtistDetailPage from "./pages/Artists/UserArtistDetailPage";
 import ClassicArtistDetailPage from "./pages/Artists/ClassicArtistDetailPage";
+import ArtworkDetail from "./pages/ArtworkMarketpage/ArtworkDetail";
 
 function App() {
   const [user, setUser] = useState(() => {
@@ -137,6 +138,10 @@ function App() {
             element={<ArtworkMarketpage user={user} />}
           />
           <Route path="/cart" element={<Cartpage user={user} />} />
+          <Route
+            path="/artworks/:artworkId"
+            element={<ArtworkDetail user={user} />}
+          />
           <Route
             path="/subscription"
             element={<SubscriptionPlan user={user} />}
