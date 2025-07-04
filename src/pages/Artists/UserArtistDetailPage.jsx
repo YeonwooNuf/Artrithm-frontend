@@ -14,7 +14,7 @@ export default function UserArtistDetailPage() {
         setArtist(data);
 
         // 2. 해당 유저가 등록한 판매 전 작품 목록 불러오기
-        return fetch(`/api/artworks/allMy/${data.id}`);
+        return fetch(`/api/artworks/my/unsold/${data.id}`);
       })
       .then((res) => res.json())
       .then((artworks) => {
@@ -36,11 +36,9 @@ export default function UserArtistDetailPage() {
         <div className="user-artist-profile-info">
           <div className="user-artist-container">
             <h2>{artist.nickname}</h2>{" "}
-            <img
-              src="/chat_bubble_no_bg.png"
-              alt="채팅 버튼"
-              className="artist-chat-button"
-            />{" "}
+            <button alt="채팅 버튼" className="artist-chat-button">
+              작가에게 문의하기
+            </button>
           </div>
           <p>{artist.artistBio || "작가 소개가 없습니다."}</p>
         </div>{" "}
