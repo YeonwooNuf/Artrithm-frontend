@@ -107,9 +107,8 @@ const ArtworkMarketpage = ({ user }) => {
         <span className="marketpage-mode-divider">|</span>
         <button
           onClick={() => setMode("sell")}
-          className={`marketpage-mode-button ${
-            mode === "sell" ? "active" : ""
-          }`}
+          className={`marketpage-mode-button ${mode === "sell" ? "active" : ""
+            }`}
         >
           작품 판매하기
         </button>
