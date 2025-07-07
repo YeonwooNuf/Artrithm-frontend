@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import "./RequestArtistPage.css";
@@ -35,6 +35,10 @@ export default function RequestArtistPage() {
       alert(err.response?.data || "요청 중 오류가 발생했습니다.");
     }
   };
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
 
   return (
     <div className="request-artist-container">
