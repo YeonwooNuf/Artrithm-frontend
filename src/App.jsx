@@ -46,6 +46,8 @@ import ArtistShowcasepage from "./pages/Artists/ArtistShowcasepage";
 import UserArtistDetailPage from "./pages/Artists/UserArtistDetailPage";
 import ClassicArtistDetailPage from "./pages/Artists/ClassicArtistDetailPage";
 import ArtworkDetail from "./pages/ArtworkMarketpage/ArtworkDetail";
+import AboutPage from "./components/About/AboutPage";
+
 
 function App() {
   const [user, setUser] = useState(() => {
@@ -112,6 +114,8 @@ function App() {
             path="/admin/upload-description"
             element={<UploadExplanationFile user={user} />}
           />
+
+          <Route path="/intro" element={<AboutPage />} />
 
           {/* ✅ 전시 관련 */}
           <Route path="/exhibitions/:id" element={<ExhibitionPage />} />
