@@ -56,6 +56,21 @@ const Header = ({ user, setUser }) => {
     artworkTimer.current = setTimeout(() => setOpenArtwork(false), 200);
   };
 
+  const handleUploadAccess = () => {
+    if (!user) {
+      alert("로그인이 필요합니다.");
+      navigate("/login");
+      return;
+    }
+
+    // 관리자이거나 승인된 작가일 경우
+    if (user.role === "ADMIN" || user.isArtistApproved === true) {
+      navigate("/upload");
+    } else {
+      alert("작가로 승인된 회원만 전시를 개설할 수 있습니다.");
+    }
+  };
+
   return (
     <header className={`header ${isVisible ? "visible" : "hidden"}`}>
       <div className="header_logo">
@@ -82,7 +97,9 @@ const Header = ({ user, setUser }) => {
                 onMouseLeave={handleExhibitionLeave}
               >
                 <li>
-                  <Link to="/upload">개설하기</Link>
+                  <span onClick={handleUploadAccess} style={{ cursor: "pointer" }}>
+                    개설하기
+                  </span>
                 </li>
                 <li>
                   <Link to="/view">감상하기</Link>
@@ -104,10 +121,10 @@ const Header = ({ user, setUser }) => {
                 onMouseLeave={handleArtworkLeave}
               >
                 <li>
-                  <Link to="/fixed-price">지정가 구매</Link>
+                  <Link to="/fixed-price">지정가</Link>
                 </li>
                 <li>
-                  <Link to="/auction">진행중인 경매</Link>
+                  <Link to="/auction">경매</Link>
                 </li>
               </ul>
             )}

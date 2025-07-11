@@ -112,6 +112,21 @@
   border-radius: 4px;
 }
 
+.dropdown__menu li span {
+  font-size: 15px;
+  font-weight: 600;
+  color: #222;
+  text-decoration: none;
+  display: block;
+  transition: background-color 0.2s ease;
+  text-shadow: 0 1px 1px rgba(200, 200, 200, 0.4);
+}
+
+.dropdown__menu li span:hover {
+  background-color: rgba(0, 0, 0, 0.05);
+  border-radius: 4px;
+}
+
 /* 로그아웃 텍스트 스타일 */
 .logout-link {
   font-size: 16px;
