@@ -23,22 +23,46 @@ export default function ArtistShowList() {
     }
   };
 
+  const userArtists = artists.filter((a) => a.type === "USER");
+  const classicArtists = artists.filter((a) => a.type === "ARTIST");
+
   return (
     <div className="artist-showlist-section">
       <hr className="custom-line" />
       <h2 className="artist-list-title">Artists</h2>
-      <div className="artistpage-scroll-wrapper">
-        {artists.map((artist) => (
-          <div key={artist.id} className="artistpage-item">
-            <img
-              src={artist.profileImage}
-              alt={artist.name}
-              className="artistpage-profile"
-              onClick={() => handleArtistClick(artist)}
-            />
-            <div className="artistpage-name">{artist.name}</div>
-          </div>
-        ))}
+
+      <div className="artist-group-section">
+        <h3 className="artist-subtitle">일반 작가</h3>
+        <div className="artistpage-scroll-wrapper">
+          {userArtists.map((artist) => (
+            <div key={artist.id} className="artistpage-item">
+              <img
+                src={artist.profileImage}
+                alt={artist.name}
+                className="artistpage-profile"
+                onClick={() => handleArtistClick(artist)}
+              />
+              <div className="artistpage-name">{artist.name}</div>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      <div className="artist-group-section">
+        <h3 className="artist-subtitle">명화 작가</h3>
+        <div className="artistpage-scroll-wrapper">
+          {classicArtists.map((artist) => (
+            <div key={artist.id} className="artistpage-item">
+              <img
+                src={artist.profileImage}
+                alt={artist.name}
+                className="artistpage-profile"
+                onClick={() => handleArtistClick(artist)}
+              />
+              <div className="artistpage-name">{artist.name}</div>
+            </div>
+          ))}
+        </div>
       </div>
     </div>
   );
