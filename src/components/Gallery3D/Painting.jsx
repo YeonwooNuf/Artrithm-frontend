@@ -20,12 +20,34 @@ export default function Painting({
   const groupRef = useRef();
   const lightRef = useRef();
   const textRef = useRef();
-  const [opacity, setOpacity] = useState(0);
 
-  const width = theme === "masterpiece" ? 11.25 : 2.5;
-  const height = theme === "masterpiece" ? 8.1 : 1.8;
+  const [opacity, setOpacity] = useState(0);
+  const [aspectRatio, setAspectRatio] = useState(1); // width / height
+
+  const baseHeight = theme === "masterpiece" ? 8.1 : 1.8;
   const frameWidth = 0.15;
   const frameDepth = 0.3;
+
+  // 이미지 로드 후 비율 계산
+  useEffect(() => {
+    if (texture?.image?.width && texture?.image?.height) {
+      const ratio = texture.image.width / texture.image.height;
+      setAspectRatio(ratio);
+    }
+  }, [texture]);
+
+  useEffect(() => {
+    if (textRef.current) {
+      // 기존 geometry를 수동으로 제거하고 새로 생성
+      const geom = textRef.current.geometry;
+      geom.dispose();
+      textRef.current.geometry = geom.clone();
+      textRef.current.geometry.center();
+    }
+  }, [title]);
+
+  const width = baseHeight * aspectRatio;
+  const height = baseHeight;
 
   useEffect(() => {
     if (textRef.current) {
@@ -81,15 +103,15 @@ export default function Painting({
               args={
                 i < 2
                   ? [
-                      (width + frameWidth * 2) * (isFocusedState ? focusScale : 1),
-                      frameWidth * (isFocusedState ? focusScale : 1),
-                      frameDepth,
-                    ]
+                    (width + frameWidth * 2) * (isFocusedState ? focusScale : 1),
+                    frameWidth * (isFocusedState ? focusScale : 1),
+                    frameDepth,
+                  ]
                   : [
-                      frameWidth * (isFocusedState ? focusScale : 1),
-                      height * (isFocusedState ? focusScale : 1),
-                      frameDepth,
-                    ]
+                    frameWidth * (isFocusedState ? focusScale : 1),
+                    height * (isFocusedState ? focusScale : 1),
+                    frameDepth,
+                  ]
               }
             />
             <meshStandardMaterial
@@ -127,9 +149,9 @@ export default function Painting({
             <Text3D
               ref={textRef}
               position={[
-                theme === "masterpiece" ? width / 2 + 3 : 2.3,
-                theme === "masterpiece" ? height / 2 - 4 : height / 2 - 0.8,
-                -0.07,
+                width / 2 + (theme === "masterpiece" ? 3 : 0.8),
+                height / 2 - (theme === "masterpiece" ? 4 : 0.8),
+                theme === "circle" ? -10 : -0.07,
               ]}
               size={theme === "masterpiece" ? 0.45 : 0.15}
               bevelEnabled
@@ -140,7 +162,7 @@ export default function Painting({
               font="/fonts/Nanum NaMuJeongWeon_Regular.json"
             >
               {title}
-              <meshStandardMaterial color={theme === "masterpiece" ? "white" : "black"} />
+              <meshStandardMaterial color={theme === "modern" ? "black" : "white"} />
             </Text3D>
           )}
 
