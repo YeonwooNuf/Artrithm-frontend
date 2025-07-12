@@ -19,7 +19,6 @@ export default function UploadExplanationFile() {
       .catch(err => console.error("작품 목록 불러오기 실패", err));
   }, []);
 
-
   // 파일 선택 핸들러 (PDF만 허용)
   const handleFileChange = (e) => {
     const selected = e.target.files[0];
@@ -43,7 +42,7 @@ export default function UploadExplanationFile() {
     formData.append("file", file);
 
     try {
-      await axios.post("/api/artchat/upload", formData, {
+      await axios.post(`/api/artworks/${selectedArtworkId}/upload-explanation`, formData, {
         headers: { "Content-Type": "multipart/form-data" }
       });
       alert("설명 파일이 성공적으로 업로드되었습니다.");
@@ -51,7 +50,7 @@ export default function UploadExplanationFile() {
     } catch (err) {
       console.error("업로드 실패:", err);
       alert("업로드 중 오류가 발생했습니다.");
-    }formData.append("artworkId", selectedArtworkId);
+    } formData.append("artworkId", selectedArtworkId);
   };
 
   return (
