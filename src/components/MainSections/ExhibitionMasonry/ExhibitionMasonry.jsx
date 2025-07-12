@@ -8,7 +8,7 @@ const ExhibitionMasonry = () => {
   const trackRef = useRef(null);
 
   const scrollBy = (direction) => {
-    const scrollAmount = 224; // 카드 너비 + gap
+    const scrollAmount = 267; // 카드 너비 + gap
     if (trackRef.current) {
       trackRef.current.scrollBy({
         left: scrollAmount * direction,
@@ -20,13 +20,16 @@ const ExhibitionMasonry = () => {
   useEffect(() => {
     axios
       .get("/api/exhibitions/subscribed")
-      .then((res) => setExhibitions(res.data))
+      .then((res) => {
+        const shuffled = [...res.data].sort(() => Math.random() - 0.5); // 랜덤 셔플
+        setExhibitions(shuffled);
+      })
       .catch((err) => console.error("전시 목록 불러오기 실패", err));
   }, []);
 
   return (
     <section className="exhibition-slider">
-      <h2 className="slider-title">Current Exhibitions</h2>
+      <h2 className="slider-title">Recommended Exhibitions</h2>
       <div className="slider-wrapper">
         <button className="arrow-prev" onClick={() => scrollBy(-1)}>
           &lt;
