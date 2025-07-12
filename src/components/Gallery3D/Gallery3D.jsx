@@ -198,7 +198,7 @@ export default function Gallery3D() {
 
   return (
     <div className="gallery3d-wrapper fade-in">
-      <h2 className="gallery-title">3D 작품 전시관</h2>
+      <h2 className="gallery-title"></h2>
       <div className="gallery3d-container">
         {infoId && (
           <div className="hud-description">
