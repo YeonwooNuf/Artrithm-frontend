@@ -14,9 +14,6 @@ export default function AdminDrawer({ onClose, isOpen }) {
           <Link to="/admin/upload-masterpiece">명화 전시 업로드</Link>
         </li>
         <li>
-          <Link to="/admin/artists/new">작가 등록</Link>
-        </li>
-        <li>
           <Link to="/admin/upload-description">작품 설명 업로드</Link>
         </li>
         <li>
