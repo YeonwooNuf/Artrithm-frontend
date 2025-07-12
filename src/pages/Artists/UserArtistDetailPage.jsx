@@ -1,8 +1,11 @@
 import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import "./UserArtistDetailPage.css"; // 선택사항: 스타일 따로 분리
+import { useNavigate } from "react-router-dom";
 
 export default function UserArtistDetailPage() {
+  const navigate = useNavigate();
+
   const { id } = useParams();
   const [artist, setArtist] = useState(null);
   const [artworks, setArtworks] = useState([]);
@@ -44,11 +47,16 @@ export default function UserArtistDetailPage() {
         </div>{" "}
       </div>
 
-      <h3>작품 목록</h3>
+      <h3>판매중인 작품 목록</h3>
       <div className="user-artwork-grid">
         {artworks.length > 0 ? (
           artworks.map((artwork) => (
-            <div key={artwork.id} className="user-artwork-card">
+            <div
+              key={artwork.id}
+              className="user-artwork-card"
+              onClick={() => navigate(`/artworks/${artwork.id}`)}
+              style={{ cursor: "pointer" }} // 클릭 가능 표시
+            >
               <img src={artwork.imageUrl} alt={artwork.title} />
               <div className="user-artwork-title">{artwork.title}</div>
             </div>
