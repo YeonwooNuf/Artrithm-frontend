@@ -43,8 +43,37 @@ const ArtworkDetail = ({ user }) => {
     }
   };
 
-  const handleBuyNow = () => {
-    navigate(`/checkout?artworkId=${artwork.artworkId}`);
+  const handleBuyNow = async () => {
+    try {
+      // 🎯 새로운 단일 주문 생성 API 호출
+      const res = await fetch("/api/cart/orders/single", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          userId,
+          artworkId: artwork.artworkId,
+          fixedPriceSaleId: artwork.fixedPriceSaleId,
+        }),
+      });
+
+      if (!res.ok) throw new Error(await res.text());
+      const order = await res.json();
+
+      // 🎯 바로 결제 페이지로 이동
+      navigate("/payment", {
+        state: {
+          cartOrderId: order.orderId,
+          paymentType: order.type,
+          finalPrice: order.totalAmount,
+          singleArtwork: {
+            artworkId: artwork.artworkId,
+            fixedPriceSaleId: artwork.fixedPriceSaleId,
+          },
+        },
+      });
+    } catch (err) {
+      alert("❌ 바로 구매 실패: " + err.message);
+    }
   };
 
   if (!artwork) return <p>로딩 중...</p>;
