@@ -63,10 +63,10 @@ export default function SaleHistoryPage() {
             <div className="details">
                 <h3>{item.artworkTitle}</h3>
                 <p className="label">
-                    구매자: {item.buyerNickname ?? "아직 없음"}
+                    구매자 : {item.buyerNickname ?? "아직 없음"}
                 </p>
                 <p className="price">
-                    ₩{item.price != null ? item.price.toLocaleString() : "경매 진행 중"}
+                    ₩ {item.price != null ? item.price.toLocaleString() : "판매 중"}
                 </p>
                 <p className="date">
                     {item.soldAt ? new Date(item.soldAt).toLocaleString() : "미정"}
