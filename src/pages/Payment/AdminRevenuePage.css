@@ -1,28 +1,55 @@
 .admin-revenue-page {
   padding: 2rem;
-  max-width: 720px;
-  margin: 0 auto;
+  max-width: 1000px;
+  margin: 120px auto;
+  font-family: 'Noto Sans KR', sans-serif;
+  color: #333;
 }
 
 .date-filter {
-  margin-bottom: 1.5rem;
+  margin-bottom: 2rem;
   display: flex;
   gap: 1rem;
   align-items: center;
+  color: white;
+  font-weight: bold;
 }
 
 .date-filter input {
   margin-left: 0.5rem;
-  padding: 0.25rem;
+  padding: 0.3rem 0.5rem;
+}
+
+.date-filter button {
+  padding: 0.5rem 1rem;
+  background: #444;
+  color: white;
+  border: none;
+  cursor: pointer;
+  border-radius: 6px;
 }
 
 .revenue-stats {
-  background: #f4f4f4;
-  padding: 1rem;
-  border-radius: 8px;
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 2rem;
 }
 
-.revenue-stats p {
+.stat-card {
+  background: #f9f9f9;
+  border: 1px solid #ddd;
+  padding: 1.5rem;
+  border-radius: 8px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.04);
+}
+
+.stat-card h3 {
+  margin-bottom: 1rem;
+  font-size: 1.2rem;
+  border-bottom: 1px solid #ccc;
+  padding-bottom: 0.5rem;
+}
+
+.stat-card p {
   margin: 0.5rem 0;
-  font-size: 1.05rem;
 }
