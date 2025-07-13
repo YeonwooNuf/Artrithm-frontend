@@ -13,6 +13,7 @@ const Payment = () => {
     finalPrice,
     tierId,
     isYearly = false,
+    singleArtwork,
   } = location.state || {};
 
   const [paymentMethod, setPaymentMethod] = useState("CARD");
@@ -83,6 +84,7 @@ const Payment = () => {
       totalAmount: finalPrice,
       paymentMethod,
       cartOrderId,
+      singleArtwork,
       tierId,
       isYearly,
     };
