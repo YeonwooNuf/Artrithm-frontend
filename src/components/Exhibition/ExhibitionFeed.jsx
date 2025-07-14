@@ -74,6 +74,9 @@ export default function ExhibitionFeed({ exhibition, userId }) {
           <span onClick={handleLike} style={{ cursor: "pointer" }}>
             {liked ? "❤️ 관심 있음" : "🤍 관심 없음"}
           </span>
+          <span className="view-count">
+            조회수 : {exhibition.viewCount?.toLocaleString()}회
+          </span>
         </div>
       </div>
 
