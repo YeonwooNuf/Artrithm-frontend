@@ -68,7 +68,7 @@ export default function ExhibitionList() {
     try {
       if (!searchKeyword.trim()) return;
 
-      const res = await axios.get("http://localhost:8000/api/recommend", {
+      const res = await axios.get("http://192.168.10.159:8000/api/recommend", {
         params: { query: searchKeyword },
       });
       console.log("🔥 의미 기반 추천 응답:", res.data);
