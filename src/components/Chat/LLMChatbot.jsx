@@ -11,7 +11,7 @@ export default function LLMChatbot({ artwork, setIsInputFocused }) {
 
   // ✅ 자동 스크롤
   useEffect(() => {
-    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+    messagesEndRef.current?.scrollIntoView({ behavior: "smooth", block: "nearest"});
   }, [messages, loading]);
 
   const handleSend = async () => {
@@ -31,6 +31,12 @@ export default function LLMChatbot({ artwork, setIsInputFocused }) {
           artworkId: artwork?.id
         })
       });
+
+      if (!response.ok) {
+        // 서버 오류 로그
+        console.error(`❌ 서버 오류 (${response.status}): ${response.statusText}`);
+        throw new Error(`서버 오류: ${response.status}`);
+      }
 
       const data = await response.json();
       console.log("📦 LLM 응답 데이터:", data);
@@ -53,10 +59,10 @@ export default function LLMChatbot({ artwork, setIsInputFocused }) {
       const botMessage = { from: "bot", text };
       setMessages((prev) => [...prev, botMessage]);
     } catch (err) {
-      console.error("❌ 서버 응답 오류:", err);
+      console.error("❌ 응답 처리 오류:", err);
       setMessages((prev) => [
         ...prev,
-        { from: "bot", text: "⚠️ 서버 응답에 문제가 발생했습니다." }
+        { from: "bot", text: "⚠️ 서버 응답에 문제가 발생했습니다. 다시 시도해 주세요." }
       ]);
     } finally {
       setLoading(false);
@@ -70,7 +76,7 @@ export default function LLMChatbot({ artwork, setIsInputFocused }) {
   return (
     <div className="llm-chatbot-container">
       <div className="llm-chatbot-header">
-        🧠 LLM 챗봇 - <strong>{artwork?.title}</strong>
+        LLM 챗봇 - <strong>{artwork?.title}</strong>
       </div>
 
       <div className="llm-chatbot-messages">
