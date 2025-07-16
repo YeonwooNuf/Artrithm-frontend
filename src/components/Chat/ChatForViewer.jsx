@@ -90,7 +90,7 @@ export default function ChatForViewer({
 
   // ✅ 스크롤 아래로 이동
   useEffect(() => {
-    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+    messagesEndRef.current?.scrollIntoView({ behavior: "smooth", block: "nearest" });
   }, [messages]);
 
   const sendMessage = () => {
