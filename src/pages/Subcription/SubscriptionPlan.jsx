@@ -73,7 +73,7 @@ export default function SubscriptionPlan() {
 
   return (
     <div className="subscription-wrapper">
-      <h2 className="subscription-title">작가 전용 구독 플랜</h2>
+      <h1 className="subscription-title">Artist Subscription</h1>
 
       <div className="toggle-container">
         <span className={!isYearly ? "active" : ""}>월간</span>
@@ -96,7 +96,7 @@ export default function SubscriptionPlan() {
           >
             <h3>{tier.name}</h3>
             <p className="price">
-              ₩{getPrice(tier.priceMonthly, isYearly).toLocaleString()} /{isYearly ? "연" : "월"}
+              ₩{getPrice(tier.priceMonthly, isYearly).toLocaleString()} / {isYearly ? "1 Year" : "1 Month"}
             </p>
             <ul>
               {tier.benefits.split(",").map((benefit, i) => (
