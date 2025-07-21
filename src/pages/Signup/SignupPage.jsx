@@ -1,10 +1,13 @@
 import React, { useState } from "react";
-import axios from "axios";
+import { useNavigate } from "react-router-dom";
+import api from "../../api/axios";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import "./SignupPage.css";
 
 const SignupPage = () => {
+  const navigate = useNavigate();
+
   const [form, setForm] = useState({
     username: "",
     nickname: "",
@@ -14,8 +17,6 @@ const SignupPage = () => {
     birth: null,
     phone: "",
   });
-
-  const [message, setMessage] = useState("");
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -31,21 +32,18 @@ const SignupPage = () => {
     }
 
     const payload = {
-      loginId: form.username, // ✅ 백엔드 기준 필드명
+      loginId: form.username,
       nickname: form.nickname,
       email: form.email,
       password: form.password,
       phoneNumber: form.phone,
-      birth: form.birth, // LocalDate로 전달
+      birth: form.birth ? form.birth.toISOString().split("T")[0] : null,
     };
 
     try {
-      const response = await api.post(
-        "/api/users/signup",
-        payload
-      );
+      await api.post("/api/users/signup", payload);
       alert("회원가입 성공! 🎉");
-      setMessage(response.data);
+      navigate("/login");
     } catch (err) {
       console.error("❌ 회원가입 실패:", err);
       alert("서버 오류가 발생했습니다.");
@@ -141,8 +139,6 @@ const SignupPage = () => {
             회원가입
           </button>
         </form>
-
-        {message && <p className="success-msg">{message}</p>}
       </div>
     </div>
   );
