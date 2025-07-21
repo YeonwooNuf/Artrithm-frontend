@@ -49,7 +49,7 @@ const AuctionRequestpage = ({ user }) => {
   return (
     <div className="auction-request-page">
       <div className="form-section">
-        <h2 className="form-title">🎨 Auction Request</h2>
+        <h2 className="form-title">Auction Request</h2>
         <form onSubmit={handleSubmit} className="auction-form">
           <label>작품 선택:</label>
           <select

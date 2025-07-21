@@ -10,28 +10,28 @@ export default defineConfig({
       // FastAPI LLM 챗봇 기능
 
       "/api/artchat": {
-        target: "http://192.168.10.159:8000",
+        target: "http://172.30.1.11:8000",
         changeOrigin: true,
         rewrite: (path) => path.replace(/^\/api\/artchat/, "/api/artchat"),
       },
 
       // FastAPI LLM 추천 기능
       "/api/recommend": {
-        target: "http://192.168.10.159:8000",
+        target: "http://172.30.1.11:8000",
         changeOrigin: true,
         rewrite: (path) => path.replace(/^\/api\/recommend/, "/api/recommend"),
       },
       // 🔁 Spring Boot 백엔드
 
       "/api": {
-        target: "http://192.168.10.159:8080",
+        target: "http://172.30.1.11:8080",
         changeOrigin: true,
         secure: false,
       },
       // 🔁 이미지
 
       "/uploads": {
-        target: "http://192.168.10.159:8080",
+        target: "http://172.30.1.11:8080",
         changeOrigin: true,
         secure: false,
       },
