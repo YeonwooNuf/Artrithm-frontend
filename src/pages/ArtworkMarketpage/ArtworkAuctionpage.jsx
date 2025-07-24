@@ -85,7 +85,7 @@ const ArtworkAuctionpage = ({ user }) => {
 
   // 5. 웹소켓 연결
   useEffect(() => {
-    socket.current = new WebSocket("ws://localhost:8080/ws/auction");
+    socket.current = new WebSocket("ws://172.30.1.11:8080/ws/auction");
 
     socket.current.onopen = () => {
       console.log("✅ 웹소켓 연결 성공");
@@ -185,7 +185,6 @@ const ArtworkAuctionpage = ({ user }) => {
         <h2>{auctionData.artwork.title}</h2>
         <p className="artist-name">
           {" "}
-          👤{" "}
           {auctionData.artwork.artistName
             ? auctionData.artwork.artistName
             : auctionData.artwork.userNickname}
